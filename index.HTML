@@ -5,17 +5,17 @@
         <title>My Counter - Muhannad Senan</title>
         <style>
             body{cursor: pointer; border: 1px solid #ccc; background: #222; color: #fff;}
-            #clicker{width: 100%; height: 100vh; border: 1px solid green; z-index: 9999; position: absolute; top: 0; right: 0;}
-            #number{font-size: 20vh;  height: 60vh; border: 1px solid #000; margin: 0; padding-left: 50px; z-index: 1; width: 100%;}
-            #total{font-size: 10vh;  height: 30vh; border: 1px solid red; margin: 0; padding-right: 50px; text-align: right; z-index: 2;}
-            #reset{float: right; font-size: 50px; padding: 20px; margin: 10px;}
-            footer{font-size: 12px; color: #fff; height: 10vh; padding-left: 20px;}
+            #clicker{width: 100%; height: 100vh; border: 0px solid green; z-index: 1; position: absolute; top: 0; right: 0; cursor: copy;}
+            #number{font-size: 20vh;  height: 60vh; border: 0px solid #000; margin: 0; padding-left: 50px; z-index: -100; width: 100%;}
+            #total{font-size: 10vh;  height: 30vh; border: 0px solid red; margin: 0; padding-right: 50px; text-align: right; z-index: -100;}
+            #reset{float: right; font-size: 50px; padding: 20px; margin: 10px; z-index: 2; cursor: pointer; position: relative;}
+            footer{font-size: 12px; color: #fff; height: 10vh; padding-left: 20px; padding-bottom: 5vh; }
         </style>
     </head>
     
     <body>
         <div id="clicker" onclick="increaseCounter()"></div>
-        <button id="reset" onclick="counter=0;">reset</button>        
+        <button id="reset" onclick="reset()">reset</button>        
         <p id="number"></p>
         <p id="total"></p>
         <footer>By Muhannad Senan - email: msn-23@live.com</footer>
@@ -62,14 +62,20 @@
             }
 
             function increaseCounter(){ //alert(document.getElementById("eee").textContent);
-                if(counter % 10 == 0 || counter == 0  &&  total % 100 == 0 || total == 0){
+                if(counter % 10 == 0 || counter == 0 ){
                     document.getElementById("number").textContent = counter;
-                    document.getElementById("total").textContent = total;
                     setCookie("counter", counter, 30);
+                }
+                if(total % 100 == 0 || total == 0){
+                    document.getElementById("total").textContent = total;
                     setCookie("total", counter, 3650);
                 }
                 counter++;
                 total++;
+            }
+            function reset(){
+                counter = 0; 
+                document.getElementById("number").textContent = counter;
             }
 
             window.onload = init();
