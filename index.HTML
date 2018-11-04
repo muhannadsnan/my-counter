@@ -51,11 +51,10 @@
             function init() { 
                 console.log("cookie", document.cookie);
                 console.log("counter", cookieCounter);
-                if( cookieCounter == 0){
+                if( cookieCounter == 0 || !cookieCounter){
                     document.getElementById("number").textContent = "start now!";
                 }else{
-                    counter = cookieCounter;
-                    
+                    counter = cookieCounter;                    
                     document.getElementById("number").textContent = counter;
                 }
                 document.getElementById("total").textContent = total;
@@ -64,17 +63,18 @@
             function increaseCounter(){ //alert(document.getElementById("eee").textContent);
                 if(counter % 10 == 0 || counter == 0 ){
                     document.getElementById("number").textContent = counter;
-                    setCookie("counter", counter, 30);
                 }
                 if(total % 100 == 0 || total == 0){
                     document.getElementById("total").textContent = total;
-                    setCookie("total", counter, 3650);
                 }
+                setCookie("counter", counter, 30);
+                setCookie("total", total, 3650);
                 counter++;
                 total++;
             }
             function reset(){
                 counter = 0; 
+                setCookie("counter", counter, 30);
                 document.getElementById("number").textContent = counter;
             }
 
