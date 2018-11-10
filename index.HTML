@@ -41,11 +41,12 @@
             }
 
         // important order after here !
-            var counter = 1, total = Number(getCookie("total")), cookieCounter = Number(getCookie("counter")),
+            var counter = 0, total = Number(getCookie("total")), cookieCounter = Number(getCookie("counter")),
             numberDiv = document.getElementById("number"),
             totalDiv = document.getElementById("total"),
             progress = document.getElementById("progress"),
-            progressSpan = document.getElementById("progressSpan");
+            progressSpan = document.getElementById("progressSpan"),
+            progressIncBy = 1;
 
             function init() { 
                 console.log("cookie", document.cookie);
@@ -61,26 +62,32 @@
                 totalDiv.textContent = total;
             }
 
-            function increaseCounter(){ //alert(document.getElementById("eee").textContent);
-                if(counter % 10 == 0 || counter == 0 ){
+            function increaseCounter(){               
+                if(counter == 0){
+                    numberDiv.textContent = "1";
+                    setProgress(1);
+                }else if(counter % 10 == 0 ){
                     numberDiv.textContent = counter;
+                    setProgress(counter%100); //get the last two digits
                 }
-                if(total % 100 == 0 || total == 0){
+                if(total % 100 == 0){
                     totalDiv.textContent = total;
-                }
-                setProgress(counter);
+                    setProgress(0);
+                }        
                 setCookie("counter", counter, 30);
                 setCookie("total", total, 3650);
                 counter++;
                 total++;
+                setProgress(counter%100); // this one order is important          
             }
-            function setProgress(number){
-                progress.classList.remove('progress-'+(number-1));
+            function setProgress(number){ 
+                progress.className = 'progress-circle';
                 progress.classList.add('progress-'+number);
                 progressSpan.textContent = number;
             }
             function reset(){
                 counter = 0; 
+                setProgress(0);
                 setCookie("counter", counter, 30);
                 numberDiv.textContent = counter;
             }
