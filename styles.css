@@ -2,10 +2,10 @@ body{cursor: pointer; border: 1px solid #ccc; background: #222; color: #fff;}
 #clicker{width: 100%; height: 100vh; border: 0px solid green; z-index: 1; position: absolute; top: 0; right: 0; cursor: copy;}
 #number{font-size: 20vh;  height: 60vh; border: 0px solid #000; margin: 0; padding-left: 50px; z-index: -100; width: 100%;}
 #number #startSpan{font-size: 115px;}
-#total{font-size: 10vh;  height: 30vh; border: 0px solid red; margin: 0; padding-right: 50px; text-align: right; z-index: -100;}
-#progress{width: 300px; height: 300px;}
-#progress span{font-size: 30px;}
+#total{font-size: 10vh;  height: 40vh; border: 0px solid red; margin: 0; padding-right: 50px; text-align: right; z-index: -100;}
+#progress{width: 500px; height: 500px;}
+#progress span{font-size: 90px; width: 200px; height: 200px; top: 37%; left: 37%; line-height: 200px; background: #222; color: #fff;}
 #progress span:after{content: ""}
 .progress-0, .progress-10, .progress-20{ background: #000 !important;}
-#reset{float: right; font-size: 50px; padding: 20px; margin: 10px; z-index: 2; cursor: pointer; position: relative;}
+#reset{float: right; font-size: 50px; padding: 20px; margin: 5px; z-index: 2; cursor: pointer; position: absolute; right: 8px;}
 footer{font-size: 12px; color: #fff; height: 10vh; padding-left: 20px; padding-bottom: 5vh; }
