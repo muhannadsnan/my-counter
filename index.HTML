@@ -75,7 +75,7 @@
                 }
                 if(total % 100 == 0){
                     totalDiv.textContent = total;
-                    setProgress(0);
+                    setProgress(0, false);
                 }
                 setCookie("counter", counter, 30);
                 setCookie("total", total, 3650);
@@ -86,7 +86,7 @@
                     progressSpan.textContent = number;
                 }
                 progress.className = 'progress-circle';
-                progress.classList.add('progress-'+number);
+                progress.classList.add('progress-'+number%100);
             }
 
             function reset(){
