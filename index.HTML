@@ -2,21 +2,29 @@
 <html>
     <head>
         <meta http-equiv="Cache-control" content="public">  
-        <title>My Counter - Muhannad Senan</title>
-        <link rel="stylesheet" href="progress-circle.min.css">
-        <link rel="stylesheet" href="styles.css">
+        <title>My Counter - Muhannad Senan</title> 
+
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        <link rel="stylesheet" href="circle.css">
+		<link rel="stylesheet" href="styles.css">
     </head>
     
     <body>
         <div id="clicker" onclick="increaseCounter()"></div>
-        <button id="reset" onclick="reset()">reset</button>        
-        <center>
-            <div id="progress" class="progress-circle"><span id="progressSpan">0</span></div>
-        </center>
-        <!-- <span id="number"></span> -->
+        <button id="reset" onclick="reset()"><i class="fab fa-creative-commons-zero"></i></button>        
+		<div class="container">
+			<div id="Progress" class="c100 p0 big dark">
+				<span id="progressSpan">0</span>
+				<div class="slice">
+					<div class="bar"></div>
+					<div class="fill"></div>
+				</div>
+			</div>
+		</div>
+		
         <p id="total"></p>
-        <footer>By Muhannad Senan - email: msn-23@live.com</footer>
-
+        <footer>By Muhannad Senan - email: msn-23@live.com</footer> 
+		
         <script>
         // important order for these functions
             function setCookie(cname, cvalue, exdays) {
@@ -44,9 +52,8 @@
 
         // important order after here !
             var counter = 0, total = Number(getCookie("total")), cookieCounter = Number(getCookie("counter")),
-            // numberDiv = document.getElementById("number"),
             totalDiv = document.getElementById("total"),
-            progress = document.getElementById("progress"),
+            progress = document.getElementById("Progress"),
             progressSpan = document.getElementById("progressSpan"),
             progressIncBy = 1;
 
@@ -83,10 +90,10 @@
 
             function setProgress(number, withNumber=true){ 
                 if(withNumber){
-                    progressSpan.textContent = number;
+                    progressSpan.textContent = number; 
                 }
-                progress.className = 'progress-circle';
-                progress.classList.add('progress-'+number%100);
+                progress.className = 'c100 big dark';
+                progress.classList.add('p'+number%100);
             }
 
             function reset(){
@@ -95,7 +102,6 @@
                 setCookie("counter", counter, 30);
                 // numberDiv.textContent = counter;
             }
-
 
             window.onload = init();
         </script>
