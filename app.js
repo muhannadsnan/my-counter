@@ -27,7 +27,8 @@ var counter = 0, total = Number(getCookie("total")), cookieCounter = Number(getC
 totalDiv = document.getElementById("total"),
 progress = document.getElementById("Progress"),
 progressSpan = document.getElementById("progressSpan"),
-progressIncBy = 1;
+progressIncBy = 1,
+panel = $('#panel');
 
 function init() { 
     // console.log("cookie", document.cookie);
@@ -41,6 +42,8 @@ function init() {
         setProgress(counter);
     }
     totalDiv.textContent = total;
+    $('#showPanel').on('click', togglePannel);
+    $('#closePanel').on('click', togglePannel);
 }
 
 function increaseCounter(){
@@ -73,6 +76,13 @@ function reset(){
     setProgress(0);
     setCookie("counter", counter, 30);
     // numberDiv.textContent = counter;
+}
+
+function togglePannel(){
+    var _bottom = -(panel.css('bottom').replace(/[^\d\.]/g, ''));
+    if(_bottom < 0) _bottom = 0;
+    else _bottom = '-120%';
+    panel.css({bottom: _bottom});
 }
 
 window.onload = init();
