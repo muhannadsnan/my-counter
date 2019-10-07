@@ -887,10 +887,20 @@ body{cursor: pointer; border: 0px solid #ccc; background: #222; color: #fff; fon
 .c100{float: unset; margin: auto;}
 .c100.big {font-size: 600px;}
 .c100.dark:after { background-color: #222;}
+.text-danger{color: #ff2600;}
+.text-info{color: #00c2ff;}
+.d-none{display: none !important;}
 button{background: transparent; cursor: pointer; border: 0; color: #c6ff00; font-size: 100px; z-index: 101; position: relative;}
 button#reset{padding: 0px; float: right; position: relative; margin: 10px;}
 #progressSpan{color: #c6ff00 !important; font-size: 180px; width: 100%; height: 600px; line-height: 600px; vertical-align: middle; top: 12px;}
 #total{font-size: 10vh;  height: 40vh; border: 0px solid red; margin: 0; text-align: center; z-index: -100; color: #777; line-height: 40vh;}
 footer{font-size: 12px; color: #fff; height: 10vh; padding-left: 20px; padding-bottom: 5vh; line-height: 10vh; vertical-align: middle; font-size: 35px;}
-#panel{background: #222; padding: 10px; z-index: 102; width: 97%; height: 96vh; position: fixed; bottom: -120%; -webkit-transition: bottom .2s linear .2s; transition: bottom .2s linear .2s; border: 10px solid #c6ff00;}
+#showPanel{margin: 10px;}
+#panel{background: #222; padding: 10px; z-index: 102; width: 96%; height: 98vh; position: fixed; bottom: -120%; -webkit-transition: bottom .2s linear .2s; transition: bottom .2s linear .2s; border: 10px solid #c6ff00; font-size: 90px; font-family: BasketOfHammers; color: #c6ff00; border-color: #c6ff00;}
+#panel .panel-heading{text-align: center; position: absolute; top: 0; left: 37%; font-size: 90px;}
+#panel .panel-body{margin-top: 55px;}
+#panel .panel-body input[type=text]{background: transparent; width: 100%; padding: 10px 0px; font-size: 90px; font-family: BasketOfHammers; color: #c6ff00; border: 0;}
+#panel .panel-body .add-state button{position: relative; top: -120px; right: -90%;}
+#panel .panel-body .all-states {font-size: 60px;}
+#panel .panel-body .all-states .state{padding-bottom: 30px;}
 button#closePanel{bottom: 0;}

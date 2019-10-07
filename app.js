@@ -28,7 +28,8 @@ totalDiv = document.getElementById("total"),
 progress = document.getElementById("Progress"),
 progressSpan = document.getElementById("progressSpan"),
 progressIncBy = 1,
-panel = $('#panel');
+panel = $('#panel'),
+states = ['first state', 'second state', 'third state'];
 
 function init() { 
     // console.log("cookie", document.cookie);
@@ -42,8 +43,8 @@ function init() {
         setProgress(counter);
     }
     totalDiv.textContent = total;
-    $('#showPanel').on('click', togglePannel);
-    $('#closePanel').on('click', togglePannel);
+    $('#showPanel').on('click', onShowPanel);
+    $('#closePanel').on('click', onClosePanel);
 }
 
 function increaseCounter(){
@@ -83,6 +84,25 @@ function togglePannel(){
     if(_bottom < 0) _bottom = 0;
     else _bottom = '-120%';
     panel.css({bottom: _bottom});
+}
+
+function onShowPanel(){
+    togglePannel();
+    showStates();    
+}
+
+function onClosePanel(){
+    togglePannel();
+    $('#panel').find('.state').remove();   
+}
+
+function showStates(){
+    states.forEach(el => {
+        var state = $('.state-tpl').clone(true);
+        state.removeClass('state-tpl d-none').addClass('state');
+        state.find('.text').text(el);
+        state.prependTo( $('#panel').find('.all-states') );
+    });
 }
 
 window.onload = init();
