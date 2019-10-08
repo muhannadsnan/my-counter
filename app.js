@@ -99,13 +99,17 @@ function onClosePanel(){
 }
 
 function showStates(states){ 
-    clearStatesDom(); 
-    $.each(states, function(i, el){
-        var state = $('.state-tpl').clone(true);
-        state.removeClass('state-tpl d-none').addClass('state');
-        state.find('.text').text(el.title +' '+ el.counter);
-        state.prependTo( $panel.find('.all-states') );
+    if($('.state').length > 0) return; // don't reload states
+    $.each(states, function(i, state){
+        addStateToPanel(state);
     });
+}
+
+function addStateToPanel(newState){
+    var tpl = $('.state-tpl').clone(true);
+    tpl.removeClass('state-tpl d-none').addClass('state');
+    tpl.find('.text').text(newState.title +' '+ newState.counter);
+    tpl.prependTo( $panel.find('.all-states') );
 }
 
 function clearStatesDom(){
@@ -123,7 +127,7 @@ function createState(){
     var $input = $('#add-state-input');
     var newState = {title: $input.val(), counter: 0};
     states.unshift(newState);
-    showStates(states);
+    addStateToPanel(newState);
     $input.val('');
 }
 
