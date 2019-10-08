@@ -23,87 +23,110 @@ function getCookie(cname) {
 }
 
 // important order after here !
-var counter = 0, total = Number(getCookie("total")), cookieCounter = Number(getCookie("counter")),
-totalDiv = document.getElementById("total"),
-progress = document.getElementById("Progress"),
-progressSpan = document.getElementById("progressSpan"),
-progressIncBy = 1,
-panel = $('#panel'),
-states = ['first state', 'second state', 'third state'];
+var counter, total, cookieCounter, $totalDiv, $progress, $progressSpan, progressIncBy, $panel, states;
 
 function init() { 
-    // console.log("cookie", document.cookie);
-    // console.log("counter", cookieCounter);
+    initValues();
     if( cookieCounter == 0 || !cookieCounter){
-        // numberDiv.innerHTML = '<span id="startSpan">START!</span>';
         setProgress(0);
     }else{
         counter = cookieCounter;                    
-        // numberDiv.textContent = counter;
         setProgress(counter);
     }
-    totalDiv.textContent = total;
+    loadData();
     $('#showPanel').on('click', onShowPanel);
     $('#closePanel').on('click', onClosePanel);
+    $('#add-state-btn').on('click', createState);
+}
+
+function initValues(){
+    counter = 0;
+    total = Number(getCookie("total"));
+    $totalDiv = $("#total");
+    $progress = $("#Progress");
+    $progressSpan = $("#progressSpan");
+    $panel = $('#panel');
+    $totalDiv.textContent = total;
+    progressIncBy = 1;
+    cookieCounter = Number(getCookie("counter"));
 }
 
 function increaseCounter(){
-    counter++; // console.log(counter);
+    counter++; 
     total++;
     if(counter % 10 == 0){
-        // numberDiv.textContent = counter;
         setProgress(counter);
     }else{
         setProgress(counter, false);
     }
     if(total % 100 == 0){
-        totalDiv.textContent = total;
+        $totalDiv.textContent = total;
         setProgress(0, false);
     }
     setCookie("counter", counter, 30);
     setCookie("total", total, 3650);
 }
 
-function setProgress(number, withNumber=true){ 
+function setProgress(number, withNumber){ 
+    if(withNumber === undefined) withNumber = true;
     if(withNumber){
-        progressSpan.textContent = number; 
+        $progressSpan.textContent = number; 
     }
-    progress.className = 'c100 big dark';
-    progress.classList.add('p'+number%100);
+    $progress.className = 'c100 big dark';
+    $progress.classList.add('p'+number%100);
 }
 
 function reset(){ 
     counter = 0; 
     setProgress(0);
     setCookie("counter", counter, 30);
-    // numberDiv.textContent = counter;
 }
 
 function togglePannel(){
-    var _bottom = -(panel.css('bottom').replace(/[^\d\.]/g, ''));
+    var _bottom = -($panel.css('bottom').replace(/[^\d\.]/g, ''));
     if(_bottom < 0) _bottom = 0;
     else _bottom = '-120%';
-    panel.css({bottom: _bottom});
+    $panel.css({bottom: _bottom});
 }
 
 function onShowPanel(){
     togglePannel();
-    showStates();    
+    showStates(states);    
 }
 
 function onClosePanel(){
     togglePannel();
-    $('#panel').find('.state').remove();   
 }
 
-function showStates(){
-    states.forEach(el => {
+function showStates(states){ 
+    clearStatesDom(); 
+    $.each(states, function(i, el){
         var state = $('.state-tpl').clone(true);
         state.removeClass('state-tpl d-none').addClass('state');
-        state.find('.text').text(el);
-        state.prependTo( $('#panel').find('.all-states') );
+        state.find('.text').text(el.title +' '+ el.counter);
+        state.prependTo( $panel.find('.all-states') );
     });
 }
+
+function clearStatesDom(){
+    $panel.find('.state').remove();  
+}
+
+function loadData(){
+    /* https://www.npmjs.com/package/js-cookie */
+    states = Cookies.getJSON('states');
+    states = [{title: 'first state', counter: 100}, {title: 'second state', counter: 200}, {title: 'third state', counter: 500}];
+    console.log("states", states); 
+}
+
+function createState(){
+    var $input = $('#add-state-input');
+    var newState = {title: $input.val(), counter: 0};
+    states.unshift(newState);
+    showStates(states);
+    $input.val('');
+}
+
 
 window.onload = init();
 
