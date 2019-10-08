@@ -42,11 +42,11 @@ function init() {
 function initValues(){
     counter = 0;
     total = Number(getCookie("total"));
-    $totalDiv = $("#total");
-    $progress = $("#Progress");
-    $progressSpan = $("#progressSpan");
-    $panel = $('#panel');
+    $totalDiv = document.getElementById("total");
+    $progress = document.getElementById("Progress");
+    $progressSpan = document.getElementById("progressSpan");
     $totalDiv.textContent = total;
+    $panel = $('#panel');
     progressIncBy = 1;
     cookieCounter = Number(getCookie("counter"));
 }
