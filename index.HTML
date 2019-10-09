@@ -9,8 +9,10 @@
     
     <body>
         <div id="clicker" onclick="increaseCounter()"></div>
+        
         <button id="reset" onclick="reset()"><i class="fab fa-creative-commons-zero"></i></button>        
 		<div class="container">
+            <p id="recordTitle"></p>
 			<div id="Progress" class="c100 p0 big dark">
 				<span id="progressSpan">0</span>
 				<div class="slice">
@@ -27,15 +29,15 @@
             <button id="closePanel"><i class="fas fa-times-circle"></i></button>
             <h1 class="panel-heading">Panel</h1>
             <div class="panel-body">
-                <div class="add-state">
-                    <input type="text" id="add-state-input" placeholder="Add new state...">
-                    <button id="add-state-btn"><i class="fas fa-plus-square"></i></button>
+                <div class="add-record">
+                    <input type="text" id="add-record-input" placeholder="Add new record...">
+                    <button id="add-record-btn"><i class="fas fa-plus-square"></i></button>
                 </div>
-                <div class="all-states">
-                    <div class="state-tpl d-none">
-                        <button class="text-danger"><i class="fas fa-trash-alt"></i></button>
-                        <button class="text-info"><i class="fab fa-creative-commons-zero"></i></button>
-                        <span class="text">first state</span>
+                <h5>My records:</h5>
+                <div class="all-records">
+                    <div class="record-tpl d-none py-1">
+                        <span class="title"></span>
+                        <span class="counter"></span>
                     </div>
                 </div>
             </div>
@@ -44,6 +46,7 @@
 		
         <script src="jquery-3.4.1.min.js"></script>
         <script src="js-cookie.min.js"></script>
+        <script src="Classes.js"></script>
         <script src="app.js"></script>
     </body>    
 </html>

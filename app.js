@@ -23,54 +23,59 @@ function getCookie(cname) {
 }
 
 // important order after here !
-var counter, total, cookieCounter, $totalDiv, $progress, $progressSpan, progressIncBy, $panel, states;
+var counter, total, currentCounter, progressIncBy, $total, $progress, $counter, $panel, STORE, selectedRecord, selectedIndex;
 
-function init() { 
+function init() {
     initValues();
-    if( cookieCounter == 0 || !cookieCounter){
+    if( selectedRecord === undefined){
         setProgress(0);
     }else{
-        counter = cookieCounter;                    
-        setProgress(counter);
+        setProgress(selectedRecord.counter);
     }
-    loadData();
     $('#showPanel').on('click', onShowPanel);
     $('#closePanel').on('click', onClosePanel);
-    $('#add-state-btn').on('click', createState);
+    $('#add-record-btn').on('click', createRecord);
 }
 
 function initValues(){
     counter = 0;
-    total = Number(getCookie("total"));
-    $totalDiv = document.getElementById("total");
-    $progress = document.getElementById("Progress");
-    $progressSpan = document.getElementById("progressSpan");
-    $totalDiv.textContent = total;
-    $panel = $('#panel');
     progressIncBy = 1;
-    cookieCounter = Number(getCookie("counter"));
+    $total = document.getElementById("total");
+    $progress = document.getElementById("Progress");
+    $counter = document.getElementById("progressSpan");
+    $title = document.getElementById("recordTitle");
+    $panel = $('#panel');
+    
+    STORE = Cookies.get("store");
+    if(STORE === undefined) {
+        STORE = new Store();
+    }
+    selectedIndex = STORE.selectedIndex;
+    selectedRecord = STORE.records[selectedIndex];
+    $title.textContent = selectedRecord.title;
+    $counter.textContent = selectedRecord.counter;
+    $total.textContent = selectedRecord.total;
 }
 
 function increaseCounter(){
-    counter++; 
-    total++;
-    if(counter % 10 == 0){
-        setProgress(counter);
+    selectedRecord.counter++; 
+    selectedRecord.total++;
+    if(selectedRecord.counter % 10 == 0){
+        setProgress(selectedRecord.counter);
     }else{
-        setProgress(counter, false);
+        setProgress(selectedRecord.counter, false);
     }
-    if(total % 100 == 0){
-        $totalDiv.textContent = total;
+    if(selectedRecord.total % 100 == 0){
+        $total.textContent = selectedRecord.total;
         setProgress(0, false);
     }
-    setCookie("counter", counter, 30);
-    setCookie("total", total, 3650);
+    saveSelectedRecord();
 }
 
 function setProgress(number, withNumber){ 
     if(withNumber === undefined) withNumber = true;
     if(withNumber){
-        $progressSpan.textContent = number; 
+        $counter.textContent = number; 
     }
     $progress.className = 'c100 big dark';
     $progress.classList.add('p'+number%100);
@@ -91,44 +96,50 @@ function togglePannel(){
 
 function onShowPanel(){
     togglePannel();
-    showStates(states);    
+    showRecords(STORE.records);    
 }
 
 function onClosePanel(){
     togglePannel();
 }
 
-function showStates(states){ 
-    if($('.state').length > 0) return; // don't reload states
-    $.each(states, function(i, state){
-        addStateToPanel(state);
+function showRecords(records){ 
+    $panel.find('.record').remove();
+    $.each(records, function(i, record){
+        addRecordToPanel(record);
     });
 }
 
-function addStateToPanel(newState){
-    var tpl = $('.state-tpl').clone(true);
-    tpl.removeClass('state-tpl d-none').addClass('state');
-    tpl.find('.text').text(newState.title +' '+ newState.counter);
-    tpl.prependTo( $panel.find('.all-states') );
+function addRecordToPanel(newRecord){
+    var tpl = $('.record-tpl').clone(true);
+    tpl.removeClass('record-tpl d-none').addClass('record');
+    tpl.find('.title').text(newRecord.title);
+    tpl.find('.counter').text(newRecord.counter);
+    tpl.prependTo( $panel.find('.all-records') );
 }
 
-function clearStatesDom(){
-    $panel.find('.state').remove();  
+function clearRecordsDom(){
+    $panel.find('.record').remove();  
 }
 
-function loadData(){
-    /* https://www.npmjs.com/package/js-cookie */
-    states = Cookies.getJSON('states');
-    states = [{title: 'first state', counter: 100}, {title: 'second state', counter: 200}, {title: 'third state', counter: 500}];
-    console.log("states", states); 
-}
-
-function createState(){
-    var $input = $('#add-state-input');
-    var newState = {title: $input.val(), counter: 0};
-    states.unshift(newState);
-    addStateToPanel(newState);
+function createRecord(){
+    var $input = $('#add-record-input');
+    var newRecord = new Record($input.val());
+    STORE.records.unshift(newRecord);
+    addRecordToPanel(newRecord);
+    saveSTORE();
     $input.val('');
+}
+
+function saveSelectedRecord(){
+    STORE.records[selectedIndex] = selectedRecord;
+    console.log("selectedRecord saved!", STORE); 
+    saveSTORE();
+}
+
+function saveSTORE(){
+    console.log("store saved!", STORE);
+    Cookies.set("store", STORE);
 }
 
 
@@ -136,9 +147,6 @@ window.onload = init();
 
 /* 
     TODO:
-    - add button for config, that shows a panel to manage states
-    - a state will have own counter
-    - states can be created with a title
-    - cookie values are saved for today, week, month, and all-time, for each state
-    - graphs are shown for each state
+    - change the selected record
+    - detail-panel for record
 */
