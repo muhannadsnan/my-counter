@@ -47,7 +47,7 @@ function initValues(){
     $panel = $('#panel');
     
     STORE = Cookies.get("store");
-    console.log(STORE)
+    console.log(STORE, typeof STORE, (Store)STORE)
     if(STORE === undefined) {
         STORE = new Store();
     }
