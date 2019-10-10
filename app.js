@@ -46,8 +46,8 @@ function initValues(){
     $title = document.getElementById("recordTitle");
     $panel = $('#panel');
     
-    STORE = Cookies.get("store");
-    console.log(STORE, typeof STORE, (Store)STORE)
+    STORE = Cookies.getJSON("store");
+    console.log(STORE, typeof STORE)
     if(STORE === undefined) {
         STORE = new Store();
     }
