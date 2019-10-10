@@ -35,6 +35,7 @@ function init() {
     $('#showPanel').on('click', onShowPanel);
     $('#closePanel').on('click', onClosePanel);
     $('#add-record-btn').on('click', createRecord);
+    $('.showDropdown, .closeDropdown').on('click', toggleDropdown);
 }
 
 function initValues(){
@@ -107,15 +108,18 @@ function onClosePanel(){
 function showRecords(records){ 
     $panel.find('.record').remove();
     $.each(records, function(i, record){
-        addRecordToPanel(record);
+        console.log(i)
+        addRecordToPanel(record, i);
     });
 }
 
-function addRecordToPanel(newRecord){
+function addRecordToPanel(newRecord, index){
     var tpl = $('.record-tpl').clone(true);
     tpl.removeClass('record-tpl d-none').addClass('record');
     tpl.find('.title').text(newRecord.title);
     tpl.find('.counter').text(newRecord.counter);
+    tpl.find('.showDropdown').attr('data-index', index);
+    tpl.find('.dropdown').attr('data-index', index);
     tpl.prependTo( $panel.find('.all-records') );
 }
 
@@ -140,6 +144,11 @@ function saveSelectedRecord(){
 function saveSTORE(){
     Cookies.set("store", STORE);
     console.log("store saved!", STORE);
+}
+
+function toggleDropdown(){
+    $('.dropdown').addClass('d-none').removeClass('show');
+    $(this).siblings('.dropdown').toggleClass('d-none').toggleClass('show');
 }
 
 

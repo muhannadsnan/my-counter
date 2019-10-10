@@ -38,6 +38,15 @@
                     <div class="record-tpl d-none py-1">
                         <span class="title"></span>
                         <span class="counter"></span>
+                        <button class="showDropdown" data-index=""><i class="fas fa-angle-down"></i></button>
+                        <button class="closeDropdown d-none" data-index=""><i class="fas fa-angle-up"></i></button>
+                        <div class="dropdown d-none" data-index="">
+                            Set Default:
+                            <button class="setDefault on d-none" data-index=""><i class="fas fa-toggle-on"></i></button>
+                            <button class="setDefault off" data-index=""><i class="fas fa-toggle-off"></i></button><br>
+                            <input type="text" class="editTitle" Placeholder="Change Title...">
+                            <span class="saveTitle color-primary">OK</span>
+                        </div>
                     </div>
                 </div>
             </div>
