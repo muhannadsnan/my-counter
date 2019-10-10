@@ -83,9 +83,9 @@ function setProgress(number, withNumber){
 }
 
 function reset(){ 
-    counter = 0; 
+    selectedRecord.counter = 0; 
     setProgress(0);
-    setCookie("counter", counter, 30);
+    saveSelectedRecord();
 }
 
 function togglePannel(){
@@ -134,13 +134,12 @@ function createRecord(){
 
 function saveSelectedRecord(){
     STORE.records[selectedIndex] = selectedRecord;
-    console.log("selectedRecord saved!", STORE); 
     saveSTORE();
 }
 
 function saveSTORE(){
-    console.log("store saved!", STORE);
     Cookies.set("store", STORE);
+    console.log("store saved!", STORE);
 }
 
 
