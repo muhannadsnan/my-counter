@@ -35,7 +35,8 @@ function init() {
     $('#showPanel').on('click', onShowPanel);
     $('#closePanel').on('click', onClosePanel);
     $('#add-record-btn').on('click', createRecord);
-    $('.showDropdown, .closeDropdown').on('click', toggleDropdown);
+    $('.toggleDropdown').on('click', toggleDropdown);
+    $('.setDefault').on('click', toggleSetDefault);
 }
 
 function initValues(){
@@ -48,11 +49,15 @@ function initValues(){
     $panel = $('#panel');
     
     STORE = Cookies.getJSON("store");
-    console.log(STORE, typeof STORE)
+    console.log(STORE, typeof STORE);
     if(STORE === undefined) {
         STORE = new Store();
     }
-    selectedIndex = STORE.selectedIndex;
+    setDefaultRecord(STORE.selectedIndex);
+}
+
+function setDefaultRecord(newIndex){
+    selectedIndex = newIndex;
     selectedRecord = STORE.records[selectedIndex];
     $title.textContent = selectedRecord.title;
     $counter.textContent = selectedRecord.counter;
@@ -90,10 +95,10 @@ function reset(){
 }
 
 function togglePannel(){
-    var _bottom = -($panel.css('bottom').replace(/[^\d\.]/g, ''));
-    if(_bottom < 0) _bottom = 0;
-    else _bottom = '-120%';
-    $panel.css({bottom: _bottom});
+    var _left = -($panel.css('left').replace(/[^\d\.]/g, ''));
+    if(_left < 0) _left = 0;
+    else _left = '-120%';
+    $panel.css({left: _left});
 }
 
 function onShowPanel(){
@@ -108,17 +113,18 @@ function onClosePanel(){
 function showRecords(records){ 
     $panel.find('.record').remove();
     $.each(records, function(i, record){
-        console.log(i)
         addRecordToPanel(record, i);
     });
 }
 
 function addRecordToPanel(newRecord, index){
+    console.log("record", newRecord); 
     var tpl = $('.record-tpl').clone(true);
     tpl.removeClass('record-tpl d-none').addClass('record');
     tpl.find('.title').text(newRecord.title);
     tpl.find('.counter').text(newRecord.counter);
-    tpl.find('.showDropdown').attr('data-index', index);
+    tpl.find('.setDefault').toggleClass('active', newRecord.isDefault);
+    tpl.attr('data-index', index);
     tpl.find('.dropdown').attr('data-index', index);
     tpl.prependTo( $panel.find('.all-records') );
 }
@@ -130,7 +136,7 @@ function clearRecordsDom(){
 function createRecord(){
     var $input = $('#add-record-input');
     var newRecord = new Record($input.val());
-    STORE.records.unshift(newRecord);
+    STORE.records.push(newRecord);
     addRecordToPanel(newRecord);
     saveSTORE();
     $input.val('');
@@ -147,10 +153,18 @@ function saveSTORE(){
 }
 
 function toggleDropdown(){
-    $('.dropdown').addClass('d-none').removeClass('show');
-    $(this).siblings('.dropdown').toggleClass('d-none').toggleClass('show');
+    var $this = $(this);
+    $this.toggleClass('active');
 }
 
+function toggleSetDefault(){
+    $('.setDefault').removeClass('active');
+    var $this = $(this);
+    $this.addClass('active');
+    selectedRecord.isDefault = !selectedRecord.isDefault;
+    saveSelectedRecord();
+    setDefaultRecord($this.parent('.record').attr('data-index'));
+}
 
 window.onload = init();
 
