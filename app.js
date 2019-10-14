@@ -168,6 +168,10 @@ function deleteRecord(){
     if(confirm('Are you sure to delete "'+title+'"?')){
         STORE.records.splice(index, 1);
         removeRecord(index);
+        if(index == selectedIndex){
+            selectedIndex = STORE.records.length - 1;
+            selectedRecord = STORE.records[selectedIndex];
+        }
         saveSTORE();
     }
 }
