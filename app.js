@@ -35,13 +35,13 @@ function initValues(){
 }
 
 function setDefaultRecord(newIndex){
-    if(newIndex === undefined) newIndex = 0;
+    if(newIndex === undefined || newIndex >= STORE.records.length) newIndex = 0;
     newIndex = Number(newIndex);
     selectedIndex = newIndex;
-    selectedRecord = STORE.records[selectedIndex];
     STORE.selectedIndex = newIndex;
     STORE.records.forEach(el => el.isDefault = false);
     STORE.records[selectedIndex].isDefault = true;
+    selectedRecord = STORE.records[selectedIndex];
     $title.textContent = selectedRecord.title;
     $counter.textContent = selectedRecord.counter;
     $total.textContent = selectedRecord.total;
