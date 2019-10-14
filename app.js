@@ -111,7 +111,7 @@ function onClosePanel(){
 }
 
 function showRecords(records){ 
-    $panel.find('.record').remove();
+    clearRecordsDom();
     $.each(records, function(i, record){
         addRecordToPanel(record, i);
     });
@@ -119,8 +119,8 @@ function showRecords(records){
 
 function addRecordToPanel(newRecord, index){
     console.log("record", newRecord); 
-    var tpl = $('.record-tpl').clone(true);
-    tpl.removeClass('record-tpl d-none').addClass('record');
+    var tpl = $('#record-tpl').clone(true);
+    tpl.removeClass('d-none').addClass('record').attr('id', '');
     tpl.find('.title').text(newRecord.title);
     tpl.find('.counter').text(newRecord.counter);
     tpl.find('.setDefault').toggleClass('active', newRecord.isDefault);
