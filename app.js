@@ -1,28 +1,3 @@
-// important order for these functions
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires;// + ",path=/";
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-
-// important order after here !
 var counter, total, currentCounter, progressIncBy, $total, $progress, $counter, $panel, STORE, selectedRecord, selectedIndex;
 
 function init() {
@@ -37,6 +12,7 @@ function init() {
     $('#add-record-btn').on('click', createRecord);
     $('.toggleDropdown').on('click', toggleDropdown);
     $('.setDefault').on('click', toggleSetDefault);
+    $('.changeTitle').on('click', changeTitle);
 }
 
 function initValues(){
@@ -164,6 +140,17 @@ function toggleSetDefault(){
     selectedRecord.isDefault = !selectedRecord.isDefault;
     saveSelectedRecord();
     setDefaultRecord($this.parent('.record').attr('data-index'));
+}
+
+function changeTitle(){
+    var currentIndex = $(this).closest('.record').attr('data-index');
+    var currentTitle = $(this).closest('.dropdown').siblings('.title').text();
+    var newTitle = prompt("New title:", currentTitle);
+    // console.log("", currentIndex, currentTitle, STORE.records[currentIndex]); 
+    if (newTitle != null) {
+        STORE.records[currentIndex].title = newTitle;
+        saveSTORE();
+    }
 }
 
 window.onload = init();
