@@ -13,6 +13,7 @@ function init() {
     $('.toggleDropdown').on('click', toggleDropdown);
     $('.setDefault').on('click', toggleSetDefault);
     $('.changeTitle').on('click', changeTitle);
+    $('.deleteRecord').on('click', deleteRecord);
 }
 
 function initValues(){
@@ -30,14 +31,22 @@ function initValues(){
         STORE = new Store();
     }
     setDefaultRecord(STORE.selectedIndex);
+    // TODO: check records.some(el => return el.defaul) any of them is set to default, else take zero index
 }
 
 function setDefaultRecord(newIndex){
+    if(newIndex === undefined) newIndex = 0;
+    newIndex = Number(newIndex);
     selectedIndex = newIndex;
     selectedRecord = STORE.records[selectedIndex];
+    STORE.selectedIndex = newIndex;
+    STORE.records.forEach(el => el.isDefault = false);
+    STORE.records[selectedIndex].isDefault = true;
     $title.textContent = selectedRecord.title;
     $counter.textContent = selectedRecord.counter;
     $total.textContent = selectedRecord.total;
+    setProgress(selectedRecord.counter);
+    saveSTORE();
 }
 
 function increaseCounter(){
@@ -94,14 +103,13 @@ function showRecords(records){
 }
 
 function addRecordToPanel(newRecord, index){
-    console.log("record", newRecord); 
+    console.log("record", newRecord, "index:", index); 
     var tpl = $('#record-tpl').clone(true);
     tpl.removeClass('d-none').addClass('record').attr('id', '');
     tpl.find('.title').text(newRecord.title);
     tpl.find('.counter').text(newRecord.counter);
     tpl.find('.setDefault').toggleClass('active', newRecord.isDefault);
     tpl.attr('data-index', index);
-    tpl.find('.dropdown').attr('data-index', index);
     tpl.prependTo( $panel.find('.all-records') );
 }
 
@@ -113,7 +121,7 @@ function createRecord(){
     var $input = $('#add-record-input');
     var newRecord = new Record($input.val());
     STORE.records.push(newRecord);
-    addRecordToPanel(newRecord);
+    addRecordToPanel(newRecord, STORE.records.length-1);
     saveSTORE();
     $input.val('');
 }
@@ -137,20 +145,42 @@ function toggleSetDefault(){
     $('.setDefault').removeClass('active');
     var $this = $(this);
     $this.addClass('active');
-    selectedRecord.isDefault = !selectedRecord.isDefault;
-    saveSelectedRecord();
-    setDefaultRecord($this.parent('.record').attr('data-index'));
+    var index = $this.closest('.record').attr('data-index');
+    setDefaultRecord(index);
 }
 
 function changeTitle(){
-    var currentIndex = $(this).closest('.record').attr('data-index');
+    var index = $(this).closest('.record').attr('data-index');
     var currentTitle = $(this).closest('.dropdown').siblings('.title').text();
     var newTitle = prompt("New title:", currentTitle);
-    // console.log("", currentIndex, currentTitle, STORE.records[currentIndex]); 
+    // console.log("", index, currentTitle, STORE.records[index]); 
     if (newTitle != null) {
-        STORE.records[currentIndex].title = newTitle;
+        STORE.records[index].title = newTitle;
+        setRecordTitle(index, newTitle); // DOM
         saveSTORE();
     }
+}
+
+function deleteRecord(){
+    var index = $(this).closest('.record').attr('data-index');
+    var title = $(this).closest('.dropdown').siblings('.title').text();
+    console.log("", title, index); 
+    if(confirm('Are you sure to delete "'+title+'"?')){
+        STORE.records.splice(index, 1);
+        removeRecord(index);
+        saveSTORE();
+    }
+}
+
+function setRecordTitle(index, newTitle){ // DOM only
+    $('[data-index='+index+']').find('.title').text(newTitle);
+    if(index == selectedIndex){
+        $('#recordTitle').text(newTitle);
+    }
+}
+
+function removeRecord(index){ // DOM only
+    $('[data-index='+index+']').remove();
 }
 
 window.onload = init();
