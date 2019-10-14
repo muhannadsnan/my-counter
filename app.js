@@ -169,8 +169,8 @@ function deleteRecord(){
         STORE.records.splice(index, 1);
         removeRecord(index);
         if(index == selectedIndex){
-            selectedIndex = STORE.records.length - 1;
-            selectedRecord = STORE.records[selectedIndex];
+            setDefaultRecord(0);
+            return;
         }
         saveSTORE();
     }
