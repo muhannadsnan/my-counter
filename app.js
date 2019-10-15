@@ -7,6 +7,9 @@ function init() {
     }else{
         setProgress(selectedRecord.counter);
     }
+    $('body').on('click', function(e) {e.stopPropagation();});
+    $('#clicker').on('click', increaseCounter);
+    $('#reset').on('click', reset);
     $('#showPanel').on('click', onShowPanel);
     $('#closePanel').on('click', onClosePanel);
     $('#add-record-btn').on('click', createRecord);
@@ -26,10 +29,10 @@ function initValues(){
     $panel = $('#panel');
     
     STORE = Cookies.getJSON("store");
-    console.log(STORE, typeof STORE);
     if(STORE === undefined) {
         STORE = new Store();
     }
+    console.log(STORE);
     setDefaultRecord(STORE.selectedIndex);
     // TODO: check records.some(el => return el.defaul) any of them is set to default, else take zero index
 }
@@ -80,10 +83,7 @@ function reset(){
 }
 
 function togglePannel(){
-    var _left = -($panel.css('left').replace(/[^\d\.]/g, ''));
-    if(_left < 0) _left = 0;
-    else _left = '-120%';
-    $panel.css({left: _left});
+    $panel.toggleClass('show');
 }
 
 function onShowPanel(){
@@ -138,7 +138,8 @@ function saveSTORE(){
 
 function toggleDropdown(){
     var $this = $(this);
-    $this.toggleClass('active');
+    $this.closest('.record').toggleClass('active');
+    console.log("$this", $this); 
 }
 
 function toggleSetDefault(){
