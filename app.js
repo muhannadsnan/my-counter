@@ -14,7 +14,7 @@ function init() {
     $('#closePanel').on('click', onClosePanel);
     $('#add-record-btn').on('click', createRecord);
     $('.toggleDropdown').on('click', toggleDropdown);
-    $('.setDefault').on('click', toggleSetDefault);
+    $('.activate').on('click', toggleActivate);
     $('.changeTitle').on('click', changeTitle);
     $('.deleteRecord').on('click', deleteRecord);
 }
@@ -33,11 +33,11 @@ function initValues(){
         STORE = new Store();
     }
     console.log(STORE);
-    setDefaultRecord(STORE.selectedIndex);
+    activateRecord(STORE.selectedIndex);
     // TODO: check records.some(el => return el.defaul) any of them is set to default, else take zero index
 }
 
-function setDefaultRecord(newIndex){
+function activateRecord(newIndex){
     if(newIndex === undefined || newIndex >= STORE.records.length) newIndex = 0;
     newIndex = Number(newIndex);
     selectedIndex = newIndex;
@@ -108,8 +108,8 @@ function addRecordToPanel(newRecord, index){
     tpl.removeClass('d-none').addClass('record').attr('id', '');
     tpl.find('.title').text(newRecord.title);
     tpl.find('.counter').text(newRecord.counter);
-    tpl.find('.setDefault').toggleClass('active', newRecord.isDefault);
-    tpl.attr('data-index', index);
+    tpl.find('.activate').toggleClass('active', newRecord.isDefault);
+    tpl.attr('data-index', index).attr('data-title', newRecord.title);
     tpl.prependTo( $panel.find('.all-records') );
 }
 
@@ -139,22 +139,20 @@ function saveSTORE(){
 function toggleDropdown(){
     var $this = $(this);
     $this.closest('.record').toggleClass('active');
-    console.log("$this", $this); 
 }
 
-function toggleSetDefault(){
-    $('.setDefault').removeClass('active');
+function toggleActivate(){
+    $('.activate').removeClass('active');
     var $this = $(this);
     $this.addClass('active');
     var index = $this.closest('.record').attr('data-index');
-    setDefaultRecord(index);
+    activateRecord(index);
 }
 
 function changeTitle(){
     var index = $(this).closest('.record').attr('data-index');
-    var currentTitle = $(this).closest('.dropdown').siblings('.title').text();
+    var currentTitle = $(this).closest('.record').attr('data-title');
     var newTitle = prompt("New title:", currentTitle);
-    // console.log("", index, currentTitle, STORE.records[index]); 
     if (newTitle != null) {
         STORE.records[index].title = newTitle;
         setRecordTitle(index, newTitle); // DOM
@@ -164,13 +162,12 @@ function changeTitle(){
 
 function deleteRecord(){
     var index = $(this).closest('.record').attr('data-index');
-    var title = $(this).closest('.dropdown').siblings('.title').text();
-    console.log("", title, index); 
+    var title = $(this).closest('.record').attr('data-title');
     if(confirm('Are you sure to delete "'+title+'"?')){
         STORE.records.splice(index, 1);
         removeRecord(index);
         if(index == selectedIndex){
-            setDefaultRecord(0);
+            activateRecord(0);
             return;
         }
         saveSTORE();

@@ -931,9 +931,9 @@ button#closePanel{position: absolute; top: 0; left: 0;}
 #panel .panel-body .all-records .record.active button.details .show{display: none;}
 #panel .panel-body .all-records .record.active button.details .close{display: block;}
 #panel .panel-body .all-records .record.active .dropdown{display: block; opacity: 1; top: 0px;}
-#panel .panel-body .all-records .record .dropdown .setDefault .on{display: none;}
-#panel .panel-body .all-records .record .dropdown .setDefault.active .on{display: block;}
-#panel .panel-body .all-records .record .dropdown .setDefault.active .off{display: none;}
+#panel .panel-body .all-records .record .dropdown .activate .on{display: none;}
+#panel .panel-body .all-records .record .dropdown .activate.active .on{display: block;}
+#panel .panel-body .all-records .record .dropdown .activate.active .off{display: none;}
 
 
 
