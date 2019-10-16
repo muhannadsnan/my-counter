@@ -132,7 +132,7 @@ function saveSelectedRecord(){
 }
 
 function saveSTORE(){
-    var options = {exprires: 3650};
+    var options = {expires: 3650};
     Cookies.set("store", STORE, options);
     console.log("store saved!", STORE);
 }
