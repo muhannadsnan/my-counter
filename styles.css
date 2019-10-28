@@ -923,6 +923,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .panel-body{margin-top: 4rem;}
 #panel .panel-body input[type=text]{background: transparent; width: 100%; font-size: 4rem; font-family: BasketOfHammers; color: #c6ff00; border: 0;}
 #panel .panel-body .add-record {}
+#panel .panel-body .add-record input{width: 85%;}
 #panel .panel-body .add-record button{margin-top: -10px;}
 #panel .panel-body .all-records {font-size: 4rem; color: #ffb300;}
 #panel .panel-body .all-records .record{position: relative; border-bottom: 1px solid #c6ff00;}
@@ -936,6 +937,3 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .panel-body .all-records .record .dropdown .activate .on{display: none;}
 #panel .panel-body .all-records .record .dropdown .activate.active .on{display: block;}
 #panel .panel-body .all-records .record .dropdown .activate.active .off{display: none;}
-
-
-
