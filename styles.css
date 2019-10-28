@@ -928,7 +928,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .panel-body .all-records {font-size: 4rem; color: #ffb300;}
 #panel .panel-body .all-records .record{position: relative; border-bottom: 1px solid #c6ff00;}
 #panel .panel-body .all-records .record .dropdown{display: none; border: 0px solid #fff; padding: 1rem 2rem; border-top: 0; background: #444; position: relative; top: -150px; opacity: 0;}
-#panel .panel-body .all-records .record .dropdown .row{position: relative;}
+#panel .panel-body .all-records .record .dropdown .row{position: relative; width: 100%;}
 #panel .panel-body .all-records .record button.details{top: -1.6rem; position: absolute; right: 0;}
 #panel .panel-body .all-records .record button.details .close{display: none;}
 #panel .panel-body .all-records .record.active button.details .show{display: none;}
