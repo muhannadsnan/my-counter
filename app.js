@@ -107,7 +107,7 @@ function addRecordToPanel(newRecord, index){
     var tpl = $('#record-tpl').clone(true);
     tpl.removeClass('d-none').addClass('record').attr('id', '');
     tpl.find('.title').text(newRecord.title);
-    tpl.find('.counter').text(newRecord.counter);
+    tpl.find('.counter').text(' ('+newRecord.counter+')');
     tpl.find('.activate').toggleClass('active', newRecord.isDefault);
     tpl.attr('data-index', index).attr('data-title', newRecord.title);
     tpl.prependTo( $panel.find('.all-records') );
@@ -124,6 +124,7 @@ function createRecord(){
     addRecordToPanel(newRecord, STORE.records.length-1);
     saveSTORE();
     $input.val('');
+    $input.focus();
 }
 
 function saveSelectedRecord(){
@@ -187,9 +188,3 @@ function removeRecord(index){ // DOM only
 }
 
 window.onload = init();
-
-/* 
-    TODO:
-    - change the selected record
-    - detail-panel for record
-*/

@@ -882,7 +882,7 @@
 /********************** STYLES CSS **********************/
 /* >>>>>>>>>>>>>> INIT */
 @font-face {font-family: BasketOfHammers; src: url(BasketOfHammers.ttf);}
-body{z-index: 0; cursor: pointer; position: fixed; top: 0; bottom: 0; right: 0; left: 0; background: #2f2f2f; color: #fff; font-family: BasketOfHammers; margin: 0; -webkit-transition: all 0.3s ease-in; -moz-transition: all 0.3s ease-in; -o-transition: all 0.3s ease-in; transition: all 0.3s ease-in; -webkit-transition: bottom 0.3s ease-in; -moz-transition: bottom 0.3s ease-in; -o-transition: bottom 0.3s ease-in; transition: bottom 0.3s ease-in;}
+body{z-index: 0; cursor: pointer; position: fixed; top: 0; bottom: 0; right: 0; left: 0; background: #2f2f2f; color: #fff; font-family: BasketOfHammers; margin: 0;}
 h1, h2, h3, h4, h5, h6{margin: 3rem 0; text-align: center;}
 button{font-family: BasketOfHammers; background: transparent; cursor: pointer; border: 0; color: #c6ff00; font-size: 7rem; z-index: 101; position: relative; line-height: 7rem; vertical-align: middle;}
 i{line-height: unset;} button span{font-size: 5rem;}
@@ -911,16 +911,17 @@ input[type=checkbox]{height: 50px; width: 50px;}
 footer{color: #fff; font-size: 3rem; text-align: center; position: absolute; right: 0; left: 0; bottom: 0; }
 footer p{text-align: right;}
 button#reset{position: absolute; top: 0; left: 0;}
-button#showPanel{position: absolute; bottom: 0; left: 0;}
-button#closePanel{position: absolute; top: 0; left: 0;}
+button#showPanel{position: absolute; top: 0; right: 0;}
+button#closePanel{position: absolute; top: 0; right: 0;}
 #recordTitle{font-size: 5rem; text-align: center;}
 
-#panel{background: #2f2f2f; z-index: 102; position: absolute; top: 0; bottom: 0; left: -200%; -webkit-transition: left .2s linear .2s; transition: left .2s linear .2s; border: 10px solid #c6ff00; font-size: 4rem; font-family: BasketOfHammers; color: #c6ff00; border-color: #c6ff00; overflow: scroll;}
+#panel{background: #2f2f2f; z-index: 102; position: absolute; top: 0; bottom: 0; left: -125%; font-size: 4rem; font-family: BasketOfHammers; color: #c6ff00; border:.25rem solid #c6ff00; overflow: scroll; 
+    -webkit-transition-property: all; -moz-transition-property: all; -o-transition-property: all; transition-property: all; -webkit-transition-duration: 0.3s; -moz-transition-duration: 0.3s; -o-transition-duration: 0.3s; transition-duration: 0.3s; -webkit-transition-timing-function: ease-out; -moz-transition-timing-function: ease-out; -o-transition-timing-function: ease-out; transition-timing-function: ease-out; -webkit-transition-delay: 0; -moz-transition-delay: 0; -o-transition-delay: 0; transition-delay: 0;}
 #panel.show{left: 0;}
 #panel .panel-heading{text-align: center; font-size: 90px;}
-#panel .panel-body{margin-top: 5rem;}
+#panel .panel-body{margin-top: 4rem;}
 #panel .panel-body input[type=text]{background: transparent; width: 100%; font-size: 4rem; font-family: BasketOfHammers; color: #c6ff00; border: 0;}
-#panel .panel-body .add-record {height: 90px;}
+#panel .panel-body .add-record {}
 #panel .panel-body .add-record button{margin-top: -10px;}
 #panel .panel-body .all-records {font-size: 4rem; color: #ffb300;}
 #panel .panel-body .all-records .record{position: relative; border-bottom: 1px solid #c6ff00;}
