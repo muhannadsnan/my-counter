@@ -23,7 +23,7 @@ function initValues(){
     counter = 0;
     progressIncBy = 1;
     $total = $("#total");
-    $progress = $("#progress .val");
+    $progress = $("#progress");
     $counter = $("#counter");
     $title = $("#recordTitle");
     $panel = $('#panel');
@@ -70,7 +70,8 @@ function setProgress(number, withNumber){
     if(withNumber){
         $counter.text(number); 
     }
-    $progress.attr('class', 'val c-'+(number%100));
+    $progress.find('.val').attr('class', 'val c-'+(number%100));
+    pulse($progress);
 }
 
 function reset(){ 
@@ -184,6 +185,12 @@ function setRecordTitle(index, newTitle){ // DOM only
 
 function removeRecord(index){ // DOM only
     $('[data-index='+index+']').remove();
+}
+
+function pulse($element){ 
+    $element.removeClass("pulse");
+    $element.width();
+    $element.addClass("pulse");
 }
 
 window.onload = init();

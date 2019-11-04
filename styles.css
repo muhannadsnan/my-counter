@@ -166,3 +166,33 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #progress .val.c-2{height: 2%;}
 #progress .val.c-1{height: 1%;}
 #progress .val.c-0{height: 0%;}
+#progress .val{transition: height .5s;}
+
+
+.pulse{animation: pulse 1s; }
+
+@-webkit-keyframes pulse {
+    0% {
+      -webkit-box-shadow: 0 0 1rem 1rem rgba(198,255,0,1);
+    }
+    70% {
+        -webkit-box-shadow: 0 0 2rem .5rem rgba(198,255,0,0);
+    }
+    100% {
+        -webkit-box-shadow:0 0 0 0 rgba(198,255,0,0);
+    }
+  }
+  @keyframes pulse {
+    0% {
+      -moz-box-shadow: 0 0 1rem 1rem  rgba(198,255,0,1);
+      box-shadow: 0 0 1rem 1rem rgba(198,255,0,1);
+    }
+    70% {
+        -moz-box-shadow: 0 0 2rem .5rem rgba(198,255,0,0);
+        box-shadow: 0 0 2rem .5rem rgba(198,255,0,0);
+    }
+    100% {
+        -moz-box-shadow:0 0 0 0 rgba(198,255,0,0);
+        box-shadow:0 0 0 0 rgba(198,255,0,0);
+    }
+  }
