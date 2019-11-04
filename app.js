@@ -60,6 +60,7 @@ function increaseCounter(){
     }
     if(selectedRecord.total % 100 == 0){
         $total.text(selectedRecord.total);
+        pulse($total, true);
         setProgress(0, false);
     }
     saveSelectedRecord();
@@ -85,11 +86,13 @@ function togglePannel(){
 }
 
 function onShowPanel(){
+    pulse($(this), true);
     togglePannel();
     showRecords(STORE.records);    
 }
 
 function onClosePanel(){
+    pulse($(this), true);
     togglePannel();
 }
 
@@ -117,6 +120,8 @@ function clearRecordsDom(){
 
 function createRecord(){
     var $input = $('#add-record-input');
+    pulse($input);
+    pulse($(this), true);
     var newRecord = new Record($input.val());
     STORE.records.push(newRecord);
     addRecordToPanel(newRecord, STORE.records.length-1);
@@ -187,7 +192,14 @@ function removeRecord(index){ // DOM only
     $('[data-index='+index+']').remove();
 }
 
-function pulse($element){ 
+function pulse($element, isText){ 
+    if(isText === undefined) isText = false;
+    if(isText){
+        $element.removeClass("pulseText");
+        $element.width();
+        $element.addClass("pulseText");
+        return;
+    }
     $element.removeClass("pulse");
     $element.width();
     $element.addClass("pulse");
