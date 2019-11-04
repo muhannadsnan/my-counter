@@ -22,19 +22,17 @@ function init() {
 function initValues(){
     counter = 0;
     progressIncBy = 1;
-    $total = document.getElementById("total");
-    $progress = document.getElementById("Progress");
-    $counter = document.getElementById("progressSpan");
-    $title = document.getElementById("recordTitle");
+    $total = $("#total");
+    $progress = $("#progress .val");
+    $counter = $("#counter");
+    $title = $("#recordTitle");
     $panel = $('#panel');
     
     STORE = Cookies.getJSON("store");
     if(STORE === undefined) {
         STORE = new Store();
     }
-    console.log(STORE);
     activateRecord(STORE.selectedIndex);
-    // TODO: check records.some(el => return el.defaul) any of them is set to default, else take zero index
 }
 
 function activateRecord(newIndex){
@@ -45,9 +43,9 @@ function activateRecord(newIndex){
     STORE.records.forEach(el => el.isDefault = false);
     STORE.records[selectedIndex].isDefault = true;
     selectedRecord = STORE.records[selectedIndex];
-    $title.textContent = selectedRecord.title;
-    $counter.textContent = selectedRecord.counter;
-    $total.textContent = selectedRecord.total;
+    $title.text(selectedRecord.title);
+    $counter.text(selectedRecord.counter);
+    $total.text(selectedRecord.total);
     setProgress(selectedRecord.counter);
     saveSTORE();
 }
@@ -61,7 +59,7 @@ function increaseCounter(){
         setProgress(selectedRecord.counter, false);
     }
     if(selectedRecord.total % 100 == 0){
-        $total.textContent = selectedRecord.total;
+        $total.text(selectedRecord.total);
         setProgress(0, false);
     }
     saveSelectedRecord();
@@ -70,10 +68,9 @@ function increaseCounter(){
 function setProgress(number, withNumber){ 
     if(withNumber === undefined) withNumber = true;
     if(withNumber){
-        $counter.textContent = number; 
+        $counter.text(number); 
     }
-    $progress.className = 'c100 big dark';
-    $progress.classList.add('p'+number%100);
+    $progress.attr('class', 'val c-'+(number%100));
 }
 
 function reset(){ 
