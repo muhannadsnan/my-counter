@@ -1,4 +1,4 @@
-var counter, total, currentCounter, progressIncBy, $total, $progress, $counter, $panel, STORE, selectedRecord, selectedIndex;
+var counter, total, currentCounter, $total, $progress, $counter, $panel, STORE, selectedRecord, selectedIndex, activeChanged;
 
 function init() {
     initValues();
@@ -17,11 +17,11 @@ function init() {
     $('.activate').on('click', toggleActivate);
     $('.changeTitle').on('click', changeTitle);
     $('.deleteRecord').on('click', deleteRecord);
+    pulseAll();
 }
 
 function initValues(){
     counter = 0;
-    progressIncBy = 1;
     $total = $("#total");
     $progress = $("#progress");
     $counter = $("#counter");
@@ -33,6 +33,7 @@ function initValues(){
         STORE = new Store();
     }
     activateRecord(STORE.selectedIndex);
+    activeChanged = false; // must be after activateRecord()    
 }
 
 function activateRecord(newIndex){
@@ -40,29 +41,30 @@ function activateRecord(newIndex){
     newIndex = Number(newIndex);
     selectedIndex = newIndex;
     STORE.selectedIndex = newIndex;
-    STORE.records.forEach(el => el.isDefault = false);
-    STORE.records[selectedIndex].isDefault = true;
+    STORE.records.forEach(el => el.isActive = false);
+    STORE.records[selectedIndex].isActive = true;
     selectedRecord = STORE.records[selectedIndex];
     $title.text(selectedRecord.title);
     $counter.text(selectedRecord.counter);
     $total.text(selectedRecord.total);
     setProgress(selectedRecord.counter);
     saveSTORE();
+    activeChanged = true;
 }
 
 function increaseCounter(){
     selectedRecord.counter++; 
     selectedRecord.total++;
-    if(selectedRecord.counter % 10 == 0){
-        setProgress(selectedRecord.counter);
-    }else{
-        setProgress(selectedRecord.counter, false);
+    var withNumber = true;
+    if(selectedRecord.counter % 10 != 0){
+        withNumber = false;
     }
     if(selectedRecord.total % 100 == 0){
         $total.text(selectedRecord.total);
-        pulse($total, true);
-        setProgress(0, false);
+        pulse($total, 1);
+        pulse($counter, 1);
     }
+    setProgress(selectedRecord.counter, withNumber);
     saveSelectedRecord();
 }
 
@@ -86,13 +88,17 @@ function togglePannel(){
 }
 
 function onShowPanel(){
-    pulse($(this), true);
+    pulse($(this), 2);
     togglePannel();
     showRecords(STORE.records);    
 }
 
 function onClosePanel(){
-    pulse($(this), true);
+    pulse($(this), 2);
+    if(activeChanged){
+        pulseAll();
+        activeChanged = false;
+    }
     togglePannel();
 }
 
@@ -106,10 +112,10 @@ function showRecords(records){
 function addRecordToPanel(newRecord, index){
     console.log("record", newRecord, "index:", index); 
     var tpl = $('#record-tpl').clone(true);
-    tpl.removeClass('d-none').addClass('record').toggleClass('color-primary', newRecord.isDefault).attr('id', '');
+    tpl.removeClass('d-none').addClass('record').toggleClass('color-primary', newRecord.isActive).attr('id', '');
     tpl.find('.title').text(newRecord.title);
     tpl.find('.counter').text(' ('+newRecord.counter+')');
-    tpl.find('.activate').toggleClass('active', newRecord.isDefault);
+    tpl.find('.activate').toggleClass('active', newRecord.isActive);
     tpl.attr('data-index', index).attr('data-title', newRecord.title);
     tpl.prependTo( $panel.find('.all-records') );
 }
@@ -121,7 +127,7 @@ function clearRecordsDom(){
 function createRecord(){
     var $input = $('#add-record-input');
     pulse($input);
-    pulse($(this), true);
+    pulse($(this), 1);
     var newRecord = new Record($input.val());
     STORE.records.push(newRecord);
     addRecordToPanel(newRecord, STORE.records.length-1);
@@ -192,17 +198,18 @@ function removeRecord(index){ // DOM only
     $('[data-index='+index+']').remove();
 }
 
-function pulse($element, isText){ 
-    if(isText === undefined) isText = false;
-    if(isText){
-        $element.removeClass("pulseText");
-        $element.width();
-        $element.addClass("pulseText");
-        return;
-    }
-    $element.removeClass("pulse");
+function pulse($element, i){ 
+    if(i === undefined) i = 0;
+    var types = ['pulse', 'pulseText', 'pulseTextLong', 'pulseLong'];
+    $element.removeClass(types);
     $element.width();
-    $element.addClass("pulse");
+    $element.addClass(types[i]);
 }
 
+function pulseAll(){
+    pulse($progress, 3);
+    pulse($counter, 2);
+    pulse($title, 2);
+    pulse($total, 2);
+}
 window.onload = init();

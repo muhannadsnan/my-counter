@@ -1,9 +1,9 @@
 class Record {
-    constructor(title, counter, total, isDefault){
+    constructor(title, counter, total, isActive){
         this.title = title || "Untitled";
         this.counter = counter || 0;
         this.total = total || 0;
-        this.isDefault = isDefault || false;
+        this.isActive = isActive || false;
         this.print();
     }
     print(){
