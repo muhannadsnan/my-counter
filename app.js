@@ -59,10 +59,12 @@ function increaseCounter(){
     if(selectedRecord.counter % 10 != 0){
         withNumber = false;
     }
+    if(selectedRecord.counter % 100 == 0){
+        pulse($counter, 1);
+    }
     if(selectedRecord.total % 100 == 0){
         $total.text(selectedRecord.total);
         pulse($total, 1);
-        pulse($counter, 1);
     }
     setProgress(selectedRecord.counter, withNumber);
     saveSelectedRecord();
