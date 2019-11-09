@@ -116,7 +116,7 @@ function addRecordToPanel(newRecord, index){
     var tpl = $('#record-tpl').clone(true);
     tpl.removeClass('d-none').addClass('record').toggleClass('color-primary', newRecord.isActive).attr('id', '');
     tpl.find('.title').text(newRecord.title);
-    tpl.find('.counter').text(' ('+newRecord.counter+')');
+    tpl.find('.counter').text(' ('+newRecord.total+'/'+newRecord.counter+')');
     tpl.find('.activate').toggleClass('active', newRecord.isActive);
     tpl.attr('data-index', index).attr('data-title', newRecord.title);
     tpl.prependTo( $panel.find('.all-records') );
