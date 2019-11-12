@@ -1,6 +1,6 @@
 body{z-index: 0; cursor: pointer; position: fixed; top: 0; bottom: 0; right: 0; left: 0; background: #2f2f2f; color: #fff; font-family: 'Audiowide', tahoma; margin: 0;}
 h1, h2, h3, h4, h5, h6{margin: 3rem 0; text-align: center;}
-button{font-family: 'Baloo Bhaijaan'; background: transparent; cursor: pointer; border: 0; color: #c6ff00; font-size: 7rem; z-index: 101; position: relative; line-height: 2rem; vertical-align: middle; padding: 0;}
+button{font-family: 'Audiowide'; background: transparent; cursor: pointer; border: 0; color: #c6ff00; font-size: 7rem; z-index: 101; position: relative; line-height: 2rem; vertical-align: middle; padding: 0;}
 i{line-height: unset;} button span{font-size: 5rem;}
 input[type=checkbox]{height: 50px; width: 50px;}
 .d-none{display: none !important;}.d-flex{display: flex !important;}.justify-content-between{justify-content: space-between;}
@@ -167,6 +167,10 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 .pulseLong{animation: pulse 3s;}
 .pulseText{animation: pulseText 1s;}
 .pulseTextLong{animation: pulseText 4s;}
+
+#showPrayers{font-size: 5rem; position: absolute; bottom: 2rem; left: 2rem;}
+#showPrayers img{width: 10rem; float: left;}
+#showPrayers span{line-height: 10rem; float: left; vertical-align: middle;}
 
 @-webkit-keyframes pulse {
     0% {

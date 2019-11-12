@@ -17,6 +17,7 @@ function init() {
     $('.activate').on('click', toggleActivate);
     $('.changeTitle').on('click', changeTitle);
     $('.deleteRecord').on('click', deleteRecord);
+    $('#showPrayers').on('click', showPrayers);
     pulseAll();
 }
 
@@ -214,4 +215,9 @@ function pulseAll(){
     pulse($title, 2);
     pulse($total, 2);
 }
+
+function showPrayers(){
+    window.location = "./prayers.html";
+}
+
 window.onload = init();
