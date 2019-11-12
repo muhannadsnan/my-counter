@@ -168,7 +168,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 .pulseText{animation: pulseText 1s;}
 .pulseTextLong{animation: pulseText 4s;}
 
-#showPrayers{font-size: 5rem; position: absolute; bottom: 2rem; left: 2rem;}
+#showPrayers{font-size: 5rem; padding: 2rem; border: .25rem solid #0b8c3f; border-radius: 1rem; margin-top: 2rem; color: #0b8c3f;}
 #showPrayers img{width: 10rem; float: left;}
 #showPrayers span{line-height: 10rem; float: left; vertical-align: middle;}
 
