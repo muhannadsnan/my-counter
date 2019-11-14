@@ -1,6 +1,6 @@
-body{z-index: 0; cursor: pointer; position: fixed; top: 0; bottom: 0; right: 0; left: 0; background: #2f2f2f; color: #fff; font-family: 'Audiowide', tahoma; margin: 0;}
+body{z-index: 0; cursor: pointer; position: fixed; top: 0; bottom: 0; right: 0; left: 0; background: #2f2f2f; color: #fff; font-family: Lalezar, Audiowide, tahoma; margin: 0;}
 h1, h2, h3, h4, h5, h6{margin: 3rem 0; text-align: center;}
-button{font-family: 'Audiowide'; background: transparent; cursor: pointer; border: 0; color: #c6ff00; font-size: 7rem; z-index: 101; position: relative; line-height: 2rem; vertical-align: middle; padding: 0;}
+button{font-family: Lalezar, Audiowide, tahoma; background: transparent; cursor: pointer; border: 0; color: #c6ff00; font-size: 7rem; z-index: 101; position: relative; line-height: 2rem; vertical-align: middle; padding: 0;}
 i{line-height: unset;} button span{font-size: 5rem;}
 input[type=checkbox]{height: 50px; width: 50px;}
 .d-none{display: none !important;}.d-flex{display: flex !important;}.justify-content-between{justify-content: space-between;}
@@ -20,7 +20,7 @@ input[type=checkbox]{height: 50px; width: 50px;}
 #clicker{position: absolute; width: 100%; height: 100vh; border: 0px solid green; z-index: 100; top: 0; right: 0; cursor: copy;}
 .main{position: absolute; top: 2rem; bottom: 10rem; right: 1rem; left: 2rem;}
 .main p{position: absolute; font-size: 9rem; line-height: 9rem; text-align: center; color: #777;}
-#recordTitle{top: 12rem; right: 0; left: 13rem; font-size: 5rem; color: #fff;}
+#recordTitle{top: 12rem; right: 0; left: 13rem; font-size: 7rem; color: #fff; font-family:  Lalezar, Audiowide, tahoma;}
 #counter{top: 0; font-size: 9rem; color: #c6ff00; margin: 0 auto; right: 8rem; left: 7rem; line-height: 7rem}
 #total{right: 0; left: 12rem; bottom: 5rem;}
 
@@ -32,16 +32,20 @@ button#reset{position: absolute; top: 0; left: 0;}
 button#showPanel{position: absolute; top: 0; right: 0;}
 button#closePanel{position: absolute; top: 0; right: 0;}
 
-#panel{background: #2f2f2f; z-index: 102; position: absolute; top: 0; bottom: 0; left: -125%; font-size: 4rem; font-family: 'Audiowide'; color: #c6ff00; border:.25rem solid #c6ff00; overflow: scroll; 
+#panel{background: #2f2f2f; z-index: 102; position: absolute; top: 0; bottom: 0; left: -125%; font-size: 4rem; font-family: Lalezar, Audiowide, tahoma; color: #c6ff00; border:.25rem solid #c6ff00; overflow: scroll; 
     -webkit-transition-property: all; -moz-transition-property: all; -o-transition-property: all; transition-property: all; -webkit-transition-duration: 0.3s;-moz-transition-duration: 0.3s; -o-transition-duration: 0.3s; transition-duration: 0.3s; -webkit-transition-timing-function: ease-out; -moz-transition-timing-function: ease-out; -o-transition-timing-function: ease-out; transition-timing-function: ease-out; -webkit-transition-delay: 0; -moz-transition-delay: 0; -o-transition-delay: 0; transition-delay: 0;}
 #panel.show{left: 0;}
 #panel .panel-heading{text-align: center; font-size: 90px;}
 #panel .panel-body{margin-top: 4rem;}
-#panel .panel-body input[type=text]{background: transparent; width: 100%; font-size: 4rem; font-family: 'Audiowide'; color: #c6ff00; border: 0;}
+#panel .panel-body input[type=text]{background: transparent; width: 100%; font-size: 4rem; font-family: Lalezar, Audiowide, tahoma; color: #c6ff00; border: 0;}
 #panel .panel-body .add-record input{width: 100%; border-bottom: .25rem solid #c6ff00;}
 #panel .panel-body .add-record button{margin-top: -10px;}
 #panel .panel-body .all-records {font-size: 4rem; color: #638000;}
 #panel .panel-body .all-records .record{position: relative; border-bottom: .25rem solid #c6ff00;}
+#panel .panel-body .all-records .record .toggleDropdown{padding: 1.5rem 0;}
+#panel .panel-body .all-records .record .toggleDropdown i{padding: 1.5rem 0;}
+#panel .panel-body .all-records .record .toggleDropdown .title{width: 70%; display: inline-block; line-height: 4rem;}
+#panel .panel-body .all-records .record .toggleDropdown .counter{display: inline-block;}
 #panel .panel-body .all-records .record .dropdown{display: none; border: 0px solid #fff; border-top: 0; background: #444; position: relative; top: -150px; opacity: 0; height: 116px;}
 #panel .panel-body .all-records .record button{color: #638000;}
 #panel .panel-body .all-records .record.color-primary button{color: #c6ff00;}
@@ -233,7 +237,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
     font-weight: 400;
     font-display: swap;
     src: local('Merienda One'), local('MeriendaOne-Regular'), url(https://fonts.gstatic.com/s/meriendaone/v10/H4cgBXaMndbflEq6kyZ1ht6ohYaz.woff2) format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    unicode-range: U+0020-024F; /* Only Latin */
 }
 @font-face {
     font-family: 'Audiowide';
@@ -241,7 +245,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
     font-weight: 400;
     font-display: swap;
     src: local('Audiowide Regular'), local('Audiowide-Regular'), url(https://fonts.gstatic.com/s/audiowide/v8/l7gdbjpo0cum0ckerWCdlg_O.woff2) format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    unicode-range: U+0020-024F; /* Only Latin */
 }
   /* arabic */
 @font-face {
@@ -250,5 +254,5 @@ button#closePanel{position: absolute; top: 0; right: 0;}
     font-weight: 400;
     font-display: swap;
     src: local('Lalezar'), local('Lalezar-Regular'), url(https://fonts.gstatic.com/s/lalezar/v6/zrfl0HLVx-HwTP82YaL4IxL0.woff2) format('woff2');
-    unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE80-FEFC;
+    unicode-range: U+0600-06FF;
 }
