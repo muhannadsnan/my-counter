@@ -44,8 +44,8 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .panel-body .all-records .record{position: relative; border-bottom: .25rem solid #c6ff00;}
 #panel .panel-body .all-records .record .toggleDropdown{padding: 1.5rem 0;}
 #panel .panel-body .all-records .record .toggleDropdown i{padding: 1.5rem 0;}
-#panel .panel-body .all-records .record .toggleDropdown .counter{float: left;}
-#panel .panel-body .all-records .record .toggleDropdown .title{width: 70%; float: left; line-height: 4rem;}
+#panel .panel-body .all-records .record .toggleDropdown .counter{}
+#panel .panel-body .all-records .record .toggleDropdown .title{width: 70%;  line-height: 4rem;}
 #panel .panel-body .all-records .record .dropdown{display: none; border: 0px solid #fff; border-top: 0; background: #444; position: relative; top: -150px; opacity: 0; height: 116px;}
 #panel .panel-body .all-records .record button{color: #638000;}
 #panel .panel-body .all-records .record.color-primary button{color: #c6ff00;}

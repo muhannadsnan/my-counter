@@ -130,17 +130,17 @@ function clearRecordsDom(){
 function createRecord(){
     var $input = $('#add-record-input');
     if($input.val().length == 0){
-        pulse($input);
         $input.attr('placeholder', 'Empty title entered!');
-        return;
+    }
+    else{
+        pulse($(this), 1);
+        var newRecord = new Record($input.val());
+        STORE.records.push(newRecord);
+        addRecordToPanel(newRecord, STORE.records.length-1);
+        saveSTORE();
+        $input.val('');
     }
     pulse($input);
-    pulse($(this), 1);
-    var newRecord = new Record($input.val());
-    STORE.records.push(newRecord);
-    addRecordToPanel(newRecord, STORE.records.length-1);
-    saveSTORE();
-    $input.val('');
     $input.focus();
 }
 
