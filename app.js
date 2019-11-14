@@ -129,6 +129,11 @@ function clearRecordsDom(){
 
 function createRecord(){
     var $input = $('#add-record-input');
+    if($input.val().length == 0){
+        pulse($input);
+        $input.attr('placeholder', 'Empty title entered!');
+        return;
+    }
     pulse($input);
     pulse($(this), 1);
     var newRecord = new Record($input.val());
