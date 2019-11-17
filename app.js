@@ -18,6 +18,7 @@ function init() {
     $('.changeTitle').on('click', changeTitle);
     $('.deleteRecord').on('click', deleteRecord);
     $('#showPrayers').on('click', showPrayers);
+    $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
     pulseAll();
 }
 
@@ -120,7 +121,7 @@ function addRecordToPanel(newRecord, index){
     tpl.find('.counter').text(' '+newRecord.total+'/'+newRecord.counter+' ');
     tpl.find('.activate').toggleClass('active', newRecord.isActive);
     tpl.attr('data-index', index).attr('data-title', newRecord.title);
-    tpl.prependTo( $panel.find('.all-records') );
+    tpl.prependTo( $panel.find('.records') );
 }
 
 function clearRecordsDom(){
@@ -223,6 +224,13 @@ function pulseAll(){
 
 function showPrayers(){
     window.location = "./prayers.html";
+}
+
+function toggleAddRecord(){
+    $panel.toggleClass('showAddRecord');
+    $panel.find('#showAddRecord').toggleClass('d-none');
+    $panel.find('#hideAddRecord').toggleClass('d-none');
+    $panel.find('.add-record').toggleClass('d-flex');
 }
 
 window.onload = init();

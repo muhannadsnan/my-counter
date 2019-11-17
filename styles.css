@@ -28,33 +28,35 @@ button#reset{position: absolute; top: 0; left: 0;}
 button#showPanel{position: absolute; top: 0; right: 0;}
 button#closePanel{position: absolute; top: 0; right: 0;}
 
-#panel{background: #2f2f2f; z-index: 102; position: absolute; top: 0; bottom: 0; left: -200%; font-size: 4rem; font-family: Lalezar, Audiowide, tahoma; color: #c6ff00; border:.25rem solid #c6ff00; overflow: scroll; 
+#panel{padding: 0; width: 100%; background: #2f2f2f; z-index: 102; position: absolute; top: 0; bottom: 0; left: -200%; font-size: 4rem; font-family: Lalezar, Audiowide, tahoma; color: #c6ff00; border:.25rem solid #c6ff00; overflow: scroll; 
     -webkit-transition-property: all; -moz-transition-property: all; -o-transition-property: all; transition-property: all; -webkit-transition-duration: 0.3s;-moz-transition-duration: 0.3s; -o-transition-duration: 0.3s; transition-duration: 0.3s; -webkit-transition-timing-function: ease-out; -moz-transition-timing-function: ease-out; -o-transition-timing-function: ease-out; transition-timing-function: ease-out; -webkit-transition-delay: 0; -moz-transition-delay: 0; -o-transition-delay: 0; transition-delay: 0;}
 #panel.show{left: 0;}
+#panel #showAddRecord, #panel #hideAddRecord{position: absolute; top: 0; left: 0; padding: 2rem;}
 #panel .panel-heading{text-align: center; font-size: 90px;}
-#panel .panel-body{margin-top: 4rem;}
-#panel .panel-body input[type=text]{background: transparent; width: 100%; font-size: 4rem; font-family: Lalezar, Audiowide, tahoma; color: #c6ff00; border: 0;}
-#panel .panel-body .add-record input{width: 100%; border-bottom: .25rem solid #c6ff00;}
-#panel .panel-body .add-record button{margin-top: -10px;}
-#panel .panel-body .all-records {font-size: 4rem; color: #638000;}
-#panel .panel-body .all-records .record{position: relative; border-bottom: .25rem solid #c6ff00;}
-#panel .panel-body .all-records .record .toggleDropdown{height: 9rem;}
-#panel .panel-body .all-records .record .toggleDropdown i{padding: 1.7rem 0;}
-#panel .panel-body .all-records .record .toggleDropdown .counter{position: absolute; left: 0; top: 1rem; line-height: 2.5rem; vertical-align: middle; margin: 0; font-size: 2.5rem; color: #8e8e8e;}
-#panel .panel-body .all-records .record .toggleDropdown .title{width: 92%; position: absolute; top: 2.5rem;}
-#panel .panel-body .all-records .record .dropdown{display: none; border: 0px solid #fff; border-top: 0; background: #444; position: relative; top: -150px; opacity: 0; height: 116px;}
-#panel .panel-body .all-records .record button{color: #638000;}
-#panel .panel-body .all-records .record.color-primary button{color: #c6ff00;}
-#panel .panel-body .all-records .record button.details{top: -0.6rem;}
-#panel .panel-body .all-records .record button.details .close{display: none;}
-#panel .panel-body .all-records .record.showDropdown button.details .show{display: none;}
-#panel .panel-body .all-records .record.showDropdown button.details .close{display: block;}
-#panel .panel-body .all-records .record.showDropdown .dropdown{display: flex; opacity: 1; top: 0px; margin: auto;}
+#panel .panel-body{/*  */}
+#panel input[type=text]{background: transparent; width: 100%; font-size: 4rem; font-family: Lalezar, Audiowide, tahoma; color: #c6ff00; border: 0;}
+#panel .add-record .d-flex{}
+#panel .add-record input{width: 100%; border-bottom: .25rem solid #c6ff00;}
+#panel .add-record button{margin-top: -10px;}
+#panel .records {font-size: 4rem; color: #638000;}
+#panel .records .record{position: relative; border-bottom: .25rem solid #c6ff00;}
+#panel .records .record .toggleDropdown{height: 9rem;}
+#panel .records .record .toggleDropdown i{padding: 1.7rem 0;}
+#panel .records .record .toggleDropdown .counter{position: absolute; left: 0; top: 1rem; line-height: 2.5rem; vertical-align: middle; margin: 0; font-size: 2.5rem; color: #8e8e8e;}
+#panel .records .record .toggleDropdown .title{width: 92%; position: absolute; top: 2.5rem;}
+#panel .records .record .dropdown{display: none; border: 0px solid #fff; border-top: 0; background: #444; position: relative; top: -150px; opacity: 0; height: 116px;}
+#panel .records .record button{color: #638000;}
+#panel .records .record.color-primary button{color: #c6ff00;}
+#panel .records .record button.details{top: -0.6rem;}
+#panel .records .record button.details .close{display: none;}
+#panel .records .record.showDropdown button.details .show{display: none;}
+#panel .records .record.showDropdown button.details .close{display: block;}
+#panel .records .record.showDropdown .dropdown{display: flex; opacity: 1; top: 0px; margin: auto;}
 
-#panel .panel-body .all-records .record .dropdown .activate{float: right;}
-#panel .panel-body .all-records .record .dropdown .activate .on{display: none;}
-#panel .panel-body .all-records .record .dropdown .activate.active .on{display: block;}
-#panel .panel-body .all-records .record .dropdown .activate.active .off{display: none;}
+#panel .records .record .dropdown .activate{float: right;}
+#panel .records .record .dropdown .activate .on{display: none;}
+#panel .records .record .dropdown .activate.active .on{display: block;}
+#panel .records .record .dropdown .activate.active .off{display: none;}
 
 .pulse{animation: pulse 1s;}
 .pulseLong{animation: pulse 3s;}
