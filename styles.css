@@ -39,12 +39,18 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .add-record input{width: 100%; border-bottom: .25rem solid #c6ff00;}
 #panel .add-record button{margin-top: -10px;}
 #panel .records {font-size: 4rem; color: #638000;}
-#panel .records .record{position: relative; border-bottom: .25rem solid #c6ff00;}
+#panel .records .record{position: relative; border-bottom: .25rem solid #8e8e8e;}
 #panel .records .record .toggleDropdown{height: 9rem;}
 #panel .records .record .toggleDropdown i{padding: 1.7rem 0;}
-#panel .records .record .toggleDropdown .counter{position: absolute; left: 0; top: 1rem; line-height: 2.5rem; vertical-align: middle; margin: 0; font-size: 2.5rem; color: #8e8e8e;}
-#panel .records .record .toggleDropdown .title{width: 92%; position: absolute; top: 2.5rem;}
-#panel .records .record .dropdown{display: none; border: 0px solid #fff; border-top: 0; background: #444; position: relative; top: -150px; opacity: 0; height: 116px;}
+#panel .records .record .toggleDropdown .counter{position: absolute; left: 0; top: 2rem; line-height: 2.5rem; vertical-align: middle; margin: 0; font-size: 2.5rem; color: #8e8e8e;}
+#panel .records .record .toggleDropdown .total{position: absolute; left: 0; top: 5rem; line-height: 2.5rem; vertical-align: middle; margin: 0; font-size: 2.5rem; color: #8e8e8e; font-weight: bolder}
+#panel .records .record .toggleDropdown .title{width: 92%; position: absolute; top: 2.5rem; left: 10rem;}
+
+#panel .records .record .dropdown{display: none; border: 0px solid #fff; border-top: 0; background: #3c3b3b; position: relative; top: -150px; opacity: 0; height: 116px;}
+#panel .records .record .dropdown .deleteRecord{color: #774545 ;}
+#panel .records .record .dropdown .activate{float: right;}
+#panel .records .record .dropdown .activate .on{display: none;}
+
 #panel .records .record button{color: #638000;}
 #panel .records .record.color-primary button{color: #c6ff00;}
 #panel .records .record button.details{top: -0.6rem;}
@@ -53,10 +59,12 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .records .record.showDropdown button.details .close{display: block;}
 #panel .records .record.showDropdown .dropdown{display: flex; opacity: 1; top: 0px; margin: auto;}
 
-#panel .records .record .dropdown .activate{float: right;}
-#panel .records .record .dropdown .activate .on{display: none;}
-#panel .records .record .dropdown .activate.active .on{display: block;}
-#panel .records .record .dropdown .activate.active .off{display: none;}
+#panel .records .record.active .dropdown {background: #505050 ;}
+#panel .records .record.active .dropdown .activate.on{display: block;}
+#panel .records .record.active .dropdown .activate.off{display: none;}
+#panel .records .record.active .dropdown .deleteRecord{color: #de3434;}
+#panel .records .record.active .toggleDropdown .counter{color: #fff;}
+#panel .records .record.active .toggleDropdown .total{color: #fff;}
 
 .pulse{animation: pulse 1s;}
 .pulseLong{animation: pulse 3s;}

@@ -118,8 +118,9 @@ function addRecordToPanel(newRecord, index){
     var tpl = $('#record-tpl').clone(true);
     tpl.removeClass('d-none').addClass('record').toggleClass('color-primary', newRecord.isActive).attr('id', '');
     tpl.find('.title').text(newRecord.title);
-    tpl.find('.counter').text(' '+newRecord.total+'/'+newRecord.counter+' ');
-    tpl.find('.activate').toggleClass('active', newRecord.isActive);
+    tpl.find('.counter').text(newRecord.counter);
+    tpl.find('.total').text(newRecord.total);
+    tpl.toggleClass('active', newRecord.isActive);
     tpl.attr('data-index', index).attr('data-title', newRecord.title);
     tpl.prependTo( $panel.find('.records') );
 }
@@ -162,11 +163,9 @@ function toggleDropdown(){
 }
 
 function toggleActivate(){
-    $('.activate').removeClass('active');
-    $('.record').removeClass('color-primary');
+    $('.record').removeClass('color-primary active');
     var $this = $(this);
-    $this.addClass('active');
-    $this.closest('.record').addClass('color-primary');
+    $this.closest('.record').addClass('color-primary active');
     var index = $this.closest('.record').attr('data-index');
     activateRecord(index);
 }
