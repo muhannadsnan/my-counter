@@ -229,7 +229,7 @@ function toggleAddRecord(){
     $panel.toggleClass('showAddRecord');
     $panel.find('#showAddRecord').toggleClass('d-none');
     $panel.find('#hideAddRecord').toggleClass('d-none');
-    $panel.find('.add-record').toggleClass('d-flex');
+    // $panel.find('.add-record').toggleClass('d-flex');
 }
 
 window.onload = init();
