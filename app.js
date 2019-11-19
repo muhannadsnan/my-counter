@@ -141,8 +141,10 @@ function createRecord(){
         addRecordToPanel(newRecord, STORE.records.length-1);
         saveSTORE();
         $input.val('');
+        pulse($panel.find('.record').first(), 1);
     }
     pulse($input);
+    pulse($(this), 1);
     $input.focus();
 }
 
@@ -229,7 +231,7 @@ function toggleAddRecord(){
     $panel.toggleClass('showAddRecord');
     $panel.find('#showAddRecord').toggleClass('d-none');
     $panel.find('#hideAddRecord').toggleClass('d-none');
-    // $panel.find('.add-record').toggleClass('d-flex');
+    pulse($('#showAddRecord, #hideAddRecord'), 2);
 }
 
 window.onload = init();
