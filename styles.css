@@ -58,7 +58,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .records .record button.details .close{display: none;}
 #panel .records .record.showDropdown button.details .show{display: none;}
 #panel .records .record.showDropdown button.details .close{display: block;}
-#panel .records .record.showDropdown .dropdown{height: 7rem; padding: 2rem;}
+#panel .records .record.showDropdown .dropdown{height: 7.3rem; padding: 2rem;}
 
 #panel .records .record.active {opacity: 1;}
 
@@ -122,12 +122,8 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 }
 
 @media screen and (orientation:portrait) {
-    html{
-        font-size: 16px;
-    }
+    html{font-size: 16px;}
 }
 @media screen and (orientation:landscape) {
-    html{
-        font-size: 9px;
-    }
+    html{font-size: 9px;}
 }
