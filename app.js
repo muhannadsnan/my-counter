@@ -19,7 +19,8 @@ function init() {
     $('.deleteRecord').on('click', deleteRecord);
     $('#showPrayers').on('click', showPrayers);
     $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
-    pulseAll();
+    // pulseAll();
+    animateStart();
 }
 
 function initValues(){
@@ -232,6 +233,32 @@ function toggleAddRecord(){
     $panel.find('#showAddRecord').toggleClass('d-none');
     $panel.find('#hideAddRecord').toggleClass('d-none');
     pulse($('#showAddRecord, #hideAddRecord'), 2);
+}
+
+function animateStart(){
+    setTimeout(function(){
+        $('#showPanel').css('top', '0');
+        setTimeout(function(){
+            $('#counter').css('top', '3rem');
+            setTimeout(function(){
+                $('#reset').css('top', '0');
+                //-----------------
+                setTimeout(function(){
+                    $('#progress').css('left', '1rem');
+                    setTimeout(function(){
+                        $('#recordTitle').css('right', '0');
+                        setTimeout(function(){
+                            $('#total').css('right', '0');
+                            //-----------------
+                            setTimeout(function(){
+                                $('footer').css('bottom', '0');
+                            }, 1000);
+                        }, 100);
+                    }, 100);
+                }, 100);
+            }, 100);
+        }, 100);
+    }, 200);
 }
 
 window.onload = init();
