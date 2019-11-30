@@ -13,8 +13,8 @@ function init() {
     $('#showPanel').on('click', onShowPanel);
     $('#closePanel').on('click', onClosePanel);
     $('#add-record-btn').on('click', createRecord);
-    $('.toggleDropdown').on('click', toggleDropdown);
-    $('.activate').on('click', toggleActivate);
+    $('button.details').on('click', toggleDropdown);
+    $('.record-body').on('click', toggleActivate);
     $('.changeTitle').on('click', changeTitle);
     $('.deleteRecord').on('click', deleteRecord);
     $('#showPrayers').on('click', showPrayers);
@@ -171,6 +171,7 @@ function toggleActivate(){
     $this.closest('.record').addClass('color-primary active');
     var index = $this.closest('.record').attr('data-index');
     activateRecord(index);
+    pulse($this.closest('.record'));
 }
 
 function changeTitle(){
