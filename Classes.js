@@ -1,4 +1,4 @@
-class Record {
+class Record{
     constructor(title, counter, total, isActive){
         this.title = title || "Untitled";
         this.counter = counter || 0;
@@ -11,13 +11,37 @@ class Record {
     }
 }
 
-class Store {
-    constructor(records, selectedIndex){
-        this.records = records || [new Record()];
-        this.selectedIndex = selectedIndex || 0;
+class Log{
+    constructor(date, value){
+        this.date = date || null;
+        this.value = value || 0;
         this.print();
     }
     print(){
-        console.log("Store instantiated!");
+        console.log("Log instantiated!");
     }
 }
+
+class History{
+    constructor(recordId, daily, weekly, monthly, yearly){
+        this.recordId = recordId || 0;
+        this.daily = daily || [new Log()];
+        this.weekly = weekly || [new Log()];
+        this.monthly = monthly || [new Log()];
+        this.yearly = yearly || [new Log()];
+        this.print();
+    }
+    print(){
+        console.log("History instantiated!");
+    }
+}
+/* 
+GRAPHS:
+    - show chart for a certain record
+    - can add another record to the chart for comparison
+    https://www.chartjs.org/samples/latest/
+
+    - Each Record has History
+    - A History is an array of Logs
+    - On startup, we check if the last writing is today OR >=today-7 OR month is Date.month OR year is Date.year.
+ */
