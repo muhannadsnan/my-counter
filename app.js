@@ -36,6 +36,7 @@ function initValues(){
         STORE = STORE.store;
         saveSTORE();
     }
+    console.log("--------- store", STORE); 
     if(STORE.records === undefined) {
         STORE.records = [new Record()];
     }
