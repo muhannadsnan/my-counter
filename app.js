@@ -33,10 +33,12 @@ function initValues(){
     
     STORE = Cookies.getJSON();
     if(STORE.store !== undefined){
-        STORE.records = STORE.store.records;
-        STORE.selectedIndex = STORE.store.selectedIndex;
+        var rec = STORE.store.records;
+        var ind = STORE.store.selectedIndex;
+        STORE.records = rec;
+        STORE.selectedIndex = ind;
         saveSTORE();
-        console.log("2++++++++ store", STORE); 
+        console.log("3++++++++ store", STORE); 
     }
     if(STORE.records === undefined) {
         STORE.records = [new Record()];
