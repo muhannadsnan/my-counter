@@ -34,6 +34,7 @@ function initValues(){
     STORE = Cookies.getJSON();
     if(STORE.store !== undefined){
         STORE = STORE.store;
+        saveSTORE();
     }
     if(STORE.records === undefined) {
         STORE.records = [new Record()];
