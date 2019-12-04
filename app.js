@@ -32,6 +32,9 @@ function initValues(){
     $panel = $('#panel');
     
     STORE = Cookies.getJSON();
+    if(STORE.store !== undefined){
+        STORE = STORE.store;
+    }
     if(STORE.records === undefined) {
         STORE.records = [new Record()];
     }
@@ -163,7 +166,8 @@ function saveSelectedRecord(){
 
 function saveSTORE(){
     var options = {expires: 3650};
-    Cookies.set("store", STORE, options);
+    Cookies.set("records", STORE.records, options);
+    Cookies.set("selectedIndex", STORE.selectedIndex, options);
     console.log("store saved!", STORE);
 }
 
