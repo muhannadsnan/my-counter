@@ -4,6 +4,7 @@
         <meta http-equiv="Cache-control" content="public">  
         <title>My Counter - Muhannad Senan</title> 
         
+		<link rel="stylesheet" href="chart/Chart.min.css">
 		<link rel="stylesheet" href="styles.css">
     </head>
     
@@ -60,15 +61,20 @@
                     <button class="showChart"><i class="fas fa-chart-line"></i></button>
                     <!-- <button class="activate"><i class="fas fa-toggle-on on"></i><i class="fas fa-toggle-off off"></i></button> -->
                     <div class="chart transition trans-right trans-left">
-                        <button class="close p-2"><i class="fas fa-times-circle"></i></button>
+                        <button class="close p-2 pos-right"><i class="fas fa-times-circle"></i></button>
+                        <div class="chart-container">
+                            <canvas class="myChart" style="height:70vh;"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         
         <script src="jquery-3.4.1.min.js"></script>
-        <script src="js-cookie.min.js"></script>
-        <script src="Classes.js"></script>
-        <script src="app.js" charset="utf-8"></script>
+        <script src="js-cookie.min.js" async></script>
+        <script src="Classes.js" async></script>
+        <script src="chart/Chart.min.js" async></script>
+        <script src="chart/Chart.bundle.js" async></script>
+        <script src="app.js" charset="utf-8" async></script>
     </body>    
 </html>

@@ -19,7 +19,8 @@ function init() {
     $('.deleteRecord').on('click', deleteRecord);
     $('#showPrayers').on('click', showPrayers);
     $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
-    $('.showChart, .chart .close').on('click', toggleChart);
+    $('.showChart').on('click', showChart);
+    $('.chart .close').on('click', function(){ $(this).closest('.dropdown').find('.chart').removeClass('show'); });
     // pulseAll();
     animateStart();
 }
@@ -289,9 +290,68 @@ function uniqID(){
     return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
 
-function toggleChart(){
-    $(this).closest('.dropdown').find('.chart').toggleClass('show');
+function showChart(){
+    $element = $(this).closest('.dropdown').find('.chart');
+    $element.addClass('show');
+    drawChart($element.find('canvas'));
 }
 
+function drawChart(element){
+    var labels = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'];
+    var data = [1000, 3000, 500, 765, 1200, 3500];
+    var myChart = new Chart(element, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '# of Votes',
+                data: [1000, 3000, 500, 765, 1200, 3500],
+                backgroundColor: '#919877',
+                borderColor: '#c6ff00',
+                lineTension: .2,
+                borderWidth: '10',
+                pointBorderColor: 'blue',
+                pointBackgroundColor: 'blue',
+                pointHitRadius: '50',
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        fontSize: '50'
+                    },
+                    gridLines: {
+                        display: true,
+                        color: '#777',
+                        lineWidth: '2',
+                        z: '1'
+                    },
+                }],
+                xAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        fontSize: '50'
+                    },
+                    gridLines: {
+                        display: true,
+                        color: '#777',
+                        lineWidth: '2',
+                        z: '1'
+                    },
+                }],
+
+            },
+
+            responsive: true,
+            responsiveAnimationDuration: 2000,
+            maintainAspectRatio: false
+        }
+    });
+    
+    Chart.defaults.global.defaultFontFamily = 'Lalezar';
+    Chart.defaults.global.defaultFontColor = '#c6ff00';
+}
 
 window.onload = init();
