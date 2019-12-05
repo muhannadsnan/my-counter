@@ -44,13 +44,15 @@ function initValues(){
         console.log("Old store removed........." ); 
     }
     if(STORE.records === undefined) {
-        STORE.records = [new Record()];
+        var title = prompt("Enter a title..", 'أستغفر الله');
+        STORE.records = [new Record(title)];
+        STORE.selectedIndex = 0;
     }
     if(STORE.selectedIndex === undefined) {
         STORE.selectedIndex = 0;
     }
     if(STORE.history === undefined) { // All histories of records
-        STORE.history = [new History()];
+        STORE.history = [];
         STORE.history.lastWriting = 0;
     }
     activateRecord(STORE.selectedIndex);
