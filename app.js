@@ -38,7 +38,9 @@ function initValues(){
         STORE.records = rec;
         STORE.selectedIndex = ind;
         saveSTORE();
-        console.log("3++++++++ store", STORE); 
+        console.log("++++++++ store", STORE); 
+        Cookies.remove('store');
+        console.log("store removed.........", ); 
     }
     if(STORE.records === undefined) {
         STORE.records = [new Record()];
