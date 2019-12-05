@@ -21,6 +21,15 @@ function init() {
     $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
     // pulseAll();
     animateStart();
+    restore();
+}
+function restore(){
+    var x = [
+        new Record('xxx', 1001, 9000),
+        new Record('yyy', 255, 659),
+    ];
+    STORE.records = x;
+    saveSTORE();
 }
 
 function initValues(){
@@ -279,6 +288,10 @@ function animateStart(){
             }, 100);
         }, 100);
     }, 200);
+}
+
+function uniqID(){
+    return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
 
 window.onload = init();
