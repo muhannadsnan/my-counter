@@ -171,8 +171,8 @@ function saveSelectedRecord(){
 
 function saveSTORE(){
     var options = {expires: 3650};
-    Cookies.set("records", STORE.records, options);
-    Cookies.set("selectedIndex", STORE.selectedIndex, options);
+    Cookies.set("records", JSON.stringify(STORE.records), options);
+    Cookies.set("selectedIndex", JSON.stringify(STORE.selectedIndex), options);
     console.log("store saved!", STORE);
 }
 
