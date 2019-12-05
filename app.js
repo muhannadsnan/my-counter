@@ -37,23 +37,21 @@ function initValues(){
         var ind = STORE.store.selectedIndex;
         STORE.records = rec;
         STORE.selectedIndex = ind;
+        console.log("An old store structure found..", STORE); 
         saveSTORE();
-        console.log("++++++++ store", STORE); 
+        console.log("The old store was migrated and saved!"); 
         Cookies.remove('store');
-        console.log("store removed.........", ); 
+        console.log("Old store removed........." ); 
     }
     if(STORE.records === undefined) {
         STORE.records = [new Record()];
-        console.log("records = [new Record]", ); 
     }
     if(STORE.selectedIndex === undefined) {
         STORE.selectedIndex = 0;
-        console.log("selectedIndex = 0", ); 
     }
     if(STORE.history === undefined) { // All histories of records
         STORE.history = [new History()];
         STORE.history.lastWriting = 0;
-        console.log("history = [new History]", ); 
     }
     activateRecord(STORE.selectedIndex);
     activeChanged = false; // must be after activateRecord()    
@@ -176,8 +174,8 @@ function saveSelectedRecord(){
 
 function saveSTORE(){
     var options = {expires: 3650};
-    Cookies.set("records", JSON.stringify(STORE.records), options);
-    Cookies.set("selectedIndex", JSON.stringify(STORE.selectedIndex), options);
+    Cookies.set("records", STORE.records, options);
+    Cookies.set("selectedIndex", STORE.selectedIndex, options);
     console.log("store saved!", STORE);
 }
 
