@@ -53,7 +53,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .records .record .dropdown .deleteRecord{color: #de3434 ;}
 #panel .records .record .dropdown .activate{float: right;}
 #panel .records .record .dropdown .activate .on{display: none;}
-#panel .records .record .dropdown .chart-container{position: absolute; left: 0; right: 0; bottom: 16rem; top: 9rem;}
+#panel .records .record .dropdown .chart-container{position: absolute; left: 0; right: 0; bottom: 5rem; top: 9rem;}
 #panel .records .record .dropdown .chart{position: fixed; left: -200%; right: 200%; background: #2f2f2f; border: .3rem solid #638000; top: 2rem; bottom: 2rem; z-index: 102; }
 #panel .records .record .dropdown .chart.show{left: 0; right: 0;}
 
