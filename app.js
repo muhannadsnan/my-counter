@@ -40,16 +40,6 @@ function initValues(){
         saveSTORE();
         console.log("3++++++++ store", STORE); 
     }
-    if(STORE.records === undefined) {
-        STORE.records = [new Record()];
-    }
-    if(STORE.selectedIndex === undefined) {
-        STORE.selectedIndex = 0;
-    }
-    if(STORE.history === undefined) { // All histories of records
-        STORE.history = [new History()];
-        STORE.history.lastWriting = 0;
-    }
     activateRecord(STORE.selectedIndex);
     activeChanged = false; // must be after activateRecord()    
 }
