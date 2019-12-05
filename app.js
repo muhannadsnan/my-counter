@@ -21,18 +21,6 @@ function init() {
     $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
     // pulseAll();
     animateStart();
-    restore();
-}
-function restore(){
-    var x = [
-        new Record('Untitled', 1800, 5601),
-        new Record('الحمد لله', 633, 7174, true),
-        new Record('قل هو الله أحد', 341, 3358),
-        new Record('لا إله إلا الله', 494, 6835),
-        new Record('استغفر الله', 1269, 18052),
-    ];
-    STORE.records = x;
-    saveSTORE();
 }
 
 function initValues(){
