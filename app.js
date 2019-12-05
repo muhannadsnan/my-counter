@@ -19,6 +19,7 @@ function init() {
     $('.deleteRecord').on('click', deleteRecord);
     $('#showPrayers').on('click', showPrayers);
     $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
+    $('.showChart, .chart .close').on('click', toggleChart);
     // pulseAll();
     animateStart();
 }
@@ -44,7 +45,7 @@ function initValues(){
         console.log("Old store removed........." ); 
     }
     if(STORE.records === undefined) {
-        var title = prompt("Enter a title..", 'أستغفر الله');
+        var title = prompt("No records yet. Create one !", 'أستغفر الله');
         STORE.records = [new Record(title)];
         STORE.selectedIndex = 0;
     }
@@ -52,7 +53,8 @@ function initValues(){
         STORE.selectedIndex = 0;
     }
     if(STORE.history === undefined) { // All histories of records
-        STORE.history = [];
+        STORE.history = {};
+        STORE.history.all = [];
         STORE.history.lastWriting = 0;
     }
     activateRecord(STORE.selectedIndex);
@@ -286,5 +288,10 @@ function animateStart(){
 function uniqID(){
     return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
+
+function toggleChart(){
+    $(this).closest('.dropdown').find('.chart').toggleClass('show');
+}
+
 
 window.onload = init();

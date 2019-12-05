@@ -22,7 +22,7 @@
             <p id="total" class="m-0">...</p>
         </div>
         
-        <div id="panel" class="transition trans-left">
+        <div id="panel" class="transition trans-left trans-right">
             <button id="closePanel" class="p-2"><i class="fas fa-times-circle"></i></button>
             <h1 class="panel-heading m-2">RECORDS</h1>
             <button id="showAddRecord" class="p-2"><i class="fas fa-plus-square"></i></button>
@@ -57,7 +57,11 @@
                 <div class="dropdown transition trans-height mx-2 justify-content-between">
                     <button class="deleteRecord"><i class="far fa-trash-alt"></i></button>
                     <button class="changeTitle"><i class="far fa-edit"></i></button>
+                    <button class="showChart"><i class="fas fa-chart-line"></i></button>
                     <!-- <button class="activate"><i class="fas fa-toggle-on on"></i><i class="fas fa-toggle-off off"></i></button> -->
+                    <div class="chart transition trans-right trans-left">
+                        <button class="close p-2"><i class="fas fa-times-circle"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,6 +69,6 @@
         <script src="jquery-3.4.1.min.js"></script>
         <script src="js-cookie.min.js"></script>
         <script src="Classes.js"></script>
-        <script src="app.js"></script>
+        <script src="app.js" charset="utf-8"></script>
     </body>    
 </html>

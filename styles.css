@@ -10,6 +10,7 @@ i{line-height: unset;} button span{font-size: 5rem;}
 .transition{-webkit-transition-duration: 0.3s;-moz-transition-duration: 0.3s; -o-transition-duration: 0.3s; transition-duration: 0.3s; -webkit-transition-timing-function: ease-out; -moz-transition-timing-function: ease-out; -o-transition-timing-function: ease-out; transition-timing-function: ease-out; -webkit-transition-delay: 0; -moz-transition-delay: 0; -o-transition-delay: 0; transition-delay: 0;}
 .trans-height{-webkit-transition-property: height; -moz-transition-property: height; -o-transition-property: height; transition-property: height; }
 .trans-left{-webkit-transition-property: left; -moz-transition-property: left; -o-transition-property: left; transition-property: left; }
+.trans-right{-webkit-transition-property: right; -moz-transition-property: right; -o-transition-property: right; transition-property: right; }
 /**********************************/
 
 #clicker{position: absolute; width: 100%; height: 100vh; border: 0px solid green; z-index: 100; top: 0; right: 0; cursor: copy;}
@@ -30,8 +31,8 @@ button#reset{position: absolute; top: 0; left: 0;}
 button#showPanel{position: absolute; top: 0; right: 0;}
 button#closePanel{position: absolute; top: 0; right: 0;}
 
-#panel{padding: 0; width: 100%; background: #2f2f2f; z-index: 102; position: absolute; top: 0; bottom: 0; left: -200%; font-size: 4rem; font-family: Lalezar, Audiowide, tahoma; color: #c6ff00; border:.25rem solid #c6ff00; overflow-y: scroll; overflow-x: hidden;}
-#panel.show{left: 0;}
+#panel{padding: 0; background: #2f2f2f; z-index: 102; position: absolute; top: 0; bottom: 0; left: -200%; right: 200%; font-size: 4rem; font-family: Lalezar, Audiowide, tahoma; color: #c6ff00; border:.5rem solid #c6ff00; overflow-y: scroll; overflow-x: hidden;}
+#panel.show{left: 0; right: 0;}
 #panel #showAddRecord, #panel #hideAddRecord{position: absolute; top: 0; left: 0; padding: 2rem;}
 #panel .panel-heading{text-align: center; font-size: 6rem;}
 #panel .panel-body{/*  */}
@@ -52,6 +53,8 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .records .record .dropdown .deleteRecord{color: #de3434 ;}
 #panel .records .record .dropdown .activate{float: right;}
 #panel .records .record .dropdown .activate .on{display: none;}
+#panel .records .record .dropdown .chart{position: fixed; left: -200%; right: 200%; background: #2f2f2f; border: 1rem solid #638000; top: 2rem; bottom: 2rem; z-index: 102; }
+#panel .records .record .dropdown .chart.show{left: 0; right: 0;}
 
 #panel .records .record button{color: #638000;}
 #panel .records .record.color-primary button{color: #c6ff00;}
