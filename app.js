@@ -61,8 +61,8 @@ function initValues(){
     }
     /* insure that every record has Logbook */
     $.each(STORE.records, function(i, rec){ 
-        console.log(!STORE.history.all.some(x => x.id == rec.id))
-        if(!STORE.history.all.some(x => x.id == rec.id)){ 
+        console.log(!STORE.history.all.some(x => x.recordId == rec.id))
+        if(!STORE.history.all.some(x => x.recordId == rec.id)){ 
             STORE.history.all.push(new Logbook(rec.id));
         }
     });
