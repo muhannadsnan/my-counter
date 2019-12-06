@@ -23,13 +23,12 @@ class Log{
     }
 }
 
-class History{
-    constructor(recordId, daily, weekly, monthly, yearly){
+class Logbook{
+    constructor(recordId, logs, weekly, monthly, yearly){
         this.recordId = recordId || 0;
-        this.daily = daily || [new Log()];
-        this.weekly = weekly || [new Log()];
-        this.monthly = monthly || [new Log()];
-        this.yearly = yearly || [new Log()];
+        this.logs = [];
+        if(logs !== undefined && logs !== null) 
+            this.logs.push(logs);
         this.print();
     }
     print(){

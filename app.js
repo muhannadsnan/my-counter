@@ -1,4 +1,4 @@
-var counter, total, currentCounter, $total, $progress, $counter, $panel, STORE, selectedRecord, selectedIndex, activeChanged;
+var counter, total, currentCounter, $total, $progress, $counter, $panel, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions;
 
 function init() {
     initValues();
@@ -27,6 +27,7 @@ function init() {
 
 function initValues(){
     counter = 0;
+    cookieOptions = {expires: 3650};
     $total = $("#total");
     $progress = $("#progress");
     $counter = $("#counter");
@@ -45,11 +46,6 @@ function initValues(){
         Cookies.remove('store');
         console.log("Old store removed........." ); 
     }
-    if(STORE.records === undefined) {
-        var title = prompt("No records yet. Create one !", 'أستغفر الله');
-        STORE.records = [new Record(title)];
-        STORE.selectedIndex = 0;
-    }
     if(STORE.selectedIndex === undefined) {
         STORE.selectedIndex = 0;
     }
@@ -58,8 +54,20 @@ function initValues(){
         STORE.history.all = [];
         STORE.history.lastWriting = 0;
     }
+    if(STORE.records === undefined) {
+        var title = prompt("No records yet. Create one !", 'أستغفر الله');
+        STORE.records = [new Record(title)];
+        STORE.selectedIndex = 0;
+    }
+    /* insure that every record has Logbook */
+    $.each(STORE.records, function(i, rec){ 
+        if(!STORE.history.all.some(x => x.id == rec.id)){ 
+            STORE.history.all.push(new Logbook(rec.id));
+        }
+    });
     activateRecord(STORE.selectedIndex);
     activeChanged = false; // must be after activateRecord()    
+    saveSTORE("logging");
 }
 
 function activateRecord(newIndex){
@@ -163,7 +171,7 @@ function createRecord(){
         var newRecord = new Record($input.val());
         STORE.records.push(newRecord);
         addRecordToPanel(newRecord, STORE.records.length-1);
-        saveSTORE();
+        saveSTORE("all", newRecord); // records + history but not logging
         $input.val('');
         pulse($panel.find('.record').first(), 1);
     }
@@ -177,11 +185,37 @@ function saveSelectedRecord(){
     saveSTORE();
 }
 
-function saveSTORE(){
-    var options = {expires: 3650};
-    Cookies.set("records", STORE.records, options);
-    Cookies.set("selectedIndex", STORE.selectedIndex, options);
-    console.log("store saved!", STORE);
+
+function saveSTORE(toSave, record){
+    if(toSave === undefined || toSave == "records" || toSave == "all"){
+        Cookies.set("records", STORE.records, cookieOptions);
+        Cookies.set("selectedIndex", STORE.selectedIndex, cookieOptions);
+        console.log("Records saved!");
+    }
+    if(toSave == "all"){
+        STORE.history.all.push(new Logbook(record.id, new Log(Date.now(), record.counter)));
+        Cookies.set("history", STORE.history, cookieOptions);
+        console.log("LogBook created!"); 
+    }
+    else if(toSave == "logging"){ // logging
+        var today = new Date();
+        var lastWriting = new Date(STORE.history.lastWriting);
+        if(lastWriting.getDate() != today.getDate() && lastWriting.getMonth() != today.getMonth() && lastWriting.getFullYear() != today.getFullYear()){
+            STORE.history.lastWriting = Date.now(); // timestamp
+            console.log("History is lastWritten today", lastWriting);
+            $.each(STORE.records, function(i, rec){ 
+                $.each(STORE.history.all, function(j, logBook){
+                    if(rec.id == logBook.recordId){
+                        logBook.logs.push(new Log(Date.now(), rec.counter)); // save the daily every time you save
+                        rec.counter = 0;
+                    }
+                });
+            });
+        }
+        Cookies.set("history", STORE.history, cookieOptions);
+        console.log("Logging saved!");
+    }
+    console.log("COOKIE STORE", STORE);
 }
 
 function toggleDropdown(){
