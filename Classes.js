@@ -32,7 +32,7 @@ class Logbook{
         this.print();
     }
     print(){
-        console.log("History instantiated!");
+        console.log("Logbook instantiated! "+this.recordId);
     }
 }
 

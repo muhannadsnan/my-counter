@@ -215,6 +215,10 @@ function saveSTORE(toSave, record){
                 });
             });
         }
+        console.log("|||||||||||||||||||||||||||||||", STORE.history.lastWriting); 
+        console.log("", today.getDate(), today.getMonth(), today.getFullYear()); 
+        console.log("", lastWriting.getDate(), lastWriting.getMonth(), lastWriting.getFullYear()); 
+        console.log(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear());
         Cookies.set("history", STORE.history, cookieOptions);
         console.log("Logging saved!");
     }
