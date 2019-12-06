@@ -200,6 +200,9 @@ function saveSTORE(toSave, record){
     else if(toSave == "logging"){ // logging
         var today = new Date();
         var lastWriting = new Date(STORE.history.lastWriting);
+        console.log("|||||||||||||||||||||||||||||||", STORE.history.lastWriting); 
+        console.log("", today); 
+        console.log("", lastWriting); 
         if(lastWriting.getDate() != today.getDate() && lastWriting.getMonth() != today.getMonth() && lastWriting.getFullYear() != today.getFullYear()){
             STORE.history.lastWriting = Date.now(); // timestamp
             console.log("History is lastWritten today", lastWriting);
@@ -207,7 +210,6 @@ function saveSTORE(toSave, record){
                 $.each(STORE.history.all, function(j, logBook){
                     if(rec.id == logBook.recordId){
                         logBook.logs.push(new Log(Date.now(), rec.counter)); // save the daily every time you save
-                        rec.counter = 0;
                     }
                 });
             });
