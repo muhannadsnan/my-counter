@@ -40,7 +40,7 @@ function initValues(){
         STORE.selectedIndex = STORE.store.selectedIndex;
         STORE.records = [];
         $.each(STORE.store.records, function(i, el){
-            STORE.records.push(new Record(i, el.title, el.counter, el.total, el.isActive));
+            STORE.records.push(new Record(i+1, el.title, el.counter, el.total, el.isActive));
         });
         saveSTORE();
         console.log("The old store was migrated and saved!"); 
@@ -170,7 +170,7 @@ function createRecord(){
     }
     else{
         pulse($(this), 1);
-        var newRecord = new Record($input.val());
+        var newRecord = new Record(newID(), $input.val());
         STORE.records.push(newRecord);
         addRecordToPanel(newRecord, STORE.records.length-1);
         saveSTORE("all", newRecord); // records + history but not logging
@@ -292,6 +292,7 @@ function toggleAddRecord(){
     $panel.toggleClass('showAddRecord');
     $panel.find('#showAddRecord').toggleClass('d-none');
     $panel.find('#hideAddRecord').toggleClass('d-none');
+    $panel.find('#add-record-input').focus();
     pulse($('#showAddRecord, #hideAddRecord'), 2);
 }
 
@@ -387,6 +388,12 @@ function drawChart(element){
     
     Chart.defaults.global.defaultFontFamily = 'Lalezar';
     Chart.defaults.global.defaultFontColor = '#c6ff00';
+}
+
+function newID(arr, idProp){
+    if(arr === undefined) arr = STORE.records;
+    if(idProp === undefined) idProp = 'id';
+    return arr[arr.length-1][idProp] + 1;
 }
 
 window.onload = init();
