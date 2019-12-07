@@ -36,11 +36,12 @@ function initValues(){
     
     STORE = Cookies.getJSON();
     if(STORE.store !== undefined){
-        var rec = STORE.store.records;
-        var ind = STORE.store.selectedIndex;
-        STORE.records = rec;
-        STORE.selectedIndex = ind;
         console.log("An old store structure found..", STORE); 
+        STORE.selectedIndex = STORE.store.selectedIndex;
+        STORE.records = [];
+        $.each(STORE.store.records, function(i, el){
+            STORE.records.push(new Record(i, el.title, el.counter, el.total, el.isActive));
+        });
         saveSTORE();
         console.log("The old store was migrated and saved!"); 
         Cookies.remove('store');
@@ -56,12 +57,12 @@ function initValues(){
     }
     if(STORE.records === undefined) {
         var title = prompt("No records yet. Create one !", 'أستغفر الله');
-        STORE.records = [new Record(title)];
+        STORE.records = [new Record(1, title)];
         STORE.selectedIndex = 0;
     }
     /* insure that every record has Logbook */
     $.each(STORE.records, function(i, rec){ 
-        console.log(!STORE.history.all.some(x => x.recordId == rec.id))
+        console.log("!STORE.history.all.some(x => x.recordId == rec.id)", !STORE.history.all.some(x => x.recordId == rec.id))
         if(!STORE.history.all.some(x => x.recordId == rec.id)){ 
             STORE.history.all.push(new Logbook(rec.id));
         }
