@@ -23,10 +23,6 @@ function init() {
     $('.chart .close').on('click', function(){ $(this).closest('.dropdown').find('.chart').removeClass('show'); });
     // pulseAll();
     animateStart();
-    STORE.history.all=[]
-    STORE.history.lastWriting=0
-    Cookies.set("history", STORE.history, cookieOptions)
-    console.log("history reset")
 }
 
 function initValues(){
