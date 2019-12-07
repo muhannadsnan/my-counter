@@ -23,9 +23,6 @@ function init() {
     $('.chart .close').on('click', function(){ $(this).closest('.dropdown').find('.chart').removeClass('show'); });
     // pulseAll();
     animateStart();
-    STORE.history.all=[]
-    STORE.history.lastWriting=0
-    Cookies.set("history", STORE.history, cookieOptions)
 }
 
 function initValues(){
@@ -73,6 +70,9 @@ function initValues(){
     activateRecord(STORE.selectedIndex);
     activeChanged = false; // must be after activateRecord()    
     saveSTORE("logging");
+    STORE.history.all=[]
+    STORE.history.lastWriting=0
+    Cookies.set("history", STORE.history, cookieOptions)
 }
 
 function activateRecord(newIndex){
