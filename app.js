@@ -80,6 +80,7 @@ function activateRecord(newIndex){
     STORE.records.forEach(el => el.isActive = false);
     STORE.records[selectedIndex].isActive = true;
     selectedRecord = STORE.records[selectedIndex];
+    if(selectedRecord.counterLog === undefined) selectedRecord.counterLog = 0;
     $title.text(selectedRecord.title);
     $counter.text(selectedRecord.counter);
     $total.text(selectedRecord.total);
@@ -91,6 +92,7 @@ function activateRecord(newIndex){
 function increaseCounter(){
     selectedRecord.counter++; 
     selectedRecord.total++;
+    selectedRecord.counterLog++;
     var withNumber = true;
     if(selectedRecord.counter % 10 != 0){
         withNumber = false;
@@ -208,7 +210,8 @@ function saveSTORE(toSave, record){
             $.each(STORE.records, function(i, rec){ 
                 $.each(STORE.history.all, function(j, logBook){
                     if(rec.id == logBook.recordId){
-                        logBook.logs.push(new Log(Date.now(), rec.counter)); // save the daily every time you save
+                        logBook.logs.push(new Log(Date.now(), rec.counterLog)); // save the daily every time you save
+                        rec.counterLog = 0;
                     }
                 });
             });
