@@ -70,9 +70,6 @@ function initValues(){
     activateRecord(STORE.selectedIndex);
     activeChanged = false; // must be after activateRecord()    
     saveSTORE("logging");
-    STORE.history.all=[]
-    STORE.history.lastWriting=0
-    Cookies.set("history", STORE.history, cookieOptions)
 }
 
 function activateRecord(newIndex){
