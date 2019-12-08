@@ -146,7 +146,13 @@ function showRecords(records){
     clearRecordsDom();
     $.each(records, function(i, record){
         addRecordToPanel(record, i);
+        createChartPanel(i);
     });
+}
+
+function createChartPanel(index){
+    var chartPanel = $('.templates .chart-panel').clone(true);
+    chartPanel.appendTo('body').addClass(''+index);
 }
 
 function addRecordToPanel(newRecord, index){
@@ -188,7 +194,6 @@ function saveSelectedRecord(){
     STORE.records[selectedIndex] = selectedRecord;
     saveSTORE();
 }
-
 
 function saveSTORE(toSave, record){
     if(toSave === undefined || toSave == "records" || toSave == "all"){
@@ -330,18 +335,16 @@ function uniqID(){
 }
 
 function showChart(){
-    $element = $(this).closest('.dropdown').find('.chart-panel');
-    $element.addClass('show');
-    drawChart($element.find('canvas'), $(this).closest('.record').attr('data-index'));
-    $element.find('.loading').toggleClass('d-none d-flex');
-    $element.find('.chart-container').removeClass('hide');
+    var index = $(this).closest('.record').attr('data-index');
+    var chartPanel = $('.chart-panel.'+index);
+    chartPanel.toggleClass('show');
+    drawChart(chartPanel.find('canvas'), index);
+    chartPanel.find('.loading').toggleClass('d-none d-flex');
+    chartPanel.find('.chart-container').removeClass('hide');
 }
 
 function closeChartpanel(){ 
-    $element = $(this).closest('.dropdown').find('.chart-panel');
-    $element.removeClass('show'); 
-    $element.find('.loading').toggleClass('d-none d-flex');
-    $element.find('.chart-container').removeClass('hide');
+    $(this).closest('.chart-panel').removeClass('show');
 }
 
 function drawChart(element, index){

@@ -1,4 +1,4 @@
-body{z-index: 0; cursor: pointer; position: fixed; top: 0; bottom: 0; right: 0; left: 0; background: #2f2f2f; color: #fff; font-family: Lalezar, Audiowide, tahoma; margin: 0;}
+body{z-index: 0; cursor: pointer; position: fixed; top: 0; bottom: 0; right: 0; left: 0; background: #2f2f2f; color: #fff; font-family: Lalezar, Audiowide, tahoma; margin: 0; font-size: 5rem;}
 h1, h2, h3, h4, h5, h6{margin: 3rem 0; text-align: center;}
 button{font-family: Lalezar, Audiowide, tahoma; background: transparent; cursor: pointer; border: 0; color: #c6ff00; font-size: 7rem; z-index: 101; position: relative; line-height: 2rem; vertical-align: middle; padding: 0;}
 select{font-size: 5rem; background: transparent; color: #c6ff00; text-align: center; padding: 1rem; border: 1px solid #c6ff00; border-radius: 1rem;}
@@ -64,10 +64,10 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .records .record .dropdown .deleteRecord{color: #de3434 ;}
 #panel .records .record .dropdown .activate{float: right;}
 #panel .records .record .dropdown .activate .on{display: none;}
-#panel .records .record .dropdown .chart-panel{position: fixed; left: -200%; right: 200%; background: #2f2f2f; border: .3rem solid #638000; top: 0; bottom: 0; z-index: 102; border-top-width: 2rem; border-bottom-width: 2rem;}
-#panel .records .record .dropdown .chart-panel.show{left: 0; right: 0;}
-#panel .records .record .dropdown .chart-panel .chart-container{/* position: absolute; left: 0; right: 0; bottom: 5rem; top: 9rem; */ }
-#panel .records .record .dropdown .chart-panel .loading{justify-content: center; height: 100%; align-items: center; font-size: 20rem; opacity: .1; position: absolute; top: 0; right: 0; left: 0;}
+
+.chart-panel{position: absolute; left: -200%; right: 200%; background: #2f2f2f; border: .3rem solid #638000; top: 0; bottom: 0; z-index: 102; border-top-width: 2rem; border-bottom-width: 2rem;}
+.chart-panel.show{left: 0; right: 0;}
+.chart-panel .loading{justify-content: center; height: 100%; align-items: center; font-size: 20rem; opacity: .1; position: absolute; top: 0; right: 0; left: 0;}
 
 .pulse{animation: pulse 1s;}
 .pulseLong{animation: pulse 3s;}
