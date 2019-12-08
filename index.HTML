@@ -60,11 +60,21 @@
                     <button class="changeTitle"><i class="far fa-edit"></i></button>
                     <button class="showChart"><i class="fas fa-chart-line"></i></button>
                     <!-- <button class="activate"><i class="fas fa-toggle-on on"></i><i class="fas fa-toggle-off off"></i></button> -->
-                    <div class="chart transition trans-left trans-right">
+                    <div class="chart-panel transition trans-left trans-right">
                         <button class="close p-2 pos-right"><i class="fas fa-times-circle"></i></button>
-                        <div class="chart-container">
+                        <div class="chart-container hide">
+                            <div class="d-flex p-1">
+                                <span class="px-2 py-2">Show by:</span>
+                                <select class="groupBy">
+                                    <option value="day">Day</option>
+                                    <option value="day" disabled>Week</option>
+                                    <option value="day" disabled>Month</option>
+                                    <option value="day" disabled>Year</option>
+                                </select>
+                            </div>
                             <canvas class="myChart" style="height:70vh;"></canvas>
                         </div>
+                        <div class="loading d-flex"><i class="fas fa-compact-disc fa-spin"></i></div>
                     </div>
                 </div>
             </div>

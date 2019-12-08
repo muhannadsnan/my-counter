@@ -20,7 +20,7 @@ function init() {
     $('#showPrayers').on('click', showPrayers);
     $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
     $('.showChart').on('click', showChart);
-    $('.chart .close').on('click', function(){ $(this).closest('.dropdown').find('.chart').removeClass('show'); });
+    $('.chart-panel .close').on('click', closeChartpanel);
     // pulseAll();
     animateStart();
 }
@@ -330,21 +330,36 @@ function uniqID(){
 }
 
 function showChart(){
-    $element = $(this).closest('.dropdown').find('.chart');
+    $element = $(this).closest('.dropdown').find('.chart-panel');
     $element.addClass('show');
-    drawChart($element.find('canvas'));
+    drawChart($element.find('canvas'), $(this).closest('.record').attr('data-index'));
+    $element.find('.loading').toggleClass('d-none d-flex');
+    $element.find('.chart-container').removeClass('hide');
 }
 
-function drawChart(element){
-    var labels = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'];
-    var data = [1000, 3000, 500, 765, 1200, 3500];
+function closeChartpanel(){ 
+    $element = $(this).closest('.dropdown').find('.chart-panel');
+    $element.removeClass('show'); 
+    $element.find('.loading').toggleClass('d-none d-flex');
+    $element.find('.chart-container').removeClass('hide');
+}
+
+function drawChart(element, index){
+    var labels = [], data = [];
+    console.log("drawing chart: ");
+    STORE.history.all[index].logs.forEach((el, i) => { console.log(i, el);
+        labels.push(new Date(el.date).getDate()+'/'+(new Date(el.date).getMonth()+1));
+        data.push(el.value);
+    }); console.log("labels", labels, "data", data);
+    // var labels = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
+    // var data = [1000, 3000, 500, 765, 1200, 3500];
     var myChart = new Chart(element, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
                 label: '# of Votes',
-                data: [1000, 3000, 500, 765, 1200, 3500],
+                data: data,
                 backgroundColor: '#919877',
                 borderColor: '#c6ff00',
                 lineTension: .2,
@@ -380,15 +395,12 @@ function drawChart(element){
                         z: '1'
                     },
                 }],
-
             },
-
-            responsive: true,
-            responsiveAnimationDuration: 2000,
+            // responsive: true,
+            // responsiveAnimationDuration: 2000,
             maintainAspectRatio: false
         }
     });
-    
     Chart.defaults.global.defaultFontFamily = 'Lalezar';
     Chart.defaults.global.defaultFontColor = '#c6ff00';
 }
