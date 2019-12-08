@@ -351,12 +351,10 @@ function closeChartpanel(){
 function drawChart(element, index){
     var labels = [], data = [];
     console.log("drawing chart: ");
-    STORE.history.all[index].logs.forEach((el, i) => { console.log(i, el);
+    STORE.history.all[index].logs.forEach((el, i) => { //console.log(i, el);
         labels.push(new Date(el.date).getDate()+'/'+(new Date(el.date).getMonth()+1));
         data.push(el.value);
     }); console.log("labels", labels, "data", data);
-    // var labels = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
-    // var data = [1000, 3000, 500, 765, 1200, 3500];
     var myChart = new Chart(element, {
         type: 'line',
         data: {
