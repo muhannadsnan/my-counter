@@ -184,6 +184,7 @@ function createRecord(){
         saveSTORE("all", newRecord); // records + history but not logging
         $input.val('');
         pulse($panel.find('.record').first(), 1);
+        createChartPanel(STORE.records.length-1);
     }
     pulse($input);
     pulse($(this), 1);
@@ -339,7 +340,7 @@ function showChart(){
     var chartPanel = $('.chart-panel.'+index);
     chartPanel.toggleClass('show');
     drawChart(chartPanel.find('canvas'), index);
-    chartPanel.find('.loading').toggleClass('d-none d-flex');
+    chartPanel.find('.loading').removeClass('d-flex').addClass('d-none');
     chartPanel.find('.chart-container').removeClass('hide');
 }
 
