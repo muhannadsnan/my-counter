@@ -343,7 +343,7 @@ function showChart(){
     chartPanel.toggleClass('show');
     drawChart(chartPanel.find('canvas'), index);
     chartPanel.find('.loading').removeClass('d-flex').addClass('d-none');
-    chartPanel.find('.chart-container').removeClass('hide');
+    chartPanel.find('.container').removeClass('hide');
 }
 
 function closeChartpanel(){
