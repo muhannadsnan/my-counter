@@ -50,7 +50,7 @@ function initValues(){
     if(STORE.selectedIndex === undefined) {
         STORE.selectedIndex = 0;
     }
-    if(STORE.history === undefined) { // All histories of records
+    if(STORE.history === undefined) {// All histories of records
         STORE.history = {};
         STORE.history.all = [];
         STORE.history.lastWriting = 0;
@@ -61,9 +61,9 @@ function initValues(){
         STORE.selectedIndex = 0;
     }
     /* insure that every record has Logbook */
-    $.each(STORE.records, function(i, rec){ 
+    $.each(STORE.records, function(i, rec){
         console.log("!STORE.history.all.some(x => x.recordId == rec.id)", !STORE.history.all.some(x => x.recordId == rec.id))
-        if(!STORE.history.all.some(x => x.recordId == rec.id)){ 
+        if(!STORE.history.all.some(x => x.recordId == rec.id)){
             STORE.history.all.push(new Logbook(rec.id));
         }
     });
@@ -108,7 +108,7 @@ function increaseCounter(){
     saveSelectedRecord();
 }
 
-function setProgress(number, withNumber){ 
+function setProgress(number, withNumber){
     if(withNumber === undefined) withNumber = true;
     if(withNumber){
         $counter.text(number); 
@@ -117,7 +117,7 @@ function setProgress(number, withNumber){
     pulse($progress);
 }
 
-function reset(){ 
+function reset(){
     selectedRecord.counter = 0; 
     setProgress(0);
     saveSelectedRecord();
@@ -142,11 +142,13 @@ function onClosePanel(){
     togglePannel();
 }
 
-function showRecords(records){ 
+function showRecords(records){
     clearRecordsDom();
     $.each(records, function(i, record){
         addRecordToPanel(record, i);
-        createChartPanel(i);
+        if($('.chart-panel.'+i).length == 0){
+            createChartPanel(i);
+        }
     });
 }
 
@@ -207,13 +209,13 @@ function saveSTORE(toSave, record){
         Cookies.set("history", STORE.history, cookieOptions);
         console.log("LogBook created!"); 
     }
-    else if(toSave == "logging"){ // logging
+    else if(toSave == "logging"){// logging
         var today = new Date();
         var lastWriting = new Date(STORE.history.lastWriting);
         if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
             STORE.history.lastWriting = Date.now(); // timestamp
             console.log("History is lastWritten today", lastWriting);
-            $.each(STORE.records, function(i, rec){ 
+            $.each(STORE.records, function(i, rec){
                 $.each(STORE.history.all, function(j, logBook){
                     if(rec.id == logBook.recordId){
                         logBook.logs.push(new Log(Date.now(), rec.counterLog)); // save the daily every time you save
@@ -267,18 +269,18 @@ function deleteRecord(){
     }
 }
 
-function setRecordTitle(index, newTitle){ // DOM only
+function setRecordTitle(index, newTitle){// DOM only
     $('[data-index='+index+']').find('.title').text(newTitle);
     if(index == selectedIndex){
         $('#recordTitle').text(newTitle);
     }
 }
 
-function removeRecord(index){ // DOM only
+function removeRecord(index){// DOM only
     $('[data-index='+index+']').remove();
 }
 
-function pulse($element, i){ 
+function pulse($element, i){
     if(i === undefined) i = 0;
     var types = ['pulse', 'pulseText', 'pulseTextLong', 'pulseLong'];
     $element.removeClass(types);
@@ -344,14 +346,14 @@ function showChart(){
     chartPanel.find('.chart-container').removeClass('hide');
 }
 
-function closeChartpanel(){ 
+function closeChartpanel(){
     $(this).closest('.chart-panel').removeClass('show');
 }
 
 function drawChart(element, index){
     var labels = [], data = [];
     console.log("drawing chart: ");
-    STORE.history.all[index].logs.forEach((el, i) => { //console.log(i, el);
+    STORE.history.all[index].logs.forEach((el, i) => {//console.log(i, el);
         labels.push(new Date(el.date).getDate()+'/'+(new Date(el.date).getMonth()+1));
         data.push(el.value);
     }); console.log("labels", labels, "data", data);
