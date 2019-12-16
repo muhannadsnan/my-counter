@@ -152,10 +152,9 @@ function showRecords(records){
     });
 }
 
-function createChartPanel(index){
+function createChartPanel(index, title){
     var chartPanel = $('.templates .chart-panel').clone(true);
-    var rec = STORE.records.find(el => el.id == index + 1);
-    chartPanel.find('.title').text(rec.title || STORE.records[index+1].id || 'Chart');
+    chartPanel.find('.title').text(title);
     chartPanel.appendTo('body').addClass(''+index);
 }
 
@@ -189,7 +188,7 @@ function createRecord(){
         saveSTORE("all", newRecord); // records + history but not logging
         $input.val('');
         pulse($panel.find('.record').first(), 1);
-        createChartPanel(STORE.records.length-1);
+        createChartPanel(STORE.records.length-1, newRecord.title);
     }
     pulse($input);
     pulse($(this), 1);
