@@ -56,9 +56,11 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 
 #panel .records .record .record-body{height: 9rem;}
 #panel .records .record .record-body i{padding: 1.7rem 0;}
-#panel .records .record .record-body .counter{position: absolute; left: 0; top: 2rem; line-height: 2.5rem; vertical-align: middle; margin: 0; font-size: 2.5rem; color: #fff;}
-#panel .records .record .record-body .total{position: absolute; left: 0; top: 5rem; line-height: 2.5rem; vertical-align: middle; margin: 0; font-size: 2.5rem; color: #fff; font-weight: bolder}
-#panel .records .record .record-body .title{width: 92%; position: absolute; top: 2.5rem; left: 10rem;}
+#panel .records .record .record-body span{position: absolute; line-height: 2.5rem; vertical-align: middle; margin: 0; font-size: 2.5rem; color: #fff; }
+#panel .records .record .record-body .counter{left: 0; top: .5rem; }
+#panel .records .record .record-body .total{left: 0; top: 5rem;  font-weight: bolder;}
+#panel .records .record .record-body .today{left: 11rem; top: .5rem;  }
+#panel .records .record .record-body .title{width: 92%; top: 3rem; left: 11rem; color: #c6ff00; line-height: 6rem; font-size: 4rem;}
 
 #panel .records .record .dropdown{height: 0px; display: flex; border: 0px solid #fff; border-top: 0; background: #3c3b3b; overflow: hidden;}
 #panel .records .record .dropdown .deleteRecord{color: #de3434 ;}

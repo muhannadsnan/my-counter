@@ -163,6 +163,7 @@ function addRecordToPanel(newRecord, index){
     tpl.removeClass('d-none').addClass('record').toggleClass('color-primary', newRecord.isActive).attr('id', '');
     tpl.find('.title').text(newRecord.title);
     tpl.find('.counter').text(newRecord.counter);
+    tpl.find('.today').text(newRecord.counterLog + ' today');
     tpl.find('.total').text(newRecord.total);
     tpl.toggleClass('active', newRecord.isActive);
     tpl.attr('data-index', index).attr('data-title', newRecord.title);
