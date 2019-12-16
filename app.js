@@ -154,6 +154,8 @@ function showRecords(records){
 
 function createChartPanel(index){
     var chartPanel = $('.templates .chart-panel').clone(true);
+    var xxxx = STORE.records.find(el => el.id == index + 1);
+    chartPanel.find('.title').text(xxxx.title);
     chartPanel.appendTo('body').addClass(''+index);
 }
 
@@ -164,7 +166,7 @@ function addRecordToPanel(newRecord, index){
     tpl.find('.title').text(newRecord.title);
     tpl.find('.counter').text(newRecord.counter);
     tpl.find('.today').text(newRecord.counterLog + ' today');
-    tpl.find('.total').text(newRecord.total);
+    tpl.find('.total').text('TOTAL ' + newRecord.total);
     tpl.toggleClass('active', newRecord.isActive);
     tpl.attr('data-index', index).attr('data-title', newRecord.title);
     tpl.prependTo( $panel.find('.records') );

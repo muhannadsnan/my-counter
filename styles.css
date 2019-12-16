@@ -1,5 +1,6 @@
 body{z-index: 0; cursor: pointer; position: fixed; top: 0; bottom: 0; right: 0; left: 0; background: #2f2f2f; color: #fff; font-family: Lalezar, Audiowide, tahoma; margin: 0; font-size: 5rem;}
 h1, h2, h3, h4, h5, h6{margin: 3rem 0; text-align: center;}
+p{margin: 0;}
 button{font-family: Lalezar, Audiowide, tahoma; background: transparent; cursor: pointer; border: 0; color: #c6ff00; font-size: 7rem; z-index: 101; position: relative; line-height: 2rem; vertical-align: middle; padding: 0;}
 select{font-size: 5rem; background: transparent; color: #c6ff00; text-align: center; padding: 1rem; border: 1px solid #c6ff00; border-radius: 1rem;}
 i{line-height: unset;} button span{font-size: 5rem;}
@@ -44,32 +45,37 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .add-record input{width: 100%; border-bottom: .25rem solid #c6ff00;}
 #panel .add-record button{margin-top: -10px;}
 #panel .records {font-size: 4rem; color: #638000;}
-#panel .records .record{position: relative; border-bottom: .25rem solid #8e8e8e; opacity: 0.6;}
+#panel .records .record{position: relative; border-bottom: .25rem solid #949393; opacity: 0.5;}
 #panel .records .record button{color: #638000;}
 #panel .records .record.color-primary button{color: #c6ff00;}
 #panel .records .record button.details{top: 0rem; font-size: 5rem;}
 #panel .records .record button.details .close{display: none;}
-#panel .records .record.showDropdown button.details .show{display: none;}
-#panel .records .record.showDropdown button.details .close{display: block;}
-#panel .records .record.showDropdown .dropdown{height: 7.3rem; padding: 2rem;}
-#panel .records .record.active {opacity: 1;}
+
+#panel .records .record.active{opacity: 1;}
 
 #panel .records .record .record-body{height: 9rem;}
 #panel .records .record .record-body i{padding: 1.7rem 0;}
 #panel .records .record .record-body span{position: absolute; line-height: 2.5rem; vertical-align: middle; margin: 0; font-size: 2.5rem; color: #fff; }
-#panel .records .record .record-body .counter{left: 0; top: .5rem; }
-#panel .records .record .record-body .total{left: 0; top: 5rem;  font-weight: bolder;}
-#panel .records .record .record-body .today{left: 11rem; top: .5rem;  }
-#panel .records .record .record-body .title{width: 92%; top: 3rem; left: 11rem; color: #c6ff00; line-height: 6rem; font-size: 4rem;}
+#panel .records .record .record-body .today{top: 1rem;  }
+#panel .records .record .record-body .counter{top: 5rem; }
+#panel .records .record .record-body .title{width: 92%; top: 3rem; left: 12rem; color: #c6ff00; line-height: 6rem; font-size: 4rem;}
 
-#panel .records .record .dropdown{height: 0px; display: flex; border: 0px solid #fff; border-top: 0; background: #3c3b3b; overflow: hidden;}
-#panel .records .record .dropdown .deleteRecord{color: #de3434 ;}
+#panel .records .record .dropdown{height: 0px; border: 0px solid #fff; border-top: 0; background: #3c3b3b; overflow: hidden; position: relative;}
+#panel .records .record .dropdown .deleteRecord{color: #de3434;}
 #panel .records .record .dropdown .activate{float: right;}
 #panel .records .record .dropdown .activate .on{display: none;}
+#panel .records .record .dropdown span{position: absolute;}
+#panel .records .record .dropdown .total{top: 1rem; font-size: 3rem; line-height: 3rem;}
+
+#panel .records .record.showDropdown button.details .show{display: none;}
+#panel .records .record.showDropdown button.details .close{display: block;}
+#panel .records .record.showDropdown .dropdown{height: 10rem; padding: 2rem;}
+#panel .records .record.showDropdown span{color: #fff;}
 
 .chart-panel{position: absolute; left: -200%; right: 200%; background: #2f2f2f; border: .3rem solid #638000; top: 0; bottom: 0; z-index: 102; border-top-width: 2rem; border-bottom-width: 2rem;}
 .chart-panel.show{left: 0; right: 0;}
 .chart-panel .loading{justify-content: center; height: 100%; align-items: center; font-size: 20rem; opacity: .1; position: absolute; top: 0; right: 0; left: 0;}
+.chart-panel .title{text-align: center;}
 
 .pulse{animation: pulse 1s;}
 .pulseLong{animation: pulse 3s;}
