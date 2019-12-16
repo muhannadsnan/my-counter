@@ -154,8 +154,8 @@ function showRecords(records){
 
 function createChartPanel(index){
     var chartPanel = $('.templates .chart-panel').clone(true);
-    var xxxx = STORE.records.find(el => el.id == index + 1);
-    chartPanel.find('.title').text(xxxx.title);
+    var rec = STORE.records.find(el => el.id == index + 1);
+    chartPanel.find('.title').text(rec.title || STORE.records[index+1] || 'Chart');
     chartPanel.appendTo('body').addClass(''+index);
 }
 
