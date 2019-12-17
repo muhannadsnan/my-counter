@@ -19,7 +19,7 @@ i{line-height: unset;} button span{font-size: 5rem;}
 #clicker{position: absolute; width: 100%; height: 100vh; border: 0px solid green; z-index: 100; top: 0; right: 0; cursor: copy;}
 #counter{position: absolute; top: 3rem; right: 8rem; left: 8rem; font-size: 9rem; color: #c6ff00; margin: 0 auto; line-height: 7rem; text-align: center;}
 .main{position: absolute; top: 2rem; bottom: 8rem; right: 1rem; left: 1rem;}
-.main .info{position: absolute; text-align: center; color: #777; bottom: 7rem; left: 14rem; right: 0rem;}
+.main .info{position: absolute; text-align: center; color: #777; bottom: 5%; left: 14rem; right: 0rem;}
 .main .info .today{color: #fff;}
 .main .info .total{}
 .main .info .label{font-size: 4rem; line-height: 4rem; height: 4rem; vertical-align: middle; width: 15rem; display: inline-block;}
