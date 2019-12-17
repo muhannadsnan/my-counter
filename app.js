@@ -1,4 +1,4 @@
-var counter, total, currentCounter, $total, $progress, $counter, $panel, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions;
+var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions;
 
 function init() {
     initValues();
@@ -31,6 +31,7 @@ function initValues(){
     $total = $("#total");
     $progress = $("#progress");
     $counter = $("#counter");
+    $today = $("#today");
     $title = $("#recordTitle");
     $panel = $('#panel');
     
@@ -83,6 +84,7 @@ function activateRecord(newIndex){
     if(selectedRecord.counterLog === undefined) selectedRecord.counterLog = 0;
     $title.text(selectedRecord.title);
     $counter.text(selectedRecord.counter);
+    $today.text(selectedRecord.counterLog);
     $total.text(selectedRecord.total);
     setProgress(selectedRecord.counter);
     saveSTORE();
@@ -93,10 +95,10 @@ function increaseCounter(){
     selectedRecord.counter++; 
     selectedRecord.total++;
     selectedRecord.counterLog++;
-    var withNumber = true;
-    if(selectedRecord.counter % 10 != 0){
-        withNumber = false;
-    }
+    var refreshCounter = selectedRecord.counter % 10 == 0;
+    var today = selectedRecord.counterLog % 10 == 0 ? selectedRecord.counterLog : undefined;
+    setProgress(selectedRecord.counter, refreshCounter, today);
+    saveSelectedRecord();
     if(selectedRecord.counter % 100 == 0){
         pulse($counter, 1);
     }
@@ -104,16 +106,18 @@ function increaseCounter(){
         $total.text(selectedRecord.total);
         pulse($total, 1);
     }
-    setProgress(selectedRecord.counter, withNumber);
-    saveSelectedRecord();
 }
 
-function setProgress(number, withNumber){
-    if(withNumber === undefined) withNumber = true;
-    if(withNumber){
-        $counter.text(number); 
+function setProgress(counter, refreshCounter, today){
+    if(refreshCounter === undefined) refreshCounter = true;
+    if(today === undefined) today = -1;
+    if(refreshCounter){
+        $counter.text(counter); 
     }
-    $progress.find('.val').attr('class', 'val c-'+(number%100));
+    if(today != -1){
+        $today.text(today); 
+    }
+    $progress.find('.val').attr('class', 'val c-'+(counter%100));
     pulse($progress);
 }
 
