@@ -92,12 +92,6 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #showPrayers img{width: 10rem; float: left;}
 #showPrayers span{line-height: 10rem; float: left; vertical-align: middle;}
 
-/* START ANIMATION EFFECT */
-button#showPanel, button#reset, #counter{top: -200%; transition: all .5s ease 0s;}
-#progress{left: -200%; transition: all .5s ease 0s;}
-#recordTitle, #total{right: -200%; transition: all .5s ease 0s;}
-footer{bottom: -100%; transition: all .5s ease 0s;}
-
 /************************ FONTS *************************/
 @font-face{font-family: 'MeriendaOne'; src: local('Merienda One'), local('MeriendaOne-Regular'), url(https://fonts.gstatic.com/s/meriendaone/v10/H4cgBXaMndbflEq6kyZ1ht6ohYaz.woff2) format('woff2'); unicode-range: U+0020-024F;}
 @font-face{font-family: 'Audiowide'; src: local('Audiowide Regular'), local('Audiowide-Regular'), url(https://fonts.gstatic.com/s/audiowide/v8/l7gdbjpo0cum0ckerWCdlg_O.woff2) format('woff2'); unicode-range: U+0020-024F;}
@@ -154,3 +148,18 @@ footer{bottom: -100%; transition: all .5s ease 0s;}
 @media screen and (orientation:landscape) {
     html{font-size: 9px;}
 }
+
+/* STARTUP ANIMATION EFFECT */
+button#showPanel, button#reset, #counter{top: -200%;}
+#progress{left: -200%;}
+#recordTitle, #total{right: -200%;}
+.info{opacity: 0;}
+footer{bottom: -100%;}
+
+.animated .info{opacity: 1; transition: all .5s ease .1s;}
+.animated button#showPanel{top: 0; transition: all .5s ease .3s;}
+.animated #counter{top: 2rem; transition: all .5s ease .4s;}
+.animated button#reset{top: 0; transition: all .5s ease .5s;}
+.animated #progress{left: 1rem; transition: all .5s ease .8s;}
+.animated #recordTitle{right: 0; transition: all .5s ease 1.3s;}
+.animated footer{bottom: 0; transition: all .5s ease 1.5s;}

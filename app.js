@@ -1,4 +1,4 @@
-var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions;
+var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $templates;
 
 function init() {
     initValues();
@@ -22,7 +22,7 @@ function init() {
     $('.showChart').on('click', showChart);
     $('.chart-panel .close').on('click', closeChartpanel);
     // pulseAll();
-    animateStart();
+    $('body').addClass('animated');
 }
 
 function initValues(){
@@ -34,6 +34,7 @@ function initValues(){
     $today = $("#today");
     $title = $("#recordTitle");
     $panel = $('#panel');
+    $templates = $('#templates');
     
     STORE = Cookies.getJSON();
     if(STORE.store !== undefined){
@@ -150,22 +151,22 @@ function showRecords(records){
     clearRecordsDom();
     $.each(records, function(i, record){
         addRecordToPanel(record, i);
-        if($('.chart-panel.'+i).length == 0){
+        if($templates.find('.chart-panel.'+i).length == 0){
             createChartPanel(i, record.title);
         }
     });
 }
 
 function createChartPanel(index, title){
-    var chartPanel = $('.templates .chart-panel').clone(true);
+    var chartPanel = $templates.find('.chart-panel').clone(true);
     chartPanel.find('.title').text(title);
     chartPanel.appendTo('body').addClass(''+index);
 }
 
 function addRecordToPanel(newRecord, index){
     console.log("record", newRecord, "index:", index); 
-    var tpl = $('#record-tpl').clone(true);
-    tpl.removeClass('d-none').addClass('record').toggleClass('color-primary', newRecord.isActive).attr('id', '');
+    var tpl = $templates.find('.record-tpl').clone(true);
+    tpl.removeClass('d-none').addClass('record').toggleClass('color-primary', newRecord.isActive);
     tpl.find('.title').text(newRecord.title);
     tpl.find('.counter').text(newRecord.counter);
     tpl.find('.today').text((newRecord.counterLog || 0) + ' today');
@@ -311,32 +312,6 @@ function toggleAddRecord(){
     $panel.find('#hideAddRecord').toggleClass('d-none');
     $panel.find('#add-record-input').focus();
     pulse($('#showAddRecord, #hideAddRecord'), 2);
-}
-
-function animateStart(){
-    setTimeout(function(){
-        $('#showPanel').css('top', '0');
-        setTimeout(function(){
-            $('#counter').css('top', '3rem');
-            setTimeout(function(){
-                $('#reset').css('top', '0');
-                //-----------------
-                setTimeout(function(){
-                    $('#progress').css('left', '1rem');
-                    setTimeout(function(){
-                        $('#recordTitle').css('right', '0');
-                        setTimeout(function(){
-                            $('#total').css('right', '0');
-                            //-----------------
-                            setTimeout(function(){
-                                $('footer').css('bottom', '0');
-                            }, 1000);
-                        }, 100);
-                    }, 100);
-                }, 100);
-            }, 100);
-        }, 100);
-    }, 200);
 }
 
 function uniqID(){
