@@ -151,7 +151,7 @@ function showRecords(records){
     $.each(records, function(i, record){
         addRecordToPanel(record, i);
         if($('.chart-panel.'+i).length == 0){
-            createChartPanel(i);
+            createChartPanel(i, record.title);
         }
     });
 }
@@ -359,10 +359,14 @@ function closeChartpanel(){
 function drawChart(element, index){
     var labels = [], data = [];
     console.log("drawing chart: ");
-    STORE.history.all[index].logs.forEach((el, i) => {//console.log(i, el);
+    var ind = 0;
+    if(STORE.history.all[index].logs.length >= 30){
+        ind = STORE.history.all[index].logs.length - 30;
+    }
+    STORE.history.all[index].logs.splice(ind).forEach((el, i) => {//console.log(i, el);
         labels.push(new Date(el.date).getDate()+'/'+(new Date(el.date).getMonth()+1));
         data.push(el.value);
-    }); console.log("labels", labels, "data", data);
+    }); //console.log("labels", labels, "data", data);
     var myChart = new Chart(element, {
         type: 'line',
         data: {
