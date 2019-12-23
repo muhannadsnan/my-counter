@@ -154,10 +154,10 @@ button#showPanel, button#reset, #counter{top: -200%;}
 .info{opacity: 0;}
 footer{bottom: -100%;}
 
-.animated .info{opacity: 1; transition: all .5s ease .1s;}
 .animated button#showPanel{top: 0; transition: all .5s ease .3s;}
 .animated #counter{top: 0; transition: all .5s ease .4s;}
 .animated button#reset{top: 0; transition: all .5s ease .5s;}
 .animated #progress{left: 1rem; transition: all .5s ease .8s;}
 .animated #recordTitle{right: 0; transition: all .5s ease 1.2s;}
+.animated .info{opacity: 1; transition: all .5s ease 1.7s;}
 .animated footer{bottom: 0; transition: all .5s ease 2s;}
