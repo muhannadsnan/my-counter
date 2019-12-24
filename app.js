@@ -81,7 +81,7 @@ function activateRecord(newIndex){
     STORE.records.forEach(el => el.isActive = false);
     STORE.records[selectedIndex].isActive = true;
     selectedRecord = STORE.records[selectedIndex];
-    if(selectedRecord.counterLog === undefined) selectedRecord.counterLog = 0;
+    if(selectedRecord.counterLog === undefined) {selectedRecord.counterLog = 0; console.log("counterLog reset");}
     $title.text(selectedRecord.title);
     $counter.text(selectedRecord.counter);
     $today.text(selectedRecord.counterLog);
