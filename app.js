@@ -72,8 +72,6 @@ function initValues(){
     activateRecord(STORE.selectedIndex);
     activeChanged = false; // must be after activateRecord()    
     saveSTORE("logging");
-    alert("counter: "+selectedRecord.counter+" - today:"+selectedRecord.counterLog)
-
 }
 
 function activateRecord(newIndex){
@@ -208,6 +206,7 @@ function saveSelectedRecord(){
 
 function saveSTORE(toSave, record){
     if(toSave === undefined || toSave == "records" || toSave == "all"){
+        alert("+counter: "+selectedRecord.counter+" - today:"+selectedRecord.counterLog)
         Cookies.set("records", STORE.records, cookieOptions);
         Cookies.set("selectedIndex", STORE.selectedIndex, cookieOptions);
         console.log("Records saved!");
