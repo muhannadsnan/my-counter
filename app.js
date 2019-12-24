@@ -224,7 +224,9 @@ function saveSTORE(toSave, record){
             $.each(STORE.records, function(i, rec){
                 $.each(STORE.history.all, function(j, logBook){
                     if(rec.id == logBook.recordId){
-                        logBook.logs.push(new Log(Date.now(), rec.counterLog)); // save the daily every time you save
+                        var yesterday = new Date();
+                        yesterday.setDate(yesterday.getDate()-1);
+                        logBook.logs.push(new Log(yesterday.getTime()/* timestamp */, rec.counterLog)); // save the daily every time you save
                         rec.counterLog = 0;
                     }
                 });
