@@ -2,8 +2,6 @@ var counter, total, currentCounter, $total, $progress, $counter, $today, $panel,
 
 function init() {
     initValues();
-    STORE.history.lastWriting = Date.now();
-    alert(new Date(STORE.history.lastWriting)+" - "+STORE.history.lastWriting)
     if( selectedRecord === undefined){
         setProgress(0);
     }else{
@@ -220,6 +218,8 @@ function saveSTORE(toSave, record){
     else if(toSave == "logging"){// logging
         var today = new Date();
         var lastWriting = new Date(STORE.history.lastWriting);
+        alert(lastWriting.getDate()+"-"+lastWriting.getMonth()+"-"+lastWriting.getFullYear())
+        
         if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
             STORE.history.lastWriting = Date.now(); // timestamp
             console.log("History is lastWritten today", lastWriting);
