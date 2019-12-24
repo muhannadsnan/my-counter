@@ -92,16 +92,16 @@ function activateRecord(newIndex){
 }
 
 function increaseCounter(){
-    console.log("1: "+selectedRecord.counterLog)
+    alert("1: "+selectedRecord.counterLog)
     selectedRecord.counter++; 
     selectedRecord.total++;
     selectedRecord.counterLog++;
-    console.log("2: "+selectedRecord.counterLog)
+    alert("2: "+selectedRecord.counterLog)
     var refreshCounter = selectedRecord.counter % 10 == 0;
     var today = selectedRecord.counterLog % 10 == 0 ? selectedRecord.counterLog : undefined;
     setProgress(selectedRecord.counter, refreshCounter, today);
     saveSelectedRecord();
-    console.log("3: "+selectedRecord.counterLog)
+    alert("3: "+selectedRecord.counterLog)
     if(selectedRecord.counter % 100 == 0){
         pulse($counter, 1);
     }
