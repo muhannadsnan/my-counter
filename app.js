@@ -81,7 +81,7 @@ function activateRecord(newIndex){
     STORE.records.forEach(el => el.isActive = false);
     STORE.records[selectedIndex].isActive = true;
     selectedRecord = STORE.records[selectedIndex];
-    if(selectedRecord.counterLog === undefined) {selectedRecord.counterLog = 0; console.log("counterLog reset");}
+    if(selectedRecord.counterLog === undefined) selectedRecord.counterLog = 0;
     $title.text(selectedRecord.title);
     $counter.text(selectedRecord.counter);
     $today.text(selectedRecord.counterLog);
@@ -92,13 +92,16 @@ function activateRecord(newIndex){
 }
 
 function increaseCounter(){
+    console.log("1: "+selectedRecord.counterLog)
     selectedRecord.counter++; 
     selectedRecord.total++;
     selectedRecord.counterLog++;
+    console.log("2: "+selectedRecord.counterLog)
     var refreshCounter = selectedRecord.counter % 10 == 0;
     var today = selectedRecord.counterLog % 10 == 0 ? selectedRecord.counterLog : undefined;
     setProgress(selectedRecord.counter, refreshCounter, today);
     saveSelectedRecord();
+    console.log("3: "+selectedRecord.counterLog)
     if(selectedRecord.counter % 100 == 0){
         pulse($counter, 1);
     }
@@ -206,7 +209,6 @@ function saveSelectedRecord(){
 
 function saveSTORE(toSave, record){
     if(toSave === undefined || toSave == "records" || toSave == "all"){
-        alert("+counter: "+selectedRecord.counter+" - today:"+selectedRecord.counterLog)
         Cookies.set("records", STORE.records, cookieOptions);
         Cookies.set("selectedIndex", STORE.selectedIndex, cookieOptions);
         console.log("Records saved!");
