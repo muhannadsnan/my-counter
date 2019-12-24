@@ -72,6 +72,8 @@ function initValues(){
     activateRecord(STORE.selectedIndex);
     activeChanged = false; // must be after activateRecord()    
     saveSTORE("logging");
+    alert("counter: "+selectedRecord.counter+" - today:"+selectedRecord.counterLog)
+
 }
 
 function activateRecord(newIndex){
@@ -106,7 +108,6 @@ function increaseCounter(){
         $total.text(selectedRecord.total);
         pulse($total, 1);
     }
-    alert("counter: "+selectedRecord.counter+" - today:"+selectedRecord.counterLog)
 }
 
 function setProgress(counter, refreshCounter, today){
