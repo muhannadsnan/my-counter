@@ -2,7 +2,7 @@ var counter, total, currentCounter, $total, $progress, $counter, $today, $panel,
 
 function init() {
     STORE.history.lastWriting = Date.now();
-    alert(new Date(STORE.history.lastWriting))
+    alert(new Date(STORE.history.lastWriting)+" - "+STORE.history.lastWriting)
     initValues();
     if( selectedRecord === undefined){
         setProgress(0);
