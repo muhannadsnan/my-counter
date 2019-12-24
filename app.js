@@ -92,16 +92,13 @@ function activateRecord(newIndex){
 }
 
 function increaseCounter(){
-    alert("1: "+selectedRecord.counterLog)
     selectedRecord.counter++; 
     selectedRecord.total++;
     selectedRecord.counterLog++;
-    alert("2: "+selectedRecord.counterLog)
     var refreshCounter = selectedRecord.counter % 10 == 0;
     var today = selectedRecord.counterLog % 10 == 0 ? selectedRecord.counterLog : undefined;
     setProgress(selectedRecord.counter, refreshCounter, today);
     saveSelectedRecord();
-    alert("3: "+selectedRecord.counterLog)
     if(selectedRecord.counter % 100 == 0){
         pulse($counter, 1);
     }
@@ -209,6 +206,7 @@ function saveSelectedRecord(){
 
 function saveSTORE(toSave, record){
     if(toSave === undefined || toSave == "records" || toSave == "all"){
+        alert("-"+STORE.records[selectedIndex].counterLog)
         Cookies.set("records", STORE.records, cookieOptions);
         Cookies.set("selectedIndex", STORE.selectedIndex, cookieOptions);
         console.log("Records saved!");
