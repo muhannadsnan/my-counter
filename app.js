@@ -53,9 +53,9 @@ function initValues(){
         STORE.selectedIndex = 0;
     }
     if(STORE.history === undefined) {// All histories of records
-        STORE.history = {};
-        STORE.history.all = [];
-        STORE.history.lastWriting = 0;
+        STORE.history = {all: [], lastWriting: 0};
+        // STORE.history.all = [];
+        // STORE.history.lastWriting = 0;
     }
     if(STORE.records === undefined) {
         var title = prompt("No records yet. Create one !", 'أستغفر الله');
@@ -64,8 +64,8 @@ function initValues(){
     }
     /* insure that every record has Logbook */
     $.each(STORE.records, function(i, rec){
-        console.log("!STORE.history.all.some(x => x.recordId == rec.id)", !STORE.history.all.some(x => x.recordId == rec.id))
         if(!STORE.history.all.some(x => x.recordId == rec.id)){
+            console.log("Generaing daily Log for record ("+rec.title+")")
             STORE.history.all.push(new Logbook(rec.id));
         }
     });
@@ -76,9 +76,8 @@ function initValues(){
 
 function activateRecord(newIndex){
     if(newIndex === undefined || newIndex >= STORE.records.length) newIndex = 0;
-    newIndex = Number(newIndex);
-    selectedIndex = newIndex;
-    STORE.selectedIndex = newIndex;
+    selectedIndex = Number(newIndex);
+    STORE.selectedIndex = selectedIndex;
     STORE.records.forEach(el => el.isActive = false);
     STORE.records[selectedIndex].isActive = true;
     selectedRecord = STORE.records[selectedIndex];
@@ -107,6 +106,7 @@ function increaseCounter(){
         $total.text(selectedRecord.total);
         pulse($total, 1);
     }
+    alert("counter: "+selectedRecord.counter+" - today:"+selectedRecord.counterLog)
 }
 
 function setProgress(counter, refreshCounter, today){
