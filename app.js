@@ -62,7 +62,6 @@ function initValues(){
         STORE.records = [new Record(1, title)];
         STORE.selectedIndex = 0;
     }
-    alert("A1. "+STORE.records[selectedIndex].counterLog)
     /* insure that every record has Logbook */
     $.each(STORE.records, function(i, rec){
         if(!STORE.history.all.some(x => x.recordId == rec.id)){
@@ -70,8 +69,8 @@ function initValues(){
             STORE.history.all.push(new Logbook(rec.id));
         }
     });
+    alert("A1. selectedIndex: "+selectedIndex+" - STORE: "+STORE.selectedIndex);
     activateRecord(STORE.selectedIndex);
-    alert("A2. "+STORE.records[selectedIndex].counterLog)
     activeChanged = false; // must be after activateRecord()    
     saveSTORE("logging");
 }
@@ -79,6 +78,7 @@ function initValues(){
 function activateRecord(newIndex){
     if(newIndex === undefined || newIndex >= STORE.records.length) newIndex = 0;
     selectedIndex = Number(newIndex);
+    alert("A2. selectedIndex: "+selectedIndex+" - STORE: "+STORE.selectedIndex);
     STORE.selectedIndex = selectedIndex;
     STORE.records.forEach(el => el.isActive = false);
     STORE.records[selectedIndex].isActive = true;
@@ -89,6 +89,7 @@ function activateRecord(newIndex){
     $today.text(selectedRecord.counterLog);
     $total.text(selectedRecord.total);
     setProgress(selectedRecord.counter);
+    alert("A3. selectedIndex: "+selectedIndex+" - STORE: "+STORE.selectedIndex);
     saveSTORE();
     activeChanged = true;
 }
