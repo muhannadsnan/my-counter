@@ -221,6 +221,7 @@ function saveSTORE(toSave, record){
         if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
             STORE.history.lastWriting = Date.now(); // timestamp
             console.log("History is lastWritten today", lastWriting);
+            alert("History is lastWritten today", lastWriting);
             $.each(STORE.records, function(i, rec){
                 $.each(STORE.history.all, function(j, logBook){
                     if(rec.id == logBook.recordId){
