@@ -69,7 +69,6 @@ function initValues(){
             STORE.history.all.push(new Logbook(rec.id));
         }
     });
-    alert("A1. selectedIndex: "+selectedIndex+" - STORE: "+STORE.selectedIndex);
     activateRecord(STORE.selectedIndex);
     activeChanged = false; // must be after activateRecord()    
     saveSTORE("logging");
@@ -78,7 +77,6 @@ function initValues(){
 function activateRecord(newIndex){
     if(newIndex === undefined || newIndex >= STORE.records.length) newIndex = 0;
     selectedIndex = Number(newIndex);
-    alert("A2. selectedIndex: "+selectedIndex+" - STORE: "+STORE.selectedIndex);
     STORE.selectedIndex = selectedIndex;
     STORE.records.forEach(el => el.isActive = false);
     STORE.records[selectedIndex].isActive = true;
@@ -89,7 +87,6 @@ function activateRecord(newIndex){
     $today.text(selectedRecord.counterLog);
     $total.text(selectedRecord.total);
     setProgress(selectedRecord.counter);
-    alert("A3. selectedIndex: "+selectedIndex+" - STORE: "+STORE.selectedIndex);
     saveSTORE();
     activeChanged = true;
 }
@@ -209,7 +206,6 @@ function saveSelectedRecord(){
 
 function saveSTORE(toSave, record){
     if(toSave === undefined || toSave == "records" || toSave == "all"){
-        alert("B. "+STORE.records[selectedIndex].counterLog)
         Cookies.set("records", STORE.records, cookieOptions);
         Cookies.set("selectedIndex", STORE.selectedIndex, cookieOptions);
         console.log("Records saved!");
@@ -230,7 +226,7 @@ function saveSTORE(toSave, record){
                     if(rec.id == logBook.recordId){
                         logBook.logs.push(new Log(Date.now(), rec.counterLog)); // save the daily every time you save
                         rec.counterLog = 0;
-                        console.log("rec.counterLog = 0;")
+                        alert("rec.counterLog = 0;")
                     }
                 });
             });
