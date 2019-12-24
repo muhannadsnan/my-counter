@@ -62,6 +62,7 @@ function initValues(){
         STORE.records = [new Record(1, title)];
         STORE.selectedIndex = 0;
     }
+    alert("A1. "+STORE.records[selectedIndex].counterLog)
     /* insure that every record has Logbook */
     $.each(STORE.records, function(i, rec){
         if(!STORE.history.all.some(x => x.recordId == rec.id)){
@@ -70,6 +71,7 @@ function initValues(){
         }
     });
     activateRecord(STORE.selectedIndex);
+    alert("A2. "+STORE.records[selectedIndex].counterLog)
     activeChanged = false; // must be after activateRecord()    
     saveSTORE("logging");
 }
@@ -206,7 +208,7 @@ function saveSelectedRecord(){
 
 function saveSTORE(toSave, record){
     if(toSave === undefined || toSave == "records" || toSave == "all"){
-        alert("-"+STORE.records[selectedIndex].counterLog)
+        alert("B. "+STORE.records[selectedIndex].counterLog)
         Cookies.set("records", STORE.records, cookieOptions);
         Cookies.set("selectedIndex", STORE.selectedIndex, cookieOptions);
         console.log("Records saved!");
