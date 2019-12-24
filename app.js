@@ -216,10 +216,11 @@ function saveSTORE(toSave, record){
         console.log("LogBook created!"); 
     }
     else if(toSave == "logging"){// logging
+        STORE.history.lastWriting = Date.now();
         var today = new Date();
         var lastWriting = new Date(STORE.history.lastWriting);
         alert(lastWriting.getDate()+"-"+lastWriting.getMonth()+"-"+lastWriting.getFullYear())
-        
+
         if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
             STORE.history.lastWriting = Date.now(); // timestamp
             console.log("History is lastWritten today", lastWriting);
