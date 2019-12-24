@@ -1,9 +1,9 @@
 var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $templates;
 
 function init() {
+    initValues();
     STORE.history.lastWriting = Date.now();
     alert(new Date(STORE.history.lastWriting)+" - "+STORE.history.lastWriting)
-    initValues();
     if( selectedRecord === undefined){
         setProgress(0);
     }else{
