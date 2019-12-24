@@ -1,6 +1,8 @@
 var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $templates;
 
 function init() {
+    STORE.history.lastWriting = Date.now();
+    alert(new Date(STORE.history.lastWriting))
     initValues();
     if( selectedRecord === undefined){
         setProgress(0);
@@ -227,7 +229,6 @@ function saveSTORE(toSave, record){
                     if(rec.id == logBook.recordId){
                         logBook.logs.push(new Log(Date.now(), rec.counterLog)); // save the daily every time you save
                         rec.counterLog = 0;
-                        alert("rec.counterLog = 0;")
                     }
                 });
             });
