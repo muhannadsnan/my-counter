@@ -232,9 +232,9 @@ function saveSTORE(toSave, record){
                     }
                 });
             });
+            Cookies.set("history", STORE.history, cookieOptions);
+            console.log("Logging saved!");
         }
-        Cookies.set("history", STORE.history, cookieOptions);
-        console.log("Logging saved!");
     }
     console.log("COOKIE STORE", STORE);
 }
