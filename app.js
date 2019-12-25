@@ -220,7 +220,7 @@ function saveSTORE(toSave, record){
         var today = new Date();
         var lastWriting = new Date(STORE.history.lastWriting);
         if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
-            STORE.history.lastWriting = today.getTime(); // timestamp
+            STORE.history.lastWriting = today; // timestamp
             // $total.text(lastWriting.getDate()+"<br>"+today.getDate());
             console.log("History is lastWritten today", lastWriting);
             $.each(STORE.records, function(i, rec){
@@ -403,7 +403,4 @@ function newID(arr, idProp){
     return arr[arr.length-1][idProp] + 1;
 }
 
-function parser(data){
-    return JSON.parse(decodeURIComponent(data.toString()))
-}
 window.onload = init();
