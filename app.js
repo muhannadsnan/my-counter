@@ -2,11 +2,11 @@ var counter, total, currentCounter, $total, $progress, $counter, $today, $panel,
 
 function init() {
     initValues();
-    alert(selectedRecord.counterLog);
+    alert(STORE.history.lastWriting);
     if( selectedRecord === undefined){
         setProgress(0);
     }else{
-        setProgress(STORE.history.lastWriting);
+        setProgress(selectedRecord.counter);
     }
     $('body').on('click', function(e) {e.stopPropagation();});
     $('#clicker').on('click', increaseCounter);
