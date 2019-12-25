@@ -404,6 +404,6 @@ function newID(arr, idProp){
 }
 
 function parser(data){
-    JSON.parse(decodeURIComponent(data.toString()))
+    return JSON.parse(decodeURIComponent(data.toString()))
 }
 window.onload = init();
