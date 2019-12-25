@@ -2,7 +2,6 @@ var counter, total, currentCounter, $total, $progress, $counter, $today, $panel,
 
 function init() {
     initValues();
-    alert(STORE.history.lastWriting);
     if( selectedRecord === undefined){
         setProgress(0);
     }else{
@@ -38,6 +37,8 @@ function initValues(){
     $templates = $('#templates');
     
     STORE = Cookies.getJSON();
+    alert(STORE.history.lastWriting);
+
     if(STORE.store !== undefined){
         console.log("An old store structure found..", STORE); 
         STORE.selectedIndex = STORE.store.selectedIndex;
