@@ -6,7 +6,7 @@ function init() {
     if( selectedRecord === undefined){
         setProgress(0);
     }else{
-        setProgress(selectedRecord.counter);
+        setProgress(STORE.history.lastWriting);
     }
     $('body').on('click', function(e) {e.stopPropagation();});
     $('#clicker').on('click', increaseCounter);
