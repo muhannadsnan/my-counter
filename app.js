@@ -2,6 +2,7 @@ var counter, total, currentCounter, $total, $progress, $counter, $today, $panel,
 
 function init() {
     initValues();
+    alert(selectedRecord.counterLog);
     if( selectedRecord === undefined){
         setProgress(0);
     }else{
