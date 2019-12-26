@@ -217,7 +217,7 @@ function saveSTORE(toSave, record){
     else if(toSave == "logging"){// logging
         var today = new Date();
         var lastWriting = new Date(Date.parse(STORE.history.lastWriting));
-        Cookies.remove("history");
+        Cookies.remove("history", { path: '' });
         console.log(lastWriting)
         alert(lastWriting)
         if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
