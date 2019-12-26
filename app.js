@@ -38,7 +38,8 @@ function initValues(){
     
     STORE = Cookies.getJSON();
     Cookies.remove('history', { path: '' }) // removed!
-    alert(JSON.parse(STORE))
+    alert(JSON.stringify(STORE))
+
 
     if(STORE.store !== undefined){
         console.log("An old store structure found..", STORE); 
