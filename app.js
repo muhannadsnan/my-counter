@@ -221,7 +221,7 @@ function saveSTORE(toSave, record){
         var lastWriting = new Date(Date.parse(STORE.history.lastWriting));
         console.log(lastWriting)
         if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
-            STORE.history.lastWriting = today.toString(); // timestamp
+            STORE.history.lastWriting = today.toLocaleString(); // timestamp
             // $total.text(lastWriting.getDate()+"<br>"+today.getDate());
             console.log("History is lastWritten today", lastWriting);
             $.each(STORE.records, function(i, rec){
@@ -229,7 +229,7 @@ function saveSTORE(toSave, record){
                     if(rec.id == logBook.recordId){
                         var yesterday = new Date();
                         yesterday.setDate(yesterday.getDate()-1);
-                        logBook.logs.push(new Log(yesterday.getTime()/* timestamp */, rec.counterLog)); // save the daily every time you save
+                        logBook.logs.push(new Log(yesterday.toLocaleString()/* timestamp */, rec.counterLog)); // save the daily every time you save
                         rec.counterLog = 0;
                     }
                 });
@@ -343,7 +343,8 @@ function drawChart(element, index){
         ind = STORE.history.all[index].logs.length - 30;
     }
     STORE.history.all[index].logs.splice(ind).forEach((el, i) => {//console.log(i, el);
-        labels.push(new Date(el.date).getDate()+'/'+(new Date(el.date).getMonth()+1));
+        var d = new Date(Date.parse(el.date));
+        labels.push(d.getDate()+'/'+(d.getMonth()+1));
         data.push(el.value);
     }); //console.log("labels", labels, "data", data);
     var myChart = new Chart(element, {
