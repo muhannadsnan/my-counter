@@ -38,6 +38,14 @@ function initValues(){
     
     STORE = Cookies.getJSON();
 
+    /* CONVERT TIME STAMPS TO LOCALESTRING DATES */
+    $.each(STORE.history.all, function(i, rec){
+        $.each(rec.logs, function(j, log){
+           log.date = new Date(log.date).toLocaleString();
+        });
+     });
+     
+
     if(STORE.store !== undefined){
         console.log("An old store structure found..", STORE); 
         STORE.selectedIndex = STORE.store.selectedIndex;
