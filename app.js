@@ -218,6 +218,7 @@ function saveSTORE(toSave, record){
         var today = new Date();
         var lastWriting = new Date(Date.parse(STORE.history.lastWriting));
         console.log(lastWriting)
+        alert(lastWriting)
         if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
             STORE.history.lastWriting = today.toLocaleString(); // timestamp
             console.log("History is lastWritten today", lastWriting);
