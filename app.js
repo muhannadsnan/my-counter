@@ -38,15 +38,6 @@ function initValues(){
     
     STORE = Cookies.getJSON();
 
-    /* CONVERT TIME STAMPS TO LOCALESTRING DATES */
-    $.each(STORE.history.all, function(i, rec){
-        $.each(rec.logs, function(j, log){
-           log.date = new Date(log.date).toLocaleString();
-        });
-     });
-     Cookies.set("history", STORE.history)
-     
-
     if(STORE.store !== undefined){
         console.log("An old store structure found..", STORE); 
         STORE.selectedIndex = STORE.store.selectedIndex;
@@ -64,8 +55,6 @@ function initValues(){
     }
     if(STORE.history === undefined) {// All histories of records
         STORE.history = {all: [], lastWriting: 0};
-        // STORE.history.all = [];
-        // STORE.history.lastWriting = 0;
     }
     if(STORE.records === undefined) {
         var title = prompt("No records yet. Create one !", 'أستغفر الله');
@@ -231,7 +220,6 @@ function saveSTORE(toSave, record){
         console.log(lastWriting)
         if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
             STORE.history.lastWriting = today.toLocaleString(); // timestamp
-            // $total.text(lastWriting.getDate()+"<br>"+today.getDate());
             console.log("History is lastWritten today", lastWriting);
             $.each(STORE.records, function(i, rec){
                 $.each(STORE.history.all, function(j, logBook){
