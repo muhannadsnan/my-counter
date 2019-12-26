@@ -37,7 +37,7 @@ function initValues(){
     $templates = $('#templates');
     
     STORE = Cookies.getJSON();
-    Cookies.remove('history', { path: '' }) // removed!
+    // Cookies.remove('history', { path: '' }) // removed!
     alert(JSON.stringify(STORE))
 
 
