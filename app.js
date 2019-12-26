@@ -209,7 +209,7 @@ function saveSTORE(toSave, record){
         Cookies.set("selectedIndex", STORE.selectedIndex, cookieOptions);
         console.log("Records saved!");
     }
-    if(toSave == "all"){
+    if(toSave == "history" || toSave == "all"){
         STORE.history.all.push(new Logbook(record.id, new Log(Date.now(), record.counter)));
         Cookies.set("history", STORE.history, cookieOptions);
         console.log("LogBook created!"); 
@@ -217,8 +217,8 @@ function saveSTORE(toSave, record){
     else if(toSave == "logging"){// logging
         var today = new Date();
         var lastWriting = new Date(Date.parse(STORE.history.lastWriting));
-        Cookies.remove("history", { path: '' });
-        console.log(lastWriting)
+        // Cookies.remove("history", { path: '' });
+        // console.log(lastWriting)
         alert(lastWriting)
         if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
             STORE.history.lastWriting = today.toLocaleString(); // timestamp
