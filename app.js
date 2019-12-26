@@ -38,8 +38,7 @@ function initValues(){
     
     STORE = Cookies.getJSON();
     // Cookies.remove('history', { path: '' }) // removed!
-    alert(JSON.stringify(STORE))
-
+    // alert(JSON.stringify(STORE))
 
     if(STORE.store !== undefined){
         console.log("An old store structure found..", STORE); 
@@ -220,9 +219,6 @@ function saveSTORE(toSave, record){
     else if(toSave == "logging"){// logging
         var today = new Date();
         var lastWriting = new Date(Date.parse(STORE.history.lastWriting));
-        // Cookies.remove("history", { path: '' });
-        // console.log(lastWriting)
-        // alert(lastWriting)
         if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
             STORE.history.lastWriting = today.toLocaleString(); // timestamp
             console.log("History is lastWritten today", lastWriting);
