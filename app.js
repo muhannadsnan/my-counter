@@ -217,7 +217,7 @@ function saveSTORE(toSave, record){
     else if(toSave == "logging"){// logging
         var today = new Date();
         var lastWriting = new Date(Date.parse(STORE.history.lastWriting));
-        STORE.history = "";
+        STORE.history = undefined;
         Cookies.set("history", STORE.history);
         console.log(lastWriting)
         alert(lastWriting)
