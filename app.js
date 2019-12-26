@@ -103,6 +103,9 @@ function increaseCounter(){
     if(selectedRecord.counter % 100 == 0){
         pulse($counter, 1);
     }
+    if(selectedRecord.counterLog % 10 == 0){
+        pulse($today, 1);
+    }
     if(selectedRecord.total % 100 == 0){
         $total.text(selectedRecord.total);
         pulse($total, 1);
