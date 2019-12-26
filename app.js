@@ -37,9 +37,9 @@ function initValues(){
     $templates = $('#templates');
     
     STORE = Cookies.getJSON();
-    alert(JSON.stringify(STORE))
-    alert(JSON.stringify(STORE.records))
-    alert(JSON.stringify(STORE.history))
+    Cookies.remove('history', { path: '' }) // removed!
+    alert(JSON.parse(STORE))
+
     if(STORE.store !== undefined){
         console.log("An old store structure found..", STORE); 
         STORE.selectedIndex = STORE.store.selectedIndex;
