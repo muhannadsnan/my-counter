@@ -44,6 +44,7 @@ function initValues(){
            log.date = new Date(log.date).toLocaleString();
         });
      });
+     Cookies.set("history", STORE.history)
      
 
     if(STORE.store !== undefined){
