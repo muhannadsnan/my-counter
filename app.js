@@ -223,14 +223,14 @@ function saveSTORE(toSave, record){
         var today = new Date();
         var lastWriting = new Date(Date.parse(STORE.history.lastWriting));
         if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
-            STORE.history.lastWriting = today.toLocaleString(); // timestamp
+            STORE.history.lastWriting = today.toLocaleString("en"); // timestamp
             console.log("History is lastWritten today", lastWriting);
             $.each(STORE.records, function(i, rec){
                 $.each(STORE.history.all, function(j, logBook){
                     if(rec.id == logBook.recordId){
                         var yesterday = new Date();
                         yesterday.setDate(yesterday.getDate()-1);
-                        logBook.logs.push(new Log(yesterday.toLocaleString()/* timestamp */, rec.counterLog)); // save the daily every time you save
+                        logBook.logs.push(new Log(yesterday.toLocaleString("en")/* timestamp */, rec.counterLog)); // save the daily every time you save
                         rec.counterLog = 0;
                     }
                 });
