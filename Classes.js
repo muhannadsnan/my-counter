@@ -14,6 +14,17 @@ class Record{
     }
 }
 
+class History{
+    constructor(all, lastWriting){
+        this.all = all || [];
+        this.lastWriting = lastWriting || 0;
+        this.print();
+    }
+    print(){
+        console.log("History instantiated!");
+    }
+}
+
 class Log{
     constructor(date, value){
         this.date = date || null;

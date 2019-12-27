@@ -53,7 +53,7 @@ function initValues(){
         STORE.selectedIndex = 0;
     }
     if(STORE.history === undefined) {// All histories of records
-        STORE.history = {all: [], lastWriting: 0};
+        STORE.history = new History();
     }
     if(STORE.records === undefined) {
         var title = prompt("No records yet. Create one !", 'أستغفر الله');
@@ -69,8 +69,8 @@ function initValues(){
     });
 
         // Cookies.remove('history', { path: '' }) // removed!
-        alert(JSON.stringify(STORE.history.lastWriting))
-        
+        // alert(JSON.stringify(STORE.history.lastWriting))
+
     activateRecord(STORE.selectedIndex);
     activeChanged = false; // must be after activateRecord()    
     saveSTORE("logging");
@@ -225,7 +225,7 @@ function saveSTORE(toSave, record){
         var lastWriting = new Date(Date.parse(STORE.history.lastWriting));
         if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
             STORE.history.lastWriting = today.toLocaleString("en"); // timestamp
-            console.log("History is lastWritten today", lastWriting);
+            console.log("History is lastWritten today", today.toLocaleString("en"));
             $.each(STORE.records, function(i, rec){
                 $.each(STORE.history.all, function(j, logBook){
                     if(rec.id == logBook.recordId){
