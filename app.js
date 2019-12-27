@@ -71,9 +71,9 @@ function initValues(){
         // Cookies.remove('history', { path: '' }) // removed!
         // alert(JSON.stringify(STORE.history.lastWriting))
 
-    activateRecord(STORE.selectedIndex);
     activeChanged = false; // must be after activateRecord()    
     saveSTORE("logging");
+    activateRecord(STORE.selectedIndex);
 }
 
 function activateRecord(newIndex){
