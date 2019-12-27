@@ -37,9 +37,6 @@ function initValues(){
     $templates = $('#templates');
     
     STORE = Cookies.getJSON();
-    // Cookies.remove('history', { path: '' }) // removed!
-    alert(JSON.stringify(STORE.history.lastWriting))
-
     if(STORE.store !== undefined){
         console.log("An old store structure found..", STORE); 
         STORE.selectedIndex = STORE.store.selectedIndex;
@@ -70,6 +67,10 @@ function initValues(){
             STORE.history.all.push(new Logbook(rec.id));
         }
     });
+
+        // Cookies.remove('history', { path: '' }) // removed!
+        alert(JSON.stringify(STORE.history.lastWriting))
+        
     activateRecord(STORE.selectedIndex);
     activeChanged = false; // must be after activateRecord()    
     saveSTORE("logging");
