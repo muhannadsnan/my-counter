@@ -1,4 +1,4 @@
-var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $templates;
+var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, STORE, selectedRecord, activeChanged, cookieOptions, $templates;
 
 function init() {
     initValues();
@@ -37,21 +37,6 @@ function initValues(){
     $templates = $('#templates');
     
     STORE = Cookies.getJSON();
-    if(STORE.store !== undefined){
-        console.log("An old store structure found..", STORE); 
-        STORE.selectedIndex = STORE.store.selectedIndex;
-        STORE.records = [];
-        $.each(STORE.store.records, function(i, el){
-            STORE.records.push(new Record(i+1, el.title, el.counter, el.total, el.isActive));
-        });
-        saveSTORE();
-        console.log("The old store was migrated and saved!"); 
-        Cookies.remove('store');
-        console.log("Old store removed........." ); 
-    }
-    if(STORE.selectedIndex === undefined) {
-        STORE.selectedIndex = 0;
-    }
     if(STORE.history === undefined) {// All histories of records
         STORE.history = new History();
     }
@@ -59,32 +44,42 @@ function initValues(){
         var title = prompt("No records yet. Create one !", 'أستغفر الله');
         if(title.trim() == '')
             title = '';
-        STORE.records = [new Record(1, title)];
-        STORE.selectedIndex = 0;
+        var newRec = new Record(1, title);
+        STORE.records = [newRec];
+        STORE.selectedRecord = newRec;
+        selectedRecord = newRec;
     }
     /* insure that every record has Logbook */
     $.each(STORE.records, function(i, rec){
-        if(!STORE.history.all.some(x => x.recordId == rec.id)){
-            console.log("Generaing daily Log for record ("+rec.title+")")
+        if(!STORE.history.all.some(el => el.recordId == rec.id)){
+            console.log("Generaing daily Log for record ("+rec.title+")");
             STORE.history.all.push(new Logbook(rec.id));
         }
     });
+    Cookies.remove('selectedIndex', { path: '' });
 
         // Cookies.remove('history', { path: '' }) // removed!
         // alert(JSON.stringify(STORE.history.lastWriting))
 
+    selectedRecord = STORE.records.find(el => el.isActive);
+    if(selectedRecord == null || typeof selectedRecord === undefined) selectedRecord = STORE.records[0];
     activeChanged = false; // must be after activateRecord()    
     saveSTORE("logging");
-    activateRecord(STORE.selectedIndex);
+    activateRecord(selectedRecord);
 }
 
-function activateRecord(newIndex){
-    if(newIndex === undefined || newIndex >= STORE.records.length) newIndex = 0;
-    selectedIndex = Number(newIndex);
-    STORE.selectedIndex = selectedIndex;
-    STORE.records.forEach(el => el.isActive = false);
-    STORE.records[selectedIndex].isActive = true;
-    selectedRecord = STORE.records[selectedIndex];
+function activateRecord(record){
+    if(typeof record === undefined  || record === null){
+        alert('No record to activate!'); 
+        return;
+    }
+    selectedRecord = record;
+    STORE.records.forEach(el => {
+        el.isActive = false;
+        if(el.id == record.id){
+            el.isActive = true;
+        }
+    });
     if(selectedRecord.counterLog === undefined) selectedRecord.counterLog = 0;
     $title.text(selectedRecord.title);
     $counter.text(selectedRecord.counter);
@@ -141,7 +136,7 @@ function togglePannel(){
 function onShowPanel(){
     pulse($('#showPanel, #closePanel'), 2);
     togglePannel();
-    showRecords(STORE.records);    
+    showRecords();    
 }
 
 function onClosePanel(){
@@ -153,38 +148,33 @@ function onClosePanel(){
     togglePannel();
 }
 
-function showRecords(records){
-    clearRecordsDom();
-    $.each(records, function(i, record){
-        addRecordToPanel(record, i);
-        if($('#chart-panel-'+i).length == 0){
-            createChartPanel(i, record.title);
+function showRecords(){
+    $panel.find('.record').remove();
+    STORE.records.forEach(record => {
+        addRecordToPanel(record);
+        if($('#chart-panel-'+record.id).length == 0){
+            createChartPanel(record);
         }
     });
 }
 
-function createChartPanel(index, title){
-    var chartPanel = $templates.find('.chart-panel').clone(true);
-    chartPanel.attr('id', 'chart-panel-'+index);
-    chartPanel.find('.title').text(title);
-    chartPanel.appendTo('body').addClass(''+index);
-}
-
-function addRecordToPanel(newRecord, index){
-    console.log("record", newRecord, "index:", index); 
+function addRecordToPanel(newRecord){
+    console.log(newRecord); 
     var tpl = $templates.find('.record-tpl').clone(true);
-    tpl.removeClass('d-none record-tpl').addClass('record').toggleClass('color-primary', newRecord.isActive);
+    tpl.attr('id', 'record-'+newRecord.id).attr('data-id', newRecord.id).attr('data-title', newRecord.title);
+    tpl.removeClass('d-none record-tpl').addClass('record').toggleClass('color-primary active', newRecord.isActive);
     tpl.find('.title').text(newRecord.title);
     tpl.find('.counter').text(newRecord.counter);
     tpl.find('.today').text((newRecord.counterLog || 0) + ' today');
     tpl.find('.total').text('TOTAL ' + newRecord.total);
-    tpl.toggleClass('active', newRecord.isActive);
-    tpl.attr('data-index', index).attr('data-title', newRecord.title);
     tpl.prependTo( $panel.find('.records') );
 }
 
-function clearRecordsDom(){
-    $panel.find('.record').remove();  
+function createChartPanel(record){
+    var chartPanel = $templates.find('.chart-panel').clone(true);
+    chartPanel.attr('id', 'chart-panel-'+record.id);
+    chartPanel.find('.title').text(record.title);
+    chartPanel.appendTo('body');
 }
 
 function createRecord(){
@@ -200,7 +190,7 @@ function createRecord(){
         saveSTORE("all", newRecord); // records + history but not logging
         $input.val('');
         pulse($panel.find('.record').first(), 1);
-        createChartPanel(STORE.records.length-1, newRecord.title);
+        createChartPanel(newRecord);
     }
     pulse($input);
     pulse($(this), 1);
@@ -208,14 +198,14 @@ function createRecord(){
 }
 
 function saveSelectedRecord(){
-    STORE.records[selectedIndex] = selectedRecord;
+    var index = recIndexByID(selectedRecord.id);
+    STORE.records[index] = selectedRecord;
     saveSTORE();
 }
 
 function saveSTORE(toSave, record){
     if(toSave === undefined || toSave == "records" || toSave == "all"){
         Cookies.set("records", STORE.records, cookieOptions);
-        Cookies.set("selectedIndex", STORE.selectedIndex, cookieOptions);
         console.log("Records saved!");
     }
     if(toSave == "history" || toSave == "all"){
@@ -253,52 +243,51 @@ function toggleDropdown(){
 
 function toggleActivate(){
     $('.record').removeClass('color-primary active');
-    var $this = $(this);
-    $this.closest('.record').addClass('color-primary active');
-    var index = $this.closest('.record').attr('data-index');
-    activateRecord(index);
-    pulse($this.closest('.record'));
+    var $rec = $(this).closest('.record');
+    $rec.addClass('color-primary active');
+    var index = recIndexByID($rec.attr('data-id'));
+    activateRecord(STORE.records[index]);
+    pulse($rec);
+}
+
+function recIndexByID(id){
+    return STORE.records.findIndex(el => el.id == id);
 }
 
 function changeTitle(){
-    var index = $(this).closest('.record').attr('data-index');
-    var currentTitle = $(this).closest('.record').attr('data-title');
-    var newTitle = prompt("New title:", currentTitle);
-    if (newTitle != null) {
-        STORE.records[index].title = newTitle;
-        setRecordTitle(index, newTitle); // DOM
+    var $rec = $(this).closest('.record');
+    var newTitle = prompt("New title:", $rec.attr('data-title'));
+    while(newTitle.trim() == '' || newTitle == null){
+        alert('You cannot enter an empty title!');
+        newTitle = prompt("New title:", $rec.attr('data-title'));
+    }
+    var index = recIndexByID($rec.attr('data-id'));
+    STORE.records[index].title = newTitle;
+    setRecordTitle($rec.attr('data-id'), newTitle); // DOM
+    saveSTORE();
+}
+
+function deleteRecord(){
+    var $rec = $(this).closest('.record');
+    if($('.record').length == 1){
+        alert("Delete aborted. It is the only record you have..");
+    }
+    else if(confirm('Are you sure to delete "' + $rec.attr('data-title') + '"?')){
+        STORE.records = STORE.records.filter(el => el.id != $rec.attr('data-id'));
+        $('#record-'+$rec.attr('data-id')).remove();
+        if($rec.attr('data-id') == selectedRecord.id){
+            activateRecord(STORE.records[0]);
+            return;
+        }
         saveSTORE();
     }
 }
 
-function deleteRecord(){
-    var index = $(this).closest('.record').attr('data-index');
-    var title = $(this).closest('.record').attr('data-title');
-    if($().length > 0){
-        if(confirm('Are you sure to delete "'+title+'"?')){
-            STORE.records.splice(index, 1);
-            removeRecord(index);
-            if(index == selectedIndex){
-                activateRecord(0);
-                return;
-            }
-            saveSTORE();
-        }
-    }
-    else{
-        alert("Delete aborted. It is the only record you have..");
-    }
-}
-
-function setRecordTitle(index, newTitle){// DOM only
-    $('[data-index='+index+']').find('.title').text(newTitle);
-    if(index == selectedIndex){
+function setRecordTitle(id, newTitle){ // DOM only
+    $('#record-'+id).find('.title').text(newTitle);
+    if(id == selectedRecord.id){
         $('#recordTitle').text(newTitle);
     }
-}
-
-function removeRecord(index){// DOM only
-    $('[data-index='+index+']').remove();
 }
 
 function pulse($element, i){
@@ -333,11 +322,13 @@ function uniqID(){
     return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
 
-function showChart(){
-    var index = $(this).closest('.record').attr('data-index');
-    var chartPanel = $('.chart-panel.'+index);
+function showChart(e){
+    var id = $(this).closest('.record').attr('data-id');
+    var chartPanel = $('#chart-panel-'+id);
     chartPanel.toggleClass('show');
-    drawChart(chartPanel.find('canvas'), index);
+    chartPanel.find('.loading').addClass('d-flex').removeClass('d-none');
+    chartPanel.find('.container').addClass('hide');
+    drawChart(chartPanel.find('canvas'), id);
     chartPanel.find('.loading').removeClass('d-flex').addClass('d-none');
     chartPanel.find('.container').removeClass('hide');
 }
@@ -346,14 +337,15 @@ function closeChartpanel(){
     $(this).closest('.chart-panel').removeClass('show');
 }
 
-function drawChart(element, index){
+function drawChart(element, recID){
     var labels = [], data = [];
+    var logBook = STORE.history.all.find(el => el.recordId == recID);
     console.log("drawing chart: ");
-    var ind = 0;
-    if(STORE.history.all[index].logs.length >= 30){
-        ind = STORE.history.all[index].logs.length - 30;
+    var index = 0;
+    if(logBook.logs.length >= 30){
+        index = logBook.logs.length - 30;
     }
-    STORE.history.all[index].logs.splice(ind).forEach((el, i) => {//console.log(i, el);
+    logBook.logs.splice(index).forEach((el, i) => {//console.log(i, el);
         var d = new Date(Date.parse(el.date));
         labels.push(d.getDate()+'/'+(d.getMonth()+1));
         data.push(el.value);
