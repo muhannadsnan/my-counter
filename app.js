@@ -59,6 +59,7 @@ function initValues(){
             console.log("Generaing daily Log for record ("+rec.title+")");
             STORE.history.all.push(new Logbook(rec.id));
         }
+        delete rec.isActive;
     });
 
         // Cookies.remove('history', { path: '' }) // removed!
