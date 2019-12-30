@@ -155,7 +155,7 @@ function showRecords(records){
     clearRecordsDom();
     $.each(records, function(i, record){
         addRecordToPanel(record, i);
-        if($templates.find('.chart-panel.'+i).length == 0){
+        if($('#chart-panel-'+i).length == 0){
             createChartPanel(i, record.title);
         }
     });
@@ -163,6 +163,7 @@ function showRecords(records){
 
 function createChartPanel(index, title){
     var chartPanel = $templates.find('.chart-panel').clone(true);
+    chartPanel.attr('id', 'chart-panel-'+index);
     chartPanel.find('.title').text(title);
     chartPanel.appendTo('body').addClass(''+index);
 }
