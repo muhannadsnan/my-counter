@@ -27,7 +27,7 @@ i{line-height: unset;} button span{font-size: 5rem;}
 
 #recordTitle{position: absolute; top: 12rem; right: 0; left: 13rem; font-size: 7rem; color: #fff; font-family:  Lalezar, Audiowide, tahoma; text-align: center;}
 #progress{border: 1rem solid #777; position: absolute; top: 9rem; bottom: 0rem; left: 1rem; width: 10rem; border-radius: 2rem;}
-#progress .val{transition: height .5s; transition: all .5s ease .8s; background: #c6ff00; width: 10rem; height: 0%; bottom: 0; position: absolute; left: 0rem; border-radius: 0 0 1rem 1rem;}
+#progress .val{transition: all .5s, width .5s ease .8s; background: #c6ff00; width: 10rem; height: 0%; bottom: 0; position: absolute; left: 0rem; border-radius: 0 0 1rem 1rem;}
 #progress .val.c-100{border-radius: 1rem; height: 100%;} #progress .val.c-99{height: 99%;} #progress .val.c-98{height: 98%;} #progress .val.c-97{height: 97%;} #progress .val.c-96{height: 96%;} #progress .val.c-95{height: 95%;} #progress .val.c-94{height: 94%;} #progress .val.c-93{height: 93%;} #progress .val.c-92{height: 92%;} #progress .val.c-91{height: 91%;} #progress .val.c-90{height: 90%;} #progress .val.c-89{height: 89%;} #progress .val.c-88{height: 88%;} #progress .val.c-87{height: 87%;} #progress .val.c-86{height: 86%;} #progress .val.c-85{height: 85%;} #progress .val.c-84{height: 84%;} #progress .val.c-83{height: 83%;} #progress .val.c-82{height: 82%;} #progress .val.c-81{height: 81%;} #progress .val.c-80{height: 80%;} #progress .val.c-79{height: 79%;} #progress .val.c-78{height: 78%;} #progress .val.c-77{height: 77%;} #progress .val.c-76{height: 76%;} #progress .val.c-75{height: 75%;} #progress .val.c-74{height: 74%;} #progress .val.c-73{height: 73%;} #progress .val.c-72{height: 72%;} #progress .val.c-71{height: 71%;} #progress .val.c-70{height: 70%;} #progress .val.c-69{height: 69%;} #progress .val.c-68{height: 68%;} #progress .val.c-67{height: 67%;} #progress .val.c-66{height: 66%;} #progress .val.c-65{height: 65%;} #progress .val.c-64{height: 64%;} #progress .val.c-63{height: 63%;} #progress .val.c-62{height: 62%;} #progress .val.c-61{height: 61%;} #progress .val.c-60{height: 60%;} #progress .val.c-59{height: 59%;} #progress .val.c-58{height: 58%;} #progress .val.c-57{height: 57%;} #progress .val.c-56{height: 56%;} #progress .val.c-55{height: 55%;} #progress .val.c-54{height: 54%;} #progress .val.c-53{height: 53%;} #progress .val.c-52{height: 52%;} #progress .val.c-51{height: 51%;} #progress .val.c-50{height: 50%;} #progress .val.c-49{height: 49%;} #progress .val.c-48{height: 48%;} #progress .val.c-47{height: 47%;} #progress .val.c-46{height: 46%;} #progress .val.c-45{height: 45%;} #progress .val.c-44{height: 44%;} #progress .val.c-43{height: 43%;} #progress .val.c-42{height: 42%;} #progress .val.c-41{height: 41%;} #progress .val.c-40{height: 40%;} #progress .val.c-39{height: 39%;} #progress .val.c-38{height: 38%;} #progress .val.c-37{height: 37%;} #progress .val.c-36{height: 36%;} #progress .val.c-35{height: 35%;} #progress .val.c-34{height: 34%;} #progress .val.c-33{height: 33%;} #progress .val.c-32{height: 32%;} #progress .val.c-31{height: 31%;} #progress .val.c-30{height: 30%;} #progress .val.c-29{height: 29%;} #progress .val.c-28{height: 28%;} #progress .val.c-27{height: 27%;} #progress .val.c-26{height: 26%;} #progress .val.c-25{height: 25%;} #progress .val.c-24{height: 24%;} #progress .val.c-23{height: 23%;} #progress .val.c-22{height: 22%;} #progress .val.c-21{height: 21%;} #progress .val.c-20{height: 20%;} #progress .val.c-19{height: 19%;} #progress .val.c-18{height: 18%;} #progress .val.c-17{height: 17%;} #progress .val.c-16{height: 16%;} #progress .val.c-15{height: 15%;} #progress .val.c-14{height: 14%;} #progress .val.c-13{height: 13%;} #progress .val.c-12{height: 12%;} #progress .val.c-11{height: 11%;} #progress .val.c-10{height: 10%;} #progress .val.c-9{height: 9%;} #progress .val.c-8{height: 8%;} #progress .val.c-7{height: 7%;} #progress .val.c-6{height: 6%;} #progress .val.c-5{height: 5%;} #progress .val.c-4{height: 4%;} #progress .val.c-3{height: 3%;} #progress .val.c-2{height: 2%;} #progress .val.c-1{height: 1%;} #progress .val.c-0{height: 0%;}
 
 footer{color: #fff; font-size: 3rem; text-align: center; position: absolute; right: 0; left: 0; bottom: 0; }
@@ -50,31 +50,32 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .add-record button{margin-top: -10px;}
 #panel .records {font-size: 4rem; color: #638000;}
 #panel .records .record{position: relative; border-bottom: .25rem solid #949393; opacity: 0.5;}
-#panel .records .record button{color: #638000;}
-#panel .records .record.color-primary button{color: #c6ff00;}
-#panel .records .record button.details{top: 0rem; font-size: 5rem;}
-#panel .records .record button.details .close{display: none;}
+#panel .record button{color: #638000;}
+#panel .record.color-primary button{color: #c6ff00;}
+#panel .record button.details{top: 0rem; font-size: 5rem;}
+#panel .record button.details .close{display: none;}
 
-#panel .records .record.active{opacity: 1;}
+#panel .record.active{opacity: 1;}
 
-#panel .records .record .record-body{height: 9rem;}
-#panel .records .record .record-body i{padding: 1.7rem 0;}
-#panel .records .record .record-body span{position: absolute; line-height: 2.5rem; vertical-align: middle; margin: 0; font-size: 2.5rem; color: #fff; }
-#panel .records .record .record-body .today{top: 1rem;  }
-#panel .records .record .record-body .counter{top: 5rem; }
-#panel .records .record .record-body .title{width: 92%; top: 3rem; left: 12rem; color: #c6ff00; line-height: 6rem; font-size: 4rem;}
+#panel .record .record-body{height: 9rem;}
+#panel .record .record-body i{padding: 1.7rem 0;}
+#panel .record .record-body span{position: absolute; line-height: 2.5rem; vertical-align: middle; margin: 0; font-size: 2.5rem; color: #fff; }
+#panel .record .record-body .today{top: 1rem;  }
+#panel .record .record-body .counter{top: 5rem; }
+#panel .record .record-body .title{width: 92%; top: 3rem; left: 12rem; color: #c6ff00; line-height: 6rem; font-size: 4rem;}
 
-#panel .records .record .dropdown{height: 0px; border: 0px solid #fff; border-top: 0; background: #3c3b3b; overflow: hidden; position: relative;}
-#panel .records .record .dropdown .deleteRecord{color: #de3434;}
-#panel .records .record .dropdown .activate{float: right;}
-#panel .records .record .dropdown .activate .on{display: none;}
-#panel .records .record .dropdown span{position: absolute;}
-#panel .records .record .dropdown .total{top: 1rem; font-size: 3rem; line-height: 3rem;}
+#panel .record .dropdown{height: 0px; border: 0px solid #fff; border-top: 0; background: #3c3b3b; overflow: hidden; position: relative;}
+#panel .record .dropdown div.buttons{position: relative;}
+#panel .record .dropdown .deleteRecord{color: #de3434;}
+#panel .record .dropdown .activate{float: right;}
+#panel .record .dropdown .activate .on{display: none;}
+#panel .record .dropdown span{position: absolute;}
+#panel .record .dropdown .total{top: 1rem; font-size: 3rem; line-height: 3rem;}
 
-#panel .records .record.showDropdown button.details .show{display: none;}
-#panel .records .record.showDropdown button.details .close{display: block;}
-#panel .records .record.showDropdown .dropdown{height: 10rem; padding: 2rem;}
-#panel .records .record.showDropdown span{color: #fff;}
+#panel .record.showDropdown button.details .show{display: none;}
+#panel .record.showDropdown button.details .close{display: block;}
+#panel .record.showDropdown .dropdown{height: 10rem; padding: 2rem;}
+#panel .record.showDropdown span{color: #fff;}
 
 .chart-panel{position: absolute; left: -200%; right: 200%; background: #2f2f2f; border: .3rem solid #638000; top: 0; bottom: 0; border-top-width: 2rem; border-bottom-width: 2rem;}
 .chart-panel.show{left: 0; right: 0; z-index: 103; }

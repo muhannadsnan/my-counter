@@ -57,6 +57,8 @@ function initValues(){
     }
     if(STORE.records === undefined) {
         var title = prompt("No records yet. Create one !", 'أستغفر الله');
+        if(title.trim() == '')
+            title = '';
         STORE.records = [new Record(1, title)];
         STORE.selectedIndex = 0;
     }
@@ -104,8 +106,8 @@ function increaseCounter(){
     if(selectedRecord.counter % 100 == 0){
         pulse($counter, 1);
     }
-    if(selectedRecord.counterLog % 10 == 0){
-        pulse($today, 1);
+    if(selectedRecord.counterLog % 100 == 0){
+        pulse($today, 2);
     }
     if(selectedRecord.total % 100 == 0){
         $total.text(selectedRecord.total);
@@ -137,13 +139,13 @@ function togglePannel(){
 }
 
 function onShowPanel(){
-    pulse($(this), 2);
+    pulse($('#showPanel, #closePanel'), 2);
     togglePannel();
     showRecords(STORE.records);    
 }
 
 function onClosePanel(){
-    pulse($(this), 2);
+    pulse($('#showPanel, #closePanel'), 2);
     if(activeChanged){
         pulseAll();
         activeChanged = false;
@@ -171,7 +173,7 @@ function createChartPanel(index, title){
 function addRecordToPanel(newRecord, index){
     console.log("record", newRecord, "index:", index); 
     var tpl = $templates.find('.record-tpl').clone(true);
-    tpl.removeClass('d-none').addClass('record').toggleClass('color-primary', newRecord.isActive);
+    tpl.removeClass('d-none record-tpl').addClass('record').toggleClass('color-primary', newRecord.isActive);
     tpl.find('.title').text(newRecord.title);
     tpl.find('.counter').text(newRecord.counter);
     tpl.find('.today').text((newRecord.counterLog || 0) + ' today');
@@ -272,14 +274,19 @@ function changeTitle(){
 function deleteRecord(){
     var index = $(this).closest('.record').attr('data-index');
     var title = $(this).closest('.record').attr('data-title');
-    if(confirm('Are you sure to delete "'+title+'"?')){
-        STORE.records.splice(index, 1);
-        removeRecord(index);
-        if(index == selectedIndex){
-            activateRecord(0);
-            return;
+    if($().length > 0){
+        if(confirm('Are you sure to delete "'+title+'"?')){
+            STORE.records.splice(index, 1);
+            removeRecord(index);
+            if(index == selectedIndex){
+                activateRecord(0);
+                return;
+            }
+            saveSTORE();
         }
-        saveSTORE();
+    }
+    else{
+        alert("Delete aborted. It is the only record you have..");
     }
 }
 
@@ -305,6 +312,7 @@ function pulse($element, i){
 function pulseAll(){
     pulse($progress, 3);
     pulse($counter, 2);
+    pulse($today, 2);
     pulse($title, 2);
     pulse($total, 2);
 }
