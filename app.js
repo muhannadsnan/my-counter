@@ -1,4 +1,4 @@
-var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, STORE, selectedRecord, activeChanged, cookieOptions, $templates;
+var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $templates;
 
 function init() {
     initValues();
@@ -40,14 +40,18 @@ function initValues(){
     if(STORE.history === undefined) {// All histories of records
         STORE.history = new History();
     }
+    if(STORE.selectedIndex === undefined) {
+        STORE.selectedIndex = 0;
+    }
     if(STORE.records === undefined) {
         var title = prompt("No records yet. Create one !", 'أستغفر الله');
         if(title.trim() == '')
             title = '';
         var newRec = new Record(1, title);
         STORE.records = [newRec];
-        STORE.selectedRecord = newRec;
+        STORE.selectedIndex = 0;
         selectedRecord = newRec;
+        selectedIndex = 0;
     }
     /* insure that every record has Logbook */
     $.each(STORE.records, function(i, rec){
@@ -56,30 +60,25 @@ function initValues(){
             STORE.history.all.push(new Logbook(rec.id));
         }
     });
-    Cookies.remove('selectedIndex', { path: '' });
 
         // Cookies.remove('history', { path: '' }) // removed!
         // alert(JSON.stringify(STORE.history.lastWriting))
 
-    selectedRecord = STORE.records.find(el => el.isActive);
-    if(selectedRecord == null || typeof selectedRecord === undefined) selectedRecord = STORE.records[0];
+    selectedIndex = STORE.selectedIndex;
+    selectedRecord = STORE.records[selectedIndex];
+    if(selectedRecord == null || selectedRecord === undefined) selectedRecord = STORE.records[0];
     activeChanged = false; // must be after activateRecord()    
     saveSTORE("logging");
     activateRecord(selectedRecord);
 }
 
 function activateRecord(record){
-    if(typeof record === undefined  || record === null){
+    if(record === undefined  || record === null){
         alert('No record to activate!'); 
         return;
     }
     selectedRecord = record;
-    STORE.records.forEach(el => {
-        el.isActive = false;
-        if(el.id == record.id){
-            el.isActive = true;
-        }
-    });
+    selectedIndex = recIndexByID(record.id);
     if(selectedRecord.counterLog === undefined) selectedRecord.counterLog = 0;
     $title.text(selectedRecord.title);
     $counter.text(selectedRecord.counter);
@@ -158,15 +157,15 @@ function showRecords(){
     });
 }
 
-function addRecordToPanel(newRecord){
-    console.log(newRecord); 
+function addRecordToPanel(record){
+    console.log(record); 
     var tpl = $templates.find('.record-tpl').clone(true);
-    tpl.attr('id', 'record-'+newRecord.id).attr('data-id', newRecord.id).attr('data-title', newRecord.title);
-    tpl.removeClass('d-none record-tpl').addClass('record').toggleClass('color-primary active', newRecord.isActive);
-    tpl.find('.title').text(newRecord.title);
-    tpl.find('.counter').text(newRecord.counter);
-    tpl.find('.today').text((newRecord.counterLog || 0) + ' today');
-    tpl.find('.total').text('TOTAL ' + newRecord.total);
+    tpl.attr('id', 'record-'+record.id).attr('data-id', record.id).attr('data-title', record.title);
+    tpl.removeClass('d-none record-tpl').addClass('record').toggleClass('color-primary active', selectedRecord.id == record.id);
+    tpl.find('.title').text(record.title);
+    tpl.find('.counter').text(record.counter);
+    tpl.find('.today').text((record.counterLog || 0) + ' today');
+    tpl.find('.total').text('TOTAL ' + record.total);
     tpl.prependTo( $panel.find('.records') );
 }
 
@@ -198,8 +197,7 @@ function createRecord(){
 }
 
 function saveSelectedRecord(){
-    var index = recIndexByID(selectedRecord.id);
-    STORE.records[index] = selectedRecord;
+    STORE.records[selectedIndex] = selectedRecord;
     saveSTORE();
 }
 
@@ -245,7 +243,7 @@ function toggleActivate(){
     $('.record').removeClass('color-primary active');
     var $rec = $(this).closest('.record');
     $rec.addClass('color-primary active');
-    var index = recIndexByID($rec.attr('data-id'));
+    var index = recIndexByID($rec.attr('data-id')); // HERE YOU CANNOT CHANGE TO SELECTEDINDEX, BCZ YOU WILL NEED TO GRAB THE INDEX FROM THE RECORD AFTERWARDS
     activateRecord(STORE.records[index]);
     pulse($rec);
 }

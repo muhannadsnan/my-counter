@@ -5,7 +5,6 @@ class Record{
         this.title = title.trim() || "Untitled";
         this.counter = counter || 0;
         this.total = total || 0;
-        this.isActive = isActive || false;
         this.counterLog = counterLog || 0;
         this.print();
     }
