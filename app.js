@@ -71,10 +71,9 @@ function initValues(){
 }
 
 function fillSelectedRecord(){
-    if(selectedRecord.counterLog === undefined) selectedRecord.counterLog = 0;
     $title.text(selectedRecord.title);
     $counter.text(selectedRecord.counter);
-    $today.text(selectedRecord.counterLog);
+    $today.text((selectedRecord.counterLog === undefined) ? 0 : selectedRecord.counterLog);
     $total.text(selectedRecord.total);
     setProgress(selectedRecord.counter);
     activeChanged = true;
@@ -95,7 +94,7 @@ function selectRecord(recID){
         });
     
     }
-    saveSTORE();
+    saveSTORE("selectedIndex");
 }
 
 function increaseCounter(){
