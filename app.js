@@ -14,7 +14,7 @@ function init() {
     $('#closePanel').on('click', onClosePanel);
     $('#add-record-btn').on('click', createRecord);
     $('button.details').on('click', toggleDropdown);
-    $('.record-body').on('click', toggleActivate);
+    $('.record-body').on('click', onClickRecordBody);
     $('.changeTitle').on('click', changeTitle);
     $('.deleteRecord').on('click', deleteRecord);
     $('#showPrayers').on('click', showPrayers);
@@ -60,10 +60,8 @@ function initValues(){
             STORE.history.all.push(new Logbook(rec.id));
         }
     });
-
-        // Cookies.remove('history', { path: '' }) // removed!
-        // alert(JSON.stringify(STORE.history.lastWriting))
-
+    // Cookies.remove('history', { path: '' }) // removed!
+    // alert(JSON.stringify(STORE.history.lastWriting))
     selectedIndex = STORE.selectedIndex;
     selectedRecord = STORE.records[selectedIndex];
     if(selectedRecord == null || selectedRecord === undefined) selectedRecord = STORE.records[0];
@@ -79,7 +77,6 @@ function fillSelectedRecord(){
     $today.text(selectedRecord.counterLog);
     $total.text(selectedRecord.total);
     setProgress(selectedRecord.counter);
-    saveSTORE();
     activeChanged = true;
 }
 
@@ -89,12 +86,16 @@ function selectRecord(recID){
         selectedRecord = STORE.records[0];
         return;
     }
-    STORE.records.forEach((rec, i) => {
-        if(rec.id == recID){
-            selectedIndex = i;
-            selectedRecord = rec;
-        }
-    });
+    else{
+        STORE.records.forEach((rec, i) => {
+            if(rec.id == recID){
+                selectedIndex = i;
+                selectedRecord = rec;
+            }
+        });
+    
+    }
+    saveSTORE();
 }
 
 function increaseCounter(){
@@ -194,7 +195,7 @@ function createRecord(){
         var newRecord = new Record(newID(), $input.val());
         STORE.records.push(newRecord);
         addRecordToPanel(newRecord, STORE.records.length-1);
-        saveSTORE("all", newRecord); // records + history but not logging
+        saveSTORE(undefined, newRecord); // records + history but not logging
         $input.val('');
         pulse($panel.find('.record').first(), 1);
         createChartPanel(newRecord);
@@ -210,11 +211,16 @@ function saveSelectedRecord(){
 }
 
 function saveSTORE(toSave, record){
-    if(toSave === undefined || toSave == "records" || toSave == "all"){
+    if(toSave === undefined || toSave == "records"){
         Cookies.set("records", STORE.records, cookieOptions);
         console.log("Records saved!");
     }
-    if(toSave == "history" || toSave == "all"){
+    if(toSave === undefined || toSave == "selectedIndex"){
+        STORE.selectedIndex = selectedIndex;
+        Cookies.set("selectedIndex", selectedIndex, cookieOptions);
+        console.log("selectedIndex saved!"); 
+    }
+    if(toSave === undefined || toSave == "history"){
         STORE.history.all.push(new Logbook(record.id, new Log(Date.now(), record.counter)));
         Cookies.set("history", STORE.history, cookieOptions);
         console.log("LogBook created!"); 
@@ -247,11 +253,10 @@ function toggleDropdown(){
     $this.closest('.record').toggleClass('showDropdown');
 }
 
-function toggleActivate(){
+function onClickRecordBody(){
     $('.record').removeClass('color-primary active');
     var $rec = $(this).closest('.record');
     $rec.addClass('color-primary active');
-    // var index = recIndexByID($rec.attr('data-id')); // HERE YOU CANNOT CHANGE TO SELECTEDINDEX, BCZ YOU WILL NEED TO GRAB THE INDEX FROM THE RECORD AFTERWARDS
     selectRecord($rec.attr('data-id'));
     fillSelectedRecord();
     pulse($rec);
@@ -283,7 +288,7 @@ function deleteRecord(){
         STORE.records = STORE.records.filter(el => el.id != $rec.attr('data-id'));
         $('#record-'+$rec.attr('data-id')).remove();
         if($rec.attr('data-id') == selectedRecord.id){
-            selectRecord();
+            selectRecord(); // the first index
             fillSelectedRecord();
             return;
         }
