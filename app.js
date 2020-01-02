@@ -67,18 +67,12 @@ function initValues(){
     selectedIndex = STORE.selectedIndex;
     selectedRecord = STORE.records[selectedIndex];
     if(selectedRecord == null || selectedRecord === undefined) selectedRecord = STORE.records[0];
-    activeChanged = false; // must be after activateRecord()    
+    activeChanged = false; // must be after fillSelectedRecord()    
     saveSTORE("logging");
-    activateRecord(selectedRecord);
+    fillSelectedRecord();
 }
 
-function activateRecord(record){
-    if(record === undefined  || record === null){
-        alert('No record to activate!'); 
-        return;
-    }
-    selectedRecord = record;
-    selectedIndex = recIndexByID(record.id);
+function fillSelectedRecord(){
     if(selectedRecord.counterLog === undefined) selectedRecord.counterLog = 0;
     $title.text(selectedRecord.title);
     $counter.text(selectedRecord.counter);
@@ -87,6 +81,20 @@ function activateRecord(record){
     setProgress(selectedRecord.counter);
     saveSTORE();
     activeChanged = true;
+}
+
+function selectRecord(recID){
+    if(recID === undefined){
+        selectedIndex = 0;
+        selectedRecord = STORE.records[0];
+        return;
+    }
+    STORE.records.forEach((rec, i) => {
+        if(rec.id == recID){
+            selectedIndex = i;
+            selectedRecord = rec;
+        }
+    });
 }
 
 function increaseCounter(){
@@ -243,8 +251,9 @@ function toggleActivate(){
     $('.record').removeClass('color-primary active');
     var $rec = $(this).closest('.record');
     $rec.addClass('color-primary active');
-    var index = recIndexByID($rec.attr('data-id')); // HERE YOU CANNOT CHANGE TO SELECTEDINDEX, BCZ YOU WILL NEED TO GRAB THE INDEX FROM THE RECORD AFTERWARDS
-    activateRecord(STORE.records[index]);
+    // var index = recIndexByID($rec.attr('data-id')); // HERE YOU CANNOT CHANGE TO SELECTEDINDEX, BCZ YOU WILL NEED TO GRAB THE INDEX FROM THE RECORD AFTERWARDS
+    selectRecord($rec.attr('data-id'));
+    fillSelectedRecord();
     pulse($rec);
 }
 
@@ -274,7 +283,8 @@ function deleteRecord(){
         STORE.records = STORE.records.filter(el => el.id != $rec.attr('data-id'));
         $('#record-'+$rec.attr('data-id')).remove();
         if($rec.attr('data-id') == selectedRecord.id){
-            activateRecord(STORE.records[0]);
+            selectRecord();
+            fillSelectedRecord();
             return;
         }
         saveSTORE();
