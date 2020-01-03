@@ -367,7 +367,7 @@ function drawChart(recID){
     if(logBook.logs.length >= 5){
         index = logBook.logs.length - 5;
     }
-    logBook.logs.splice(index).forEach(el => { 
+    (logBook.logs.splice(index)).forEach(el => { 
         dataPoints.push({
             x: new Date(Date.parse(el.date)),
             y: el.value
@@ -387,8 +387,8 @@ function drawChart(recID){
             fontColor: "#c6ff00"
         },
         axisX:{
-            title: "Last 30 days",
-            titleFontColor: "c6ff00",
+            title: "Last 5 days",
+            titleFontColor: "#c6ff00",
             labelFontColor: "#c6ff00",
             labelAngle: -50,
             valueFormatString: "DD-MM"
