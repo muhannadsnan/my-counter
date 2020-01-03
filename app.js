@@ -1,4 +1,4 @@
-var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $templates;
+var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, $chartPanel, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $templates;
 
 function init() {
     initValues();
@@ -35,6 +35,7 @@ function initValues(){
     $title = $("#recordTitle");
     $panel = $('#panel');
     $templates = $('#templates');
+    $chartPanel = $('#chart-panel');
     
     STORE = Cookies.getJSON();
     if(STORE.history === undefined) {// All histories of records
@@ -159,9 +160,9 @@ function showRecords(){
     $panel.find('.record').remove();
     STORE.records.forEach(record => {
         addRecordToPanel(record);
-        if($('#chart-panel-'+record.id).length == 0){
-            createChartPanel(record);
-        }
+        // if($('#chart-panel-'+record.id).length == 0){
+        //     createChartPanel(record);
+        // }
     });
 }
 
@@ -177,12 +178,12 @@ function addRecordToPanel(record){
     tpl.prependTo( $panel.find('.records') );
 }
 
-function createChartPanel(record){
-    var chartPanel = $templates.find('.chart-panel').clone(true);
-    chartPanel.attr('id', 'chart-panel-'+record.id);
-    chartPanel.find('.title').text(record.title);
-    chartPanel.appendTo('body');
-}
+// function createChartPanel(record){
+//     var chartPanel = $templates.find('.chart-panel').clone(true);
+//     chartPanel.attr('id', 'chart-panel-'+record.id);
+//     chartPanel.find('.title').text(record.title);
+//     chartPanel.appendTo('body');
+// }
 
 function createRecord(){
     var $input = $('#add-record-input');
@@ -198,7 +199,7 @@ function createRecord(){
         saveSTORE(); // records + selectedIndex + history
         $input.val('');
         pulse($panel.find('.record').first(), 1);
-        createChartPanel(newRecord);
+        // createChartPanel(newRecord);
     }
     pulse($input);
     pulse($(this), 1);
@@ -338,16 +339,18 @@ function uniqID(){
 
 function showChart(e){
     var id = $(this).closest('.record').attr('data-id');
-    var chartPanel = $('#chart-panel-'+id);
-    chartPanel.toggleClass('show');
-    chartPanel.find('.loading').addClass('d-flex').removeClass('d-none');
-    chartPanel.find('.container').addClass('hide');
-    drawChart(chartPanel.find('canvas'), id);
-    chartPanel.find('.loading').removeClass('d-flex').addClass('d-none');
-    chartPanel.find('.container').removeClass('hide');
+    var $chart = $templates.find('.chart-tpl').clone();
+    $chartPanel.find('.chart-container').html($chart);
+    $chartPanel.toggleClass('show');
+    $chartPanel.find('.loading').addClass('d-flex').removeClass('d-none');
+    $chartPanel.find('.container').addClass('hide');
+    drawChart($chartPanel.find('canvas'), id);
+    $chartPanel.find('.loading').removeClass('d-flex').addClass('d-none');
+    $chartPanel.find('.container').removeClass('hide');
 }
 
 function closeChartpanel(){
+    $chartPanel.find('.chart-container canvas').remove();
     $(this).closest('.chart-panel').removeClass('show');
 }
 

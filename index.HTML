@@ -51,6 +51,25 @@
             </div>
         </div>
 
+        <div id="chart-panel" class="chart-panel transition trans-left trans-right">
+            <button class="close p-2 pos-right"><i class="fas fa-times-circle"></i></button>
+            <div class="container hide">
+                <div class="p-1">
+                    <p class="title"></p>
+                    <span class="color-grey">Show by:</span>
+                    <select class="groupBy">
+                        <option value="7days">5 days</option>
+                        <option value="30days"disabled >30 days</option>
+                        <option value="week" disabled>Week</option>
+                        <option value="month" disabled>Month</option>
+                        <option value="year" disabled>Year</option>
+                    </select>
+                </div>
+                <div class="chart-container"></div>
+            </div>
+            <div class="loading d-flex"><i class="fas fa-compact-disc fa-spin"></i></div>
+        </div>
+
         <footer class="p-2">
             <p class="my-0">Muhannad Senan</p>
             <p class="my-0">msn-23@live.com</p>
@@ -77,26 +96,7 @@
                 </div>
             </div>
 
-            <div id="" class="chart-panel transition trans-left trans-right">
-                <button class="close p-2 pos-right"><i class="fas fa-times-circle"></i></button>
-                <div class="container hide">
-                    <div class="p-1">
-                        <p class="title"></p>
-                        <span class="color-grey">Show by:</span>
-                        <select class="groupBy">
-                            <option value="7days">5 days</option>
-                            <option value="30days"disabled >30 days</option>
-                            <option value="week" disabled>Week</option>
-                            <option value="month" disabled>Month</option>
-                            <option value="year" disabled>Year</option>
-                        </select>
-                    </div>
-                    <div class="chart-container">
-                        <canvas class="myChart" style="height:70vh;"></canvas>
-                    </div>
-                </div>
-                <div class="loading d-flex"><i class="fas fa-compact-disc fa-spin"></i></div>
-            </div>
+            <canvas class="chart-tpl myChart" style="height:70vh;"></canvas>
         </div>
         
         <script src="jquery-3.4.1.min.js"></script>
