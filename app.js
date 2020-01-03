@@ -194,7 +194,8 @@ function createRecord(){
         var newRecord = new Record(newID(), $input.val());
         STORE.records.push(newRecord);
         addRecordToPanel(newRecord, STORE.records.length-1);
-        saveSTORE(undefined, newRecord); // records + history but not logging
+        STORE.history.all.push(new Logbook(newRecord.id, new Log(Date.now(), newRecord.counter)));
+        saveSTORE(); // records + selectedIndex + history
         $input.val('');
         pulse($panel.find('.record').first(), 1);
         createChartPanel(newRecord);
@@ -206,21 +207,21 @@ function createRecord(){
 
 function saveSelectedRecord(){
     STORE.records[selectedIndex] = selectedRecord;
-    saveSTORE();
+    saveSTORE("records", selectRecord);
 }
 
 function saveSTORE(toSave, record){
-    if(toSave === undefined || toSave == "records"){
+    if(toSave === undefined) toSave = "all";
+    if(toSave == "all" || toSave == "records"){
         Cookies.set("records", STORE.records, cookieOptions);
         console.log("Records saved!");
     }
-    if(toSave === undefined || toSave == "selectedIndex"){
+    if(toSave == "all" || toSave == "selectedIndex"){
         STORE.selectedIndex = selectedIndex;
         Cookies.set("selectedIndex", selectedIndex, cookieOptions);
         console.log("selectedIndex saved!"); 
     }
-    if(toSave === undefined || toSave == "history"){
-        STORE.history.all.push(new Logbook(record.id, new Log(Date.now(), record.counter)));
+    if(toSave == "all" || toSave == "history"){
         Cookies.set("history", STORE.history, cookieOptions);
         console.log("LogBook created!"); 
     }
@@ -275,7 +276,7 @@ function changeTitle(){
     var index = recIndexByID($rec.attr('data-id'));
     STORE.records[index].title = newTitle;
     setRecordTitle($rec.attr('data-id'), newTitle); // DOM
-    saveSTORE();
+    saveSTORE("records");
 }
 
 function deleteRecord(){
@@ -285,6 +286,7 @@ function deleteRecord(){
     }
     else if(confirm('Are you sure to delete "' + $rec.attr('data-title') + '"?')){
         STORE.records = STORE.records.filter(el => el.id != $rec.attr('data-id'));
+        STORE.history.all = STORE.history.all.filter(el => el.recordId != $rec.attr('data-id'));
         $('#record-'+$rec.attr('data-id')).remove();
         if($rec.attr('data-id') == selectedRecord.id){
             selectRecord(); // the first index
@@ -362,12 +364,16 @@ function drawChart(element, recID){
         labels.push(d.getDate()+'/'+(d.getMonth()+1));
         data.push(el.value);
     }); //console.log("labels", labels, "data", data);
+    /* Add today to chart */
+    // STORE.records.
+    // labels.push();
+    // data.push();
     var myChart = new Chart(element, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
-                label: '# of Votes',
+                label: 'count',
                 data: data,
                 backgroundColor: '#919877',
                 borderColor: '#c6ff00',
