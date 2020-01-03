@@ -361,15 +361,17 @@ function drawChart(recID){
     var today = new Date();
     var d = new Date();
     if(logBook.logs.length == 0){
-        dataPoints.push({x: today.getDate()+'/'+(today.getMonth()+1), y: 0});
+        dataPoints.push({x: today, y: 0});
     }
     var index = 0;
     if(logBook.logs.length >= 5){
         index = logBook.logs.length - 5;
     }
     logBook.logs.splice(index).forEach(el => { 
-        d = new Date(Date.parse(el.date));
-        dataPoints.push({x: d.getDate()+'/'+(d.getMonth()+1), y: el.value});
+        dataPoints.push({
+            x: new Date(Date.parse(el.date)),
+            y: el.value
+        });
     }); 
     /* Add today to chart */
     var rec = STORE.records.find(el => el.id == recID);
@@ -385,7 +387,7 @@ function drawChart(recID){
             fontColor: "#c6ff00"
         },
         axisX:{
-            title: "Red Color labels",
+            title: "Last 30 days",
             titleFontColor: "c6ff00",
             labelFontColor: "#c6ff00",
             labelAngle: -50,
