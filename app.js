@@ -367,7 +367,7 @@ function drawChart(recID){
     if(logBook.logs.length >= 5){
         index = logBook.logs.length - 5;
     }
-    (logBook.logs.splice(index)).forEach(el => { 
+    logBook.logs.slice(index).forEach(el => { 
         dataPoints.push({
             x: new Date(Date.parse(el.date)),
             y: el.value
