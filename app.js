@@ -367,7 +367,7 @@ function drawChart(element, recID){
     /* Add today to chart */
     var today = new Date();
     var rec = STORE.records.find(el=> el.id == recID);
-    labels.push(today.getDate()+'/'+(today.getDate()+1));
+    labels.push(today.getDate()+'/'+(today.getMonth()+1));
     data.push(rec.counterLog);
     var myChart = new Chart(element, {
         type: 'line',
