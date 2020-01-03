@@ -356,8 +356,8 @@ function drawChart(element, recID){
     var logBook = STORE.history.all.find(el => el.recordId == recID);
     console.log("drawing chart: ");
     var index = 0;
-    if(logBook.logs.length >= 30){
-        index = logBook.logs.length - 30;
+    if(logBook.logs.length >= 5){
+        index = logBook.logs.length - 5;
     }
     logBook.logs.splice(index).forEach((el, i) => {//console.log(i, el);
         var d = new Date(Date.parse(el.date));
@@ -365,9 +365,10 @@ function drawChart(element, recID){
         data.push(el.value);
     }); //console.log("labels", labels, "data", data);
     /* Add today to chart */
-    // STORE.records.
-    // labels.push();
-    // data.push();
+    var today = new Date();
+    var rec = STORE.records.find(el=> el.id == recID);
+    labels.push(today.getDate()+'/'+(today.getDate()+1));
+    data.push(rec.counterLog);
     var myChart = new Chart(element, {
         type: 'line',
         data: {
