@@ -1,4 +1,4 @@
-var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, $chartPanel, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $templates;
+var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $templates;
 
 function init() {
     initValues();
@@ -339,12 +339,13 @@ function uniqID(){
 
 function showChart(e){
     var id = $(this).closest('.record').attr('data-id');
-    var $chart = $templates.find('.chart-tpl').clone();
-    $chartPanel.find('.chart-container').html($chart);
+    $chart = $chartPanel.find('.chart-container');
+    // var $chart = $templates.find('.chart-tpl').clone();
+    // $chartPanel.find('.chart-container').html($chart);
     $chartPanel.toggleClass('show');
     $chartPanel.find('.loading').addClass('d-flex').removeClass('d-none');
     $chartPanel.find('.container').addClass('hide');
-    drawChart($chartPanel.find('canvas'), id);
+    drawChart(id);
     $chartPanel.find('.loading').removeClass('d-flex').addClass('d-none');
     $chartPanel.find('.container').removeClass('hide');
 }
@@ -354,79 +355,66 @@ function closeChartpanel(){
     $(this).closest('.chart-panel').removeClass('show');
 }
 
-function drawChart(element, recID){
-    var labels = [], data = [];
+function drawChart(recID){
+    var dataPoints = [];
     var logBook = STORE.history.all.find(el => el.recordId == recID);
     var today = new Date();
+    var d = new Date();
     if(logBook.logs.length == 0){
-        labels.push('');
-        data.push(0);
+        dataPoints.push({x: today.getDate()+'/'+(today.getMonth()+1), y: 0});
     }
-    console.log("drawing chart: ");
     var index = 0;
     if(logBook.logs.length >= 5){
         index = logBook.logs.length - 5;
     }
-    logBook.logs.splice(index).forEach((el, i) => {//console.log(i, el);
-        var d = new Date(Date.parse(el.date));
-        labels.push(d.getDate()+'/'+(d.getMonth()+1));
-        data.push(el.value);
-    }); //console.log("labels", labels, "data", data);
+    logBook.logs.splice(index).forEach(el => { 
+        d = new Date(Date.parse(el.date));
+        dataPoints.push({x: d.getDate()+'/'+(d.getMonth()+1), y: el.value});
+    }); 
     /* Add today to chart */
-    var rec = STORE.records.find(el=> el.id == recID);
-    labels.push(today.getDate()+'/'+(today.getMonth()+1));
-    data.push(rec.counterLog);
-    console.log(logBook.logs.length, labels, data); 
-    var myChart = new Chart(element, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'count',
-                data: data,
-                backgroundColor: '#919877',
-                borderColor: '#c6ff00',
-                lineTension: .2,
-                borderWidth: '10',
-                pointBorderColor: 'blue',
-                pointBackgroundColor: 'blue',
-                pointHitRadius: '50',
-            }]
+    var rec = STORE.records.find(el => el.id == recID);
+    dataPoints.push({x: today, y: rec.counterLog});
+    /* https://canvasjs.com/jquery-charts/dynamic-chart/ */
+    
+    var chart = new CanvasJS.Chart("chart-container",
+    {
+        animationEnabled: true,
+        backgroundColor: "#2f2f2f",
+        title: {
+            text: rec.title,
+            fontColor: "#c6ff00"
         },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        fontSize: '50'
-                    },
-                    gridLines: {
-                        display: true,
-                        color: '#777',
-                        lineWidth: '2',
-                        z: '1'
-                    },
-                }],
-                xAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        fontSize: '50'
-                    },
-                    gridLines: {
-                        display: true,
-                        color: '#777',
-                        lineWidth: '2',
-                        z: '1'
-                    },
-                }],
-            },
-            // responsive: true,
-            // responsiveAnimationDuration: 2000,
-            maintainAspectRatio: false
-        }
+        axisX:{
+            title: "Red Color labels",
+            titleFontColor: "c6ff00",
+            labelFontColor: "#c6ff00",
+            labelAngle: -50,
+            valueFormatString: "DD-MM"
+        },
+        axisY:{
+            labelFontColor: "#c6ff00"
+        },
+        toolTip:{
+            enabled: true,
+            animationEnabled: true,
+            fontColor: "#c6ff00"
+        },
+        data: [
+            {
+                type: "line",
+                dataPoints: dataPoints,
+                showInLegend: true,
+                lineColor: "#c6ff00",
+                markerColor: "red",
+            }
+        ],
+        // width: 100,
+        // height: 100
     });
-    Chart.defaults.global.defaultFontFamily = 'Lalezar';
-    Chart.defaults.global.defaultFontColor = '#c6ff00';
+
+    chart.render();
+
+    console.log("Chart !");
 }
 
 function newID(arr, idProp){
