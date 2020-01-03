@@ -354,6 +354,11 @@ function closeChartpanel(){
 function drawChart(element, recID){
     var labels = [], data = [];
     var logBook = STORE.history.all.find(el => el.recordId == recID);
+    var today = new Date();
+    if(logBook.logs.length == 0){
+        labels.push('');
+        data.push(0);
+    }
     console.log("drawing chart: ");
     var index = 0;
     if(logBook.logs.length >= 5){
@@ -365,10 +370,10 @@ function drawChart(element, recID){
         data.push(el.value);
     }); //console.log("labels", labels, "data", data);
     /* Add today to chart */
-    var today = new Date();
     var rec = STORE.records.find(el=> el.id == recID);
     labels.push(today.getDate()+'/'+(today.getMonth()+1));
     data.push(rec.counterLog);
+    console.log(logBook.logs.length, labels, data); 
     var myChart = new Chart(element, {
         type: 'line',
         data: {
