@@ -352,32 +352,64 @@ function showChart(e){
 
 function closeChartpanel(){
     $chartPanel.find('.chart-container canvas').remove();
-    $(this).closest('.chart-panel').removeClass('show');
+    $chartPanel.toggleClass('show');
 }
 
-function drawChart(recID){
-    var dataPoints = [];
+function drawChart(recID, show){
+    if(show === undefined) show = "5-days";
     var logBook = STORE.history.all.find(el => el.recordId == recID);
+    if(logBook === undefined){
+        alert("No data was found for this record");
+        closeChartpanel();
+        return;
+    }
+    var dataPoints = [];
     var today = new Date();
     var d = new Date();
     if(logBook.logs.length == 0){
         dataPoints.push({x: today, y: 0});
     }
     var index = 0;
-    if(logBook.logs.length >= 5){
-        index = logBook.logs.length - 5;
+    var startDate = new Date();
+    var chartX = 0;
+    switch(show){
+        case "5-days":
+            chartX = 5;
+            if(logBook.logs.length >= chartX){
+                index = logBook.logs.length - chartX - 1;
+            }
+            startDate.setDate(today.getDate() - chartX);
+            break;
+        case "30-days":
+            if(logBook.logs.length >= 30){
+                index = logBook.logs.length - 30 - 1;
+            }
+            startDate.setDate(today.getDate() - 30);
+            chartX = 30;
+            break;
+        default:
+            break;
     }
-    logBook.logs.slice(index).forEach(el => { 
-        dataPoints.push({
-            x: new Date(Date.parse(el.date)),
-            y: el.value
-        });
-    }); 
+
+    for(var i = 0; i < chartX; i++){
+        var _date = new Date();
+        _date.setDate(startDate.getDate() + i);
+        var log = logBook.logs.find(el => new Date(el.date).getDate() == _date.getDate());
+        var point = {};
+        if(log !== undefined){
+            point.y = log.value;
+        }
+        else{
+            point.y = 0;
+        }
+        point.x = new Date(_date.getFullYear(), _date.getMonth(), _date.getDate());
+        dataPoints.push(point);
+    }
     /* Add today to chart */
     var rec = STORE.records.find(el => el.id == recID);
-    dataPoints.push({x: today, y: rec.counterLog});
+    dataPoints.push({x: new Date(today.getFullYear(), today.getMonth(), today.getDate()), y: rec.counterLog});
     /* https://canvasjs.com/jquery-charts/dynamic-chart/ */
-    
+    console.log("dataPoints", dataPoints); 
     var chart = new CanvasJS.Chart("chart-container",
     {
         animationEnabled: true,
@@ -390,8 +422,9 @@ function drawChart(recID){
             title: "Last 5 days",
             titleFontColor: "#c6ff00",
             labelFontColor: "#c6ff00",
-            labelAngle: -50,
-            valueFormatString: "DD-MM"
+            labelAngle: 70,
+            valueFormatString: "DD/MM/YYYY",
+            gridThickness: 1
         },
         axisY:{
             labelFontColor: "#c6ff00"
@@ -405,7 +438,8 @@ function drawChart(recID){
             {
                 type: "line",
                 dataPoints: dataPoints,
-                showInLegend: true,
+                axisXIndex: 0, //defaults to 0
+                // showInLegend: true,
                 lineColor: "#c6ff00",
                 markerColor: "red",
             }
