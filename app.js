@@ -1,6 +1,7 @@
 var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, $panelRecord, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $templates;
 
 function init() {
+    alert()
     initValues();
     if( selectedRecord === undefined){
         setProgress(0);
