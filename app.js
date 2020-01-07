@@ -28,6 +28,12 @@ function DB_connect(){
 function init() {
     // if(!DB_connect()) return false;
     fillValues();
+    
+    var xhr =  new XMLHttpRequest();
+    xhr.open( 'post', '/path/to/php', true );
+    xhr.send(data);
+
+    
     if( selectedRecord === undefined){
         setProgress(0);
     }else{
