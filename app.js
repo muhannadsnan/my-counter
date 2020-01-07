@@ -1,7 +1,33 @@
-var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, $panelRecord, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $templates;
+window.counter, window.total, window.STORE, window.selectedRecord, window.selectedIndex, window.activeChanged, window.cookieOptions,
+window.$total, window.$progress, window.$counter, window.$today, window.$panel, window.$chartPanel, window.$chart, window.$panelRecord, window.$templates;
+window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction || {READ_WRITE: "readwrite"}; // This line should only be needed if it is needed to support the object's constants for older browsers
+window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange; // Mozilla has never prefixed these objects, no need to window.mozIDB*
+if(!window.indexedDB) console.log("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
+
+// IndexedDB API : https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
+function DB_connect(){
+    var request = indexedDB.open("STORE", 3); // DB_NAME, DB_VERSION
+    request.onerror = function(e) {
+        console.error("openDb:", e.target.errorCode);
+        alert('Error when reaching data! Try again..');
+    };
+    request.onsuccess = function(e) {
+        console.log("openDb success... ");
+    };
+    request.onupgradeneeded = function(e) {
+        alert();
+        STORE = e.target.result;
+        var objectStore = STORE.createObjectStore('books');
+        var txn = e.target.transaction;
+        console.log("STORE", STORE); 
+    };
+    // return true;
+}
 
 function init() {
-    initValues();
+    // if(!DB_connect()) return false;
+    fillValues();
     if( selectedRecord === undefined){
         setProgress(0);
     }else{
@@ -26,7 +52,7 @@ function init() {
     $('body').addClass('animated');
 }
 
-function initValues(){
+function fillValues(){
     counter = 0;
     cookieOptions = {expires: 3650};
     $total = $("#total");
