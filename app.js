@@ -331,7 +331,6 @@ function uniqID(){
 function onChangeShowBy(){
     $chartPanel.find('.chart-container canvas').remove();
     var showBy = $(this).val();
-    console.log("id", $chartPanel.attr('data-rec-id'), $(this)); 
     $chartPanel.find('.loading').addClass('d-flex').removeClass('d-none');
     $chartPanel.find('.container').addClass('hide');
     drawChart($chartPanel.attr('data-rec-id'), showBy);
@@ -372,7 +371,6 @@ function drawChart(recID, showBy){
     var intervalY = 1;
     function checkIntervalY(val){
         if(intervalY != 100){
-            console.log("val",val);
             if(val > 10){
                 intervalY = 10;
                 if(val > 100){
@@ -416,7 +414,7 @@ function drawChart(recID, showBy){
     dataPoints.push({x: new Date(today.getFullYear(), today.getMonth(), today.getDate()), y: rec.counterLog});
     checkIntervalY(rec.counterLog);
     
-    console.log("dataPoints", dataPoints, intervalY); 
+    console.log("dataPoints", dataPoints); 
     var title = {'5-days': 'Last 5 days', '30-days': 'Last 30 days'};
     var chart = new CanvasJS.Chart("chart-container", { /* https://canvasjs.com/jquery-charts/dynamic-chart/ */
         animationEnabled: true,
