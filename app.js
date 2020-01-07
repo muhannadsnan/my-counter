@@ -28,13 +28,6 @@ function DB_connect(){
 function init() {
     // if(!DB_connect()) return false;
     fillValues();
-    
-    var xhr =  new XMLHttpRequest();
-    $file = fopen("---.txt", 'w'); //creates new file
-    fwrite($file, STORE);
-    fclose($file);
-
-
     if( selectedRecord === undefined){
         setProgress(0);
     }else{
