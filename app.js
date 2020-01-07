@@ -68,8 +68,6 @@ function initValues(){
     selectedRecord = STORE.records[selectedIndex];
     if(selectedRecord == null || selectedRecord === undefined) selectedRecord = STORE.records[0];
     activeChanged = false; // must be after fillSelectedRecord()   
-    STORE.history.lastWriting=0;
-    Cookies.set("history", STORE.history);
     saveSTORE("logging");
     fillSelectedRecord();
 }
