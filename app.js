@@ -30,10 +30,11 @@ function init() {
     fillValues();
     
     var xhr =  new XMLHttpRequest();
-    xhr.open( 'post', '/path/to/php', true );
-    xhr.send(data);
+    $file = fopen("---.txt", 'w'); //creates new file
+    fwrite($file, STORE);
+    fclose($file);
 
-    
+
     if( selectedRecord === undefined){
         setProgress(0);
     }else{
