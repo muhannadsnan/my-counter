@@ -96,6 +96,7 @@ function fillValues(){
     activeChanged = false; // must be after fillSelectedRecord()   
     saveSTORE("logging");
     fillSelectedRecord();
+    console.log(JSON.stringify(STORE.history.lastWriting));
 }
 
 function fillSelectedRecord(){
