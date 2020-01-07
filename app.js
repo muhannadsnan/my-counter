@@ -1,7 +1,9 @@
 var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, $panelRecord, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $templates;
 
 function init() {
-    alert()
+    STORE.history.lastWriting = 0;
+    Cookies.set("history", STORE.history);
+    console.log("lastwriting cleaned", STORE.history);
     initValues();
     if( selectedRecord === undefined){
         setProgress(0);
