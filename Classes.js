@@ -44,7 +44,7 @@ class Logbook{
         this.print();
     }
     print(){
-        console.log("Logbook instantiated! "+this.recordId);
+        console.log("Logbook instantiated! id: "+this.recordId);
     }
 }
 

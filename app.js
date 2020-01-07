@@ -1,4 +1,4 @@
-var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $templates;
+var counter, total, currentCounter, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, $panelRecord, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $templates;
 
 function init() {
     initValues();
@@ -20,7 +20,8 @@ function init() {
     $('#showPrayers').on('click', showPrayers);
     $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
     $('.showChart').on('click', showChart);
-    $('.chart-panel .close').on('click', closeChartpanel);
+    $chartPanel.find('.close').on('click', closeChartpanel);
+    $chartPanel.find('select.showBy').on('change', onChangeShowBy);
     // pulseAll();
     $('body').addClass('animated');
 }
@@ -57,7 +58,7 @@ function initValues(){
     /* insure that every record has Logbook */
     $.each(STORE.records, function(i, rec){
         if(!STORE.history.all.some(el => el.recordId == rec.id)){
-            console.log("Generaing daily Log for record ("+rec.title+")");
+            console.log("Generating daily Log for record ("+rec.title+")");
             STORE.history.all.push(new Logbook(rec.id));
         }
     });
@@ -160,9 +161,6 @@ function showRecords(){
     $panel.find('.record').remove();
     STORE.records.forEach(record => {
         addRecordToPanel(record);
-        // if($('#chart-panel-'+record.id).length == 0){
-        //     createChartPanel(record);
-        // }
     });
 }
 
@@ -177,13 +175,6 @@ function addRecordToPanel(record){
     tpl.find('.total').text('TOTAL ' + record.total);
     tpl.prependTo( $panel.find('.records') );
 }
-
-// function createChartPanel(record){
-//     var chartPanel = $templates.find('.chart-panel').clone(true);
-//     chartPanel.attr('id', 'chart-panel-'+record.id);
-//     chartPanel.find('.title').text(record.title);
-//     chartPanel.appendTo('body');
-// }
 
 function createRecord(){
     var $input = $('#add-record-input');
@@ -337,26 +328,32 @@ function uniqID(){
     return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
 
-function showChart(e){
-    var id = $(this).closest('.record').attr('data-id');
-    $chart = $chartPanel.find('.chart-container');
-    // var $chart = $templates.find('.chart-tpl').clone();
-    // $chartPanel.find('.chart-container').html($chart);
-    $chartPanel.toggleClass('show');
+function onChangeShowBy(){
+    $chartPanel.find('.chart-container canvas').remove();
+    var showBy = $(this).val();
+    console.log("id", $chartPanel.attr('data-rec-id'), $(this)); 
     $chartPanel.find('.loading').addClass('d-flex').removeClass('d-none');
     $chartPanel.find('.container').addClass('hide');
-    drawChart(id);
+    drawChart($chartPanel.attr('data-rec-id'), showBy);
     $chartPanel.find('.loading').removeClass('d-flex').addClass('d-none');
     $chartPanel.find('.container').removeClass('hide');
 }
 
-function closeChartpanel(){
-    $chartPanel.find('.chart-container canvas').remove();
+function showChart(){
+    if($(this).closest('.record').attr('data-id') !== undefined){
+        $chartPanel.attr('data-rec-id', $(this).closest('.record').attr('data-id'));
+    }
+    $chartPanel.find('select.showBy').val("5-days").trigger('change');
     $chartPanel.toggleClass('show');
 }
 
-function drawChart(recID, show){
-    if(show === undefined) show = "5-days";
+function closeChartpanel(){
+    $chartPanel.find('.chart-container canvas').remove();
+    $chartPanel.removeClass('show');
+}
+
+function drawChart(recID, showBy){
+    if(showBy === undefined) showBy = "5-days";
     var logBook = STORE.history.all.find(el => el.recordId == recID);
     if(logBook === undefined){
         alert("No data was found for this record");
@@ -366,68 +363,87 @@ function drawChart(recID, show){
     var dataPoints = [];
     var today = new Date();
     var d = new Date();
-    if(logBook.logs.length == 0){
+    if(logBook.logs.length == 0){ /* if record has been just created */
         dataPoints.push({x: today, y: 0});
     }
     var index = 0;
     var startDate = new Date();
     var chartX = 0;
-    switch(show){
-        case "5-days":
-            chartX = 5;
-            if(logBook.logs.length >= chartX){
-                index = logBook.logs.length - chartX - 1;
+    var intervalY = 1;
+    function checkIntervalY(val){
+        if(intervalY != 100){
+            console.log("val",val);
+            if(val > 10){
+                intervalY = 10;
+                if(val > 100){
+                    intervalY = 100;
+                }
             }
-            startDate.setDate(today.getDate() - chartX);
+        }
+    }
+    function makeChartData(chX){
+        chartX = chX - 1;
+        startDate.setDate(today.getDate() - chartX);
+        for(var i = 0; i < chartX; i++){
+            var _date = new Date();
+            _date.setDate(startDate.getDate() + i);
+            var log = logBook.logs.find(el => new Date(el.date).getDate() == _date.getDate());
+            var point = {};
+            if(log !== undefined){
+                point.y = log.value;
+            }
+            else{
+                point.y = 0;
+            }
+            point.x = new Date(_date.getFullYear(), _date.getMonth(), _date.getDate());
+            dataPoints.push(point);
+            checkIntervalY(point.y);
+        }
+    }
+    switch(showBy){
+        case "5-days":
+            makeChartData(5);
             break;
         case "30-days":
-            if(logBook.logs.length >= 30){
-                index = logBook.logs.length - 30 - 1;
-            }
-            startDate.setDate(today.getDate() - 30);
-            chartX = 30;
+            makeChartData(30);
             break;
         default:
+            //
             break;
-    }
-
-    for(var i = 0; i < chartX; i++){
-        var _date = new Date();
-        _date.setDate(startDate.getDate() + i);
-        var log = logBook.logs.find(el => new Date(el.date).getDate() == _date.getDate());
-        var point = {};
-        if(log !== undefined){
-            point.y = log.value;
-        }
-        else{
-            point.y = 0;
-        }
-        point.x = new Date(_date.getFullYear(), _date.getMonth(), _date.getDate());
-        dataPoints.push(point);
     }
     /* Add today to chart */
     var rec = STORE.records.find(el => el.id == recID);
     dataPoints.push({x: new Date(today.getFullYear(), today.getMonth(), today.getDate()), y: rec.counterLog});
-    /* https://canvasjs.com/jquery-charts/dynamic-chart/ */
-    console.log("dataPoints", dataPoints); 
-    var chart = new CanvasJS.Chart("chart-container",
-    {
+    checkIntervalY(rec.counterLog);
+    
+    console.log("dataPoints", dataPoints, intervalY); 
+    var title = {'5-days': 'Last 5 days', '30-days': 'Last 30 days'};
+    var chart = new CanvasJS.Chart("chart-container", { /* https://canvasjs.com/jquery-charts/dynamic-chart/ */
         animationEnabled: true,
         backgroundColor: "#2f2f2f",
         title: {
             text: rec.title,
-            fontColor: "#c6ff00"
+            fontColor: "#c6ff00",
+            fontSize: '60'
         },
         axisX:{
-            title: "Last 5 days",
+            title: title[showBy],
             titleFontColor: "#c6ff00",
             labelFontColor: "#c6ff00",
             labelAngle: 70,
-            valueFormatString: "DD/MM/YYYY",
-            gridThickness: 1
+            valueFormatString: "DD/MM",
+            gridThickness: 1,
+            interval: 1,
+            intervalType: "day",
         },
         axisY:{
-            labelFontColor: "#c6ff00"
+            labelFontColor: "#c6ff00",
+            scaleBreaks: {
+                auoCalculate: true,
+                spacing: 4,
+                type: "zigzag",
+            },
+            interval: intervalY
         },
         toolTip:{
             enabled: true,
@@ -436,21 +452,19 @@ function drawChart(recID, show){
         },
         data: [
             {
-                type: "line",
+                type: "area",
                 dataPoints: dataPoints,
                 axisXIndex: 0, //defaults to 0
                 // showInLegend: true,
-                lineColor: "#c6ff00",
+                color: "#c6ff00",
                 markerColor: "red",
             }
         ],
         // width: 100,
-        // height: 100
+        height: 500
     });
-
     chart.render();
-
-    console.log("Chart !");
+    console.log("Chart done!");
 }
 
 function newID(arr, idProp){
