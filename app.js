@@ -96,7 +96,9 @@ function fillValues(){
     activeChanged = false; // must be after fillSelectedRecord()   
     saveSTORE("logging");
     fillSelectedRecord();
-    console.log(JSON.stringify(STORE));
+    setTimeout(() => {
+        console.log(JSON.stringify(STORE));
+    }, 5000);
 }
 
 function fillSelectedRecord(){
