@@ -63,7 +63,7 @@ function initValues(){
         }
     });
     // Cookies.remove('history', { path: '' }) // removed!
-    // alert(JSON.stringify(STORE.history.lastWriting))
+    alert(JSON.stringify(STORE.history.lastWriting))
     selectedIndex = STORE.selectedIndex;
     selectedRecord = STORE.records[selectedIndex];
     if(selectedRecord == null || selectedRecord === undefined) selectedRecord = STORE.records[0];
