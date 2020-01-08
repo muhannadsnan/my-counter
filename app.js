@@ -1,9 +1,8 @@
-window.counter, window.total, window.STORE, window.selectedRecord, window.selectedIndex, window.activeChanged, window.cookieOptions,
-window.$total, window.$progress, window.$counter, window.$today, window.$panel, window.$chartPanel, window.$chart, window.$panelRecord, window.$templates;
-window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction || {READ_WRITE: "readwrite"}; // This line should only be needed if it is needed to support the object's constants for older browsers
-window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange; // Mozilla has never prefixed these objects, no need to window.mozIDB*
-if(!window.indexedDB) console.log("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
+var counter, total, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, $panelRecord, $templates;
+var indexedDB = indexedDB || mozIndexedDB || webkitIndexedDB || msIndexedDB;
+var IDBTransaction = IDBTransaction || webkitIDBTransaction || msIDBTransaction || {READ_WRITE: "readwrite"}; // This line should only be needed if it is needed to support the object's constants for older browsers
+var IDBKeyRange = IDBKeyRange || webkitIDBKeyRange || msIDBKeyRange; // Mozilla has never prefixed these objects, no need to mozIDB*
+if(!indexedDB) console.log("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
 
 // IndexedDB API : https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
 function DB_connect(){
@@ -96,9 +95,7 @@ function fillValues(){
     activeChanged = false; // must be after fillSelectedRecord()   
     saveSTORE("logging");
     fillSelectedRecord();
-    setTimeout(() => {
-        console.log(JSON.stringify(STORE));
-    }, 5000);
+    // setTimeout(() => { console.log(JSON.stringify(STORE)); }, 5000);
 }
 
 function fillSelectedRecord(){
@@ -411,9 +408,8 @@ function drawChart(recID, showBy){
     function makeChartData(chX){
         chartX = chX - 1;
         startDate.setDate(today.getDate() - chartX);
+        var _date = startDate;
         for(var i = 0; i < chartX; i++){
-            var _date = new Date();
-            _date.setDate(startDate.getDate() + i);
             var log = logBook.logs.find(el => new Date(el.date).getDate() == _date.getDate());
             var point = {};
             if(log !== undefined){
@@ -425,6 +421,7 @@ function drawChart(recID, showBy){
             point.x = new Date(_date.getFullYear(), _date.getMonth(), _date.getDate());
             dataPoints.push(point);
             checkIntervalY(point.y);
+            _date.setDate(_date.getDate() + 1);
         }
     }
     switch(showBy){
