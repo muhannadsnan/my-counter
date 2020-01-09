@@ -1,31 +1,6 @@
 var counter, total, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, $panelRecord, $templates;
-var indexedDB = indexedDB || mozIndexedDB || webkitIndexedDB || msIndexedDB;
-var IDBTransaction = IDBTransaction || webkitIDBTransaction || msIDBTransaction || {READ_WRITE: "readwrite"}; // This line should only be needed if it is needed to support the object's constants for older browsers
-var IDBKeyRange = IDBKeyRange || webkitIDBKeyRange || msIDBKeyRange; // Mozilla has never prefixed these objects, no need to mozIDB*
-if(!indexedDB) console.log("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
-
-// IndexedDB API : https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
-function DB_connect(){
-    var request = indexedDB.open("STORE", 3); // DB_NAME, DB_VERSION
-    request.onerror = function(e) {
-        console.error("openDb:", e.target.errorCode);
-        alert('Error when reaching data! Try again..');
-    };
-    request.onsuccess = function(e) {
-        console.log("openDb success... ");
-    };
-    request.onupgradeneeded = function(e) {
-        alert();
-        STORE = e.target.result;
-        var objectStore = STORE.createObjectStore('books');
-        var txn = e.target.transaction;
-        console.log("STORE", STORE); 
-    };
-    // return true;
-}
 
 function init() {
-    // if(!DB_connect()) return false;
     fillValues();
     if( selectedRecord === undefined){
         setProgress(0);
@@ -498,3 +473,15 @@ function newID(arr, idProp){
 }
 
 window.onload = init();
+
+/* 
+    VERSIONS:
+        v1 : simple counter with circle.
+        v2 : records objects & panel.
+        v3 : logs, charts & prayer-times page.
+        v4 : advanced charts.
+        
+    FUTURE VERSIONS:
+        v5 : export your data to cloud and import them back on another device/browser, organized with google login.
+        v6 : data stored on cloud firebase, no login required, but some kind of security. offline cache can be provided with firebase.
+*/
