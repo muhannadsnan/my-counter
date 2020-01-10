@@ -457,7 +457,16 @@ function drawChart(recID, showBy){
         toolTip:{
             enabled: true,
             animationEnabled: true,
-            fontColor: "#c6ff00"
+            fontColor: "#c6ff00",
+            fontSize: 60,
+            backgroundColor: "#2f2f2f80", // with opacity
+            contentFormatter: function (e) {
+                var content = " ";
+                e.entries.forEach(el => {
+                    content += "<strong>" + el.dataPoint.y + "</strong>: <small>" + el.dataPoint.x.toLocaleDateString("en") + "</small>";
+                });
+				return content;
+			}
         },
         data: [
             {
