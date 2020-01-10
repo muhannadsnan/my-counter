@@ -369,15 +369,22 @@ function drawChart(recID, showBy){
     var index = 0;
     var startDate = new Date();
     var chartX = 0;
-    var intervalY = 1;
-    function checkIntervalY(val){
-        if(intervalY != 100){
-            if(val > 10){
-                intervalY = 10;
-                if(val > 100){
-                    intervalY = 100;
-                }
-            }
+    var maxVal = 0;
+    function getIntervalY(){
+        if(maxVal <= 10){
+            return 1;
+        }else if(maxVal <= 20){
+            return 2;
+        }else if(maxVal <= 50){
+            return 5;
+        }else if(maxVal <= 100){
+            return 10;
+        }else if(maxVal <= 200){
+            return 20;
+        }else if(maxVal <= 500){
+            return 50;
+        }else{
+            return Math.ceil(maxVal/1000) * 100;
         }
     }
     function makeChartData(chX){
@@ -395,7 +402,8 @@ function drawChart(recID, showBy){
             }
             point.x = new Date(_date.getFullYear(), _date.getMonth(), _date.getDate());
             dataPoints.push(point);
-            checkIntervalY(point.y);
+            // getIntervalY(point.y);
+            if(point.y > maxVal) maxVal = point.y;
             _date.setDate(_date.getDate() + 1);
         }
     }
@@ -413,9 +421,10 @@ function drawChart(recID, showBy){
     /* Add today to chart */
     var rec = STORE.records.find(el => el.id == recID);
     dataPoints.push({x: new Date(today.getFullYear(), today.getMonth(), today.getDate()), y: rec.counterLog});
-    checkIntervalY(rec.counterLog);
+    // getIntervalY(rec.counterLog);
+    if(rec.counterLog > maxVal) maxVal = rec.counterLog;
     
-    console.log("dataPoints", dataPoints); 
+    console.log("dataPoints", dataPoints, maxVal); 
     var title = {'5-days': 'Last 5 days', '30-days': 'Last 30 days'};
     var chart = new CanvasJS.Chart("chart-container", { /* https://canvasjs.com/jquery-charts/dynamic-chart/ */
         animationEnabled: true,
@@ -442,7 +451,8 @@ function drawChart(recID, showBy){
                 spacing: 4,
                 type: "zigzag",
             },
-            interval: intervalY
+            interval: getIntervalY(),
+            maximum: maxVal+1
         },
         toolTip:{
             enabled: true,
@@ -451,7 +461,7 @@ function drawChart(recID, showBy){
         },
         data: [
             {
-                type: "area",
+                type: "spline", // line, area
                 dataPoints: dataPoints,
                 axisXIndex: 0, //defaults to 0
                 // showInLegend: true,
