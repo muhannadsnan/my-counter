@@ -470,12 +470,15 @@ function drawChart(recID, showBy){
         },
         data: [
             {
-                type: "spline", // line, area
+                type: "area", // line, area, spline
                 dataPoints: dataPoints,
                 axisXIndex: 0, //defaults to 0
                 // showInLegend: true,
                 color: "#c6ff00",
-                markerColor: "red",
+                markerSize: 15,
+                markerColor: "green",
+                lineThickness: 5,
+                fillOpacity: .2,
             }
         ],
         // width: 100,
