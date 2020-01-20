@@ -561,7 +561,6 @@ function checkEmail(){
             USER.email = prompt("Enter a username/email to log in. (Register if not exist)");
         }while(USER.email == null || USER.email == '');
         Cookies.set("email", USER.email);
-        console.log("type of ", typeof db.collection("counter-users").doc(USER.email).get()); 
         return db.collection("counter-users").doc(USER.email).get();
     }
     else{
