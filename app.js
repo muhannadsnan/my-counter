@@ -536,7 +536,6 @@ function fetchData(){
                 // console.log(doc.id, " => ", doc.data());
                 USER = doc.data();
                 STORE = USER.store;
-                console.log("USER", USER); 
                 return;
             });
             fillValues();
@@ -572,13 +571,12 @@ function saveDB(){
         alert("Cannot save empty STORE!");
         return;
     }
-    console.log("USER", USER); 
     db.collection("counter-users").doc(USER.email).set(JSON.parse(JSON.stringify(USER)))
         .then(function() {
-            console.log("Document successfully written!");
+            console.log("DB saved.");
         })
         .catch(function(error) {
-            console.error("Error writing document: ", error);
+            console.error("Error saving DB: ", error);
         });
 }
 
