@@ -1,29 +1,46 @@
-var counter, total, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, $panelRecord, $templates;
+var counter, total, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, $panelRecord, $templates, db, USER;
 
+// var is_db_fetched = false;
 function init() {
-    fillValues();
-    if( selectedRecord === undefined){
-        setProgress(0);
-    }else{
-        setProgress(selectedRecord.counter);
-    }
-    $('body').on('click', function(e) {e.stopPropagation();});
-    $('#clicker').on('click', increaseCounter);
-    $('#reset').on('click', reset);
-    $('#showPanel').on('click', onShowPanel);
-    $('#closePanel').on('click', onClosePanel);
-    $('#add-record-btn').on('click', createRecord);
-    $('button.details').on('click', toggleDropdown);
-    $('.record-body').on('click', onClickRecordBody);
-    $('.changeTitle').on('click', changeTitle);
-    $('.deleteRecord').on('click', deleteRecord);
-    $('#showPrayers').on('click', showPrayers);
-    $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
-    $('.showChart').on('click', showChart);
-    $chartPanel.find('.close').on('click', closeChartpanel);
-    $chartPanel.find('select.showBy').on('change', onChangeShowBy);
-    // pulseAll();
-    $('body').addClass('animated');
+    initDB();
+    fetchDB()
+        .then(function(querySnapshot) {
+            console.log("query", querySnapshot); 
+            querySnapshot.forEach(function(doc) {
+                console.log(doc.id, " => ", doc.data());
+                USER = doc.data();
+                STORE = USER.store;
+                console.log("USER", USER); 
+                return;
+            });
+            fillValues();
+            if( selectedRecord === undefined){
+                setProgress(0);
+            }else{
+                setProgress(selectedRecord.counter);
+            }
+            $('body').on('click', function(e) {e.stopPropagation();});
+            $('#clicker').on('click', increaseCounter);
+            $('#reset').on('click', reset);
+            $('#showPanel').on('click', onShowPanel);
+            $('#closePanel').on('click', onClosePanel);
+            $('#add-record-btn').on('click', createRecord);
+            $('button.details').on('click', toggleDropdown);
+            $('.record-body').on('click', onClickRecordBody);
+            $('.changeTitle').on('click', changeTitle);
+            $('.deleteRecord').on('click', deleteRecord);
+            $('#showPrayers').on('click', showPrayers);
+            $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
+            $('.showChart').on('click', showChart);
+            $chartPanel.find('.close').on('click', closeChartpanel);
+            $chartPanel.find('select.showBy').on('change', onChangeShowBy);
+            // pulseAll();
+            $('body').addClass('animated');
+        })
+        .catch(function(error){
+            console.error(error);
+            alert("Couldn't connect to the Counter!");
+        });
 }
 
 function fillValues(){
@@ -38,12 +55,17 @@ function fillValues(){
     $templates = $('#templates');
     $chartPanel = $('#chart-panel');
     
-    STORE = Cookies.getJSON();
+    if(STORE === null){
+        STORE = {};
+        console.log("store init ", STORE); 
+    }
     if(STORE.history === undefined) {// All histories of records
         STORE.history = new History();
+        console.log("history init",  STORE.history); 
     }
     if(STORE.selectedIndex === undefined) {
         STORE.selectedIndex = 0;
+        console.log("index init", STORE.selectedIndex); 
     }
     if(STORE.records === undefined) {
         var title = prompt("No records yet. Create one !", 'أستغفر الله');
@@ -54,6 +76,7 @@ function fillValues(){
         STORE.selectedIndex = 0;
         selectedRecord = newRec;
         selectedIndex = 0;
+        console.log("records init", STORE.records); 
     }
     /* insure that every record has Logbook */
     $.each(STORE.records, function(i, rec){
@@ -238,6 +261,7 @@ function saveSTORE(toSave, record){
             console.log("Logging saved!");
         }
     }
+    saveDB();
     console.log("COOKIE STORE", STORE);
 }
 
@@ -492,6 +516,30 @@ function newID(arr, idProp){
     if(arr === undefined) arr = STORE.records;
     if(idProp === undefined) idProp = 'id';
     return arr[arr.length-1][idProp] + 1;
+}
+
+function initDB(){
+    firebase.initializeApp({
+        apiKey: 'AIzaSyBP196irDbj3NgzWnTggEV_5XQJlNhRL5k',
+        authDomain: 'test-firebase-597da.firebaseapp.com',
+        projectId: 'test-firebase-597da'
+    });
+    db = firebase.firestore();
+}
+
+function fetchDB(){
+    return db.collection("counter-users").where("email", "==", "msn-23@live.com").get();
+}
+
+function saveDB(){
+    USER.store = STORE;
+    db.collection("counter-users").doc('msn-23@live.com').set(JSON.parse(JSON.stringify(USER)))
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
 }
 
 window.onload = init();
