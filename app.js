@@ -3,6 +3,9 @@ var counter, total, STORE, selectedRecord, selectedIndex, activeChanged, cookieO
 // var is_db_fetched = false;
 function init() {
     initDB();
+    if(checkEmail() == "cookie-email"){
+        fetchData();
+    }
     checkEmail().then(function(data) {
         // data.forEach(doc => console.log("doc", doc));
         console.log("============== Email registered ! ==============");
@@ -559,6 +562,7 @@ function checkEmail(){
         Cookies.set("email", USER.email);
         return db.collection("counter-users").doc(USER.email).get();
     }
+    return "cookie-email";
 }
 
 function saveDB(){
