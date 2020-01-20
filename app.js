@@ -562,7 +562,9 @@ function checkEmail(){
         Cookies.set("email", USER.email);
         return db.collection("counter-users").doc(USER.email).get();
     }
-    return "cookie-email";
+    else{
+        return "cookie-email";
+    }
 }
 
 function saveDB(){
