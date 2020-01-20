@@ -1,46 +1,40 @@
-var counter, total, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, $panelRecord, $templates, db, USER;
+var counter, total, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, $panelRecord, $templates, db, USER = {};
 
 // var is_db_fetched = false;
 function init() {
     initDB();
-    fetchDB()
-        .then(function(querySnapshot) {
-            console.log("query", querySnapshot); 
-            querySnapshot.forEach(function(doc) {
-                console.log(doc.id, " => ", doc.data());
-                USER = doc.data();
-                STORE = USER.store;
-                console.log("USER", USER); 
-                return;
-            });
-            fillValues();
-            if( selectedRecord === undefined){
-                setProgress(0);
-            }else{
-                setProgress(selectedRecord.counter);
-            }
-            $('body').on('click', function(e) {e.stopPropagation();});
-            $('#clicker').on('click', increaseCounter);
-            $('#reset').on('click', reset);
-            $('#showPanel').on('click', onShowPanel);
-            $('#closePanel').on('click', onClosePanel);
-            $('#add-record-btn').on('click', createRecord);
-            $('button.details').on('click', toggleDropdown);
-            $('.record-body').on('click', onClickRecordBody);
-            $('.changeTitle').on('click', changeTitle);
-            $('.deleteRecord').on('click', deleteRecord);
-            $('#showPrayers').on('click', showPrayers);
-            $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
-            $('.showChart').on('click', showChart);
-            $chartPanel.find('.close').on('click', closeChartpanel);
-            $chartPanel.find('select.showBy').on('change', onChangeShowBy);
-            // pulseAll();
-            $('body').addClass('animated');
-        })
-        .catch(function(error){
-            console.error(error);
-            alert("Couldn't connect to the Counter!");
+    checkEmail().then(function(data) {
+        // data.forEach(doc => console.log("doc", doc));
+        console.log("============== Email registered ! ==============");
+        fetchData();
+    })
+    .catch(function(error) {
+        console.log("Registering email...");
+        db.collection("counter-users").doc(USER.email).get().then(function(data){
+            console.log("Email registered!!!");
+            fetchData();
         });
+    });
+    
+}
+
+function initListeners(){
+    $('body').on('click', function(e) {e.stopPropagation();});
+    $('#clicker').on('click', increaseCounter);
+    $('#reset').on('click', reset);
+    $('#showPanel').on('click', onShowPanel);
+    $('#closePanel').on('click', onClosePanel);
+    $('#add-record-btn').on('click', createRecord);
+    $('button.details').on('click', toggleDropdown);
+    $('.record-body').on('click', onClickRecordBody);
+    $('.changeTitle').on('click', changeTitle);
+    $('.deleteRecord').on('click', deleteRecord);
+    $('#showPrayers').on('click', showPrayers);
+    $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
+    $('.showChart').on('click', showChart);
+    $chartPanel.find('.close').on('click', closeChartpanel);
+    $chartPanel.find('select.showBy').on('change', onChangeShowBy);
+    $('body').addClass('animated');
 }
 
 function fillValues(){
@@ -55,20 +49,20 @@ function fillValues(){
     $templates = $('#templates');
     $chartPanel = $('#chart-panel');
     
-    if(STORE === null){
+    if(STORE === null || STORE === undefined){
         STORE = {};
-        console.log("store init ", STORE); 
     }
     if(STORE.history === undefined) {// All histories of records
         STORE.history = new History();
-        console.log("history init",  STORE.history); 
     }
     if(STORE.selectedIndex === undefined) {
         STORE.selectedIndex = 0;
-        console.log("index init", STORE.selectedIndex); 
     }
     if(STORE.records === undefined) {
-        var title = prompt("No records yet. Create one !", 'أستغفر الله');
+        var title = '';
+        do{
+            title = prompt("No records yet. Create one !", 'أستغفر الله');
+        }while(title == null);
         if(title.trim() == '')
             title = '';
         var newRec = new Record(1, title);
@@ -93,7 +87,6 @@ function fillValues(){
     activeChanged = false; // must be after fillSelectedRecord()   
     saveSTORE("logging");
     fillSelectedRecord();
-    // setTimeout(() => { console.log(JSON.stringify(STORE)); }, 5000);
 }
 
 function fillSelectedRecord(){
@@ -517,7 +510,7 @@ function newID(arr, idProp){
     if(idProp === undefined) idProp = 'id';
     return arr[arr.length-1][idProp] + 1;
 }
-
+// =========================================== DATABASE ==========================================
 function initDB(){
     firebase.initializeApp({
         apiKey: 'AIzaSyBP196irDbj3NgzWnTggEV_5XQJlNhRL5k',
@@ -527,13 +520,55 @@ function initDB(){
     db = firebase.firestore();
 }
 
-function fetchDB(){
-    return db.collection("counter-users").where("email", "==", "msn-23@live.com").get();
+function _fetchDB(){
+    return db.collection("counter-users").where("email", "==", USER.email).get();
+}
+
+function fetchData(){
+    _fetchDB()
+        .then(function(querySnapshot) {
+            console.log("Connected to Muhannad-Counter database!"); 
+            querySnapshot.forEach(function(doc) {
+                // console.log(doc.id, " => ", doc.data());
+                USER = doc.data();
+                STORE = USER.store;
+                console.log("USER", USER); 
+                return;
+            });
+            fillValues();
+            if( selectedRecord === undefined){
+                setProgress(0);
+            }else{
+                setProgress(selectedRecord.counter);
+            }
+            initListeners();
+        })
+        .catch(function(error){
+            console.error(error);
+            alert("Couldn't connect to the Counter!");
+        });
+}
+
+function checkEmail(){
+    USER.email = Cookies.get("email");
+    if(USER.email === undefined || USER.email == null){
+        USER.email = '';
+        do{
+            USER.email = prompt("Enter a username/email to log in. (Register if not exist)");
+        }while(USER.email == null || USER.email == '');
+        Cookies.set("email", USER.email);
+        return db.collection("counter-users").doc(USER.email).get();
+    }
 }
 
 function saveDB(){
     USER.store = STORE;
-    db.collection("counter-users").doc('msn-23@live.com').set(JSON.parse(JSON.stringify(USER)))
+    if(USER.store === undefined){
+        alert("Cannot save empty STORE!");
+        return;
+    }
+    console.log("USER", USER); 
+    db.collection("counter-users").doc(USER.email).set(JSON.parse(JSON.stringify(USER)))
         .then(function() {
             console.log("Document successfully written!");
         })
