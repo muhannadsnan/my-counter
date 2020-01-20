@@ -3,7 +3,7 @@ var counter, total, STORE, selectedRecord, selectedIndex, activeChanged, cookieO
 // var is_db_fetched = false;
 function init() {
     initDB();
-    if(checkEmail() == "cookie-email"){
+    if(checkEmail() === "cookie-email"){
         fetchData();
     }
     else{
