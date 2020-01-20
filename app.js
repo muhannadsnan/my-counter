@@ -3,11 +3,12 @@ var counter, total, STORE, selectedRecord, selectedIndex, activeChanged, cookieO
 // var is_db_fetched = false;
 function init() {
     initDB();
-    if(checkEmail() === "cookie-email"){
+    var checkemail = checkEmail();
+    if(checkemail === "cookie-email"){
         fetchData();
     }
-    else{
-        checkEmail().then(function(data) {
+    else if(typeof checkemail === "object"){
+        checkemail.then(function(data) {
             // data.forEach(doc => console.log("doc", doc));
             console.log("============== Email registered ! ==============");
             fetchData();
@@ -560,6 +561,7 @@ function checkEmail(){
             USER.email = prompt("Enter a username/email to log in. (Register if not exist)");
         }while(USER.email == null || USER.email == '');
         Cookies.set("email", USER.email);
+        console.log("type of ", typeof db.collection("counter-users").doc(USER.email).get()); 
         return db.collection("counter-users").doc(USER.email).get();
     }
     else{
