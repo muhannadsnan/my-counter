@@ -6,19 +6,20 @@ function init() {
     if(checkEmail() == "cookie-email"){
         fetchData();
     }
-    checkEmail().then(function(data) {
-        // data.forEach(doc => console.log("doc", doc));
-        console.log("============== Email registered ! ==============");
-        fetchData();
-    })
-    .catch(function(error) {
-        console.log("Registering email...");
-        db.collection("counter-users").doc(USER.email).get().then(function(data){
-            console.log("Email registered!!!");
+    else{
+        checkEmail().then(function(data) {
+            // data.forEach(doc => console.log("doc", doc));
+            console.log("============== Email registered ! ==============");
             fetchData();
+        })
+        .catch(function(error) {
+            console.log("Registering email...");
+            db.collection("counter-users").doc(USER.email).get().then(function(data){
+                console.log("Email registered!!!");
+                fetchData();
+            });
         });
-    });
-    
+    }
 }
 
 function initListeners(){
