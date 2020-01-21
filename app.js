@@ -1,22 +1,20 @@
-var counter, total, STORE, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, $panelRecord, $templates, db, USER = {};
+var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, $panelRecord, $templates, db, STORE, dbCollection;
 
-// var is_db_fetched = false;
 function init() {
     initDB();
     var checkemail = checkEmail();
-    if(checkemail === "cookie-email"){
+    if(checkemail === "cookie-id"){
         fetchData();
     }
     else if(typeof checkemail === "object"){
         checkemail.then(function(data) {
-            // data.forEach(doc => console.log("doc", doc));
-            console.log("============== Email registered ! ==============");
+            console.log("============== User found ! ==============");
             fetchData();
         })
         .catch(function(error) {
-            console.log("Registering email...");
-            db.collection("counter-users").doc(USER.email).get().then(function(data){
-                console.log("Email registered!!!");
+            console.log("Registering user...");
+            _fetchDB().then(function(data){
+                console.log("Successfully registered!!!");
                 fetchData();
             });
         });
@@ -53,10 +51,7 @@ function fillValues(){
     $panel = $('#panel');
     $templates = $('#templates');
     $chartPanel = $('#chart-panel');
-    
-    if(STORE === null || STORE === undefined){
-        STORE = {};
-    }
+
     if(STORE.history === undefined) {// All histories of records
         STORE.history = new History();
     }
@@ -84,13 +79,11 @@ function fillValues(){
             STORE.history.logBooks.push(new Logbook(rec.id));
         }
     });
-    // Cookies.remove('history', { path: '' }) // removed!
-    // alert(JSON.stringify(STORE.history.lastWriting))
     selectedIndex = STORE.selectedIndex;
     selectedRecord = STORE.records[selectedIndex];
     if(selectedRecord == null || selectedRecord === undefined) selectedRecord = STORE.records[0];
     activeChanged = false; // must be after fillSelectedRecord()   
-    saveSTORE("logging");
+    logging();
     fillSelectedRecord();
 }
 
@@ -115,10 +108,10 @@ function selectRecord(recID){
                 selectedIndex = i;
                 selectedRecord = rec;
             }
-        });
-    
+        });    
     }
-    saveSTORE("selectedIndex");
+    STORE.selectedIndex = selectedIndex;
+    saveDB();
 }
 
 function increaseCounter(){
@@ -209,10 +202,9 @@ function createRecord(){
         STORE.records.push(newRecord);
         addRecordToPanel(newRecord, STORE.records.length-1);
         STORE.history.logBooks.push(new Logbook(newRecord.id, new Log(new Date().toLocaleString("en"), newRecord.counter)));
-        saveSTORE(); // records + selectedIndex + history
+        saveDB();
         $input.val('');
         pulse($panel.find('.record').first(), 1);
-        // createChartPanel(newRecord);
     }
     pulse($input);
     pulse($(this), 1);
@@ -221,46 +213,28 @@ function createRecord(){
 
 function saveSelectedRecord(){
     STORE.records[selectedIndex] = selectedRecord;
-    saveSTORE("records", selectRecord);
+    saveDB();
 }
 
-function saveSTORE(toSave, record){
-    if(toSave === undefined) toSave = "all";
-    if(toSave == "all" || toSave == "records"){
-        Cookies.set("records", STORE.records, cookieOptions);
-        console.log("Records saved!");
-    }
-    if(toSave == "all" || toSave == "selectedIndex"){
-        STORE.selectedIndex = selectedIndex;
-        Cookies.set("selectedIndex", selectedIndex, cookieOptions);
-        console.log("selectedIndex saved!"); 
-    }
-    if(toSave == "all" || toSave == "history"){
-        Cookies.set("history", STORE.history, cookieOptions);
-        console.log("LogBook created!"); 
-    }
-    else if(toSave == "logging"){// logging
-        var today = new Date();
-        var lastWriting = new Date(Date.parse(STORE.history.lastWriting));
-        if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
-            STORE.history.lastWriting = today.toLocaleString("en"); // timestamp
-            console.log("History is lastWritten today", today.toLocaleString("en"));
-            $.each(STORE.records, function(i, rec){
-                $.each(STORE.history.logBooks, function(j, logBook){
-                    if(rec.id == logBook.recordId){
-                        var yesterday = new Date();
-                        yesterday.setDate(yesterday.getDate()-1);
-                        logBook.logs.push(new Log(yesterday.toLocaleString("en")/* timestamp */, rec.counterLog)); // save the daily every time you save
-                        rec.counterLog = 0;
-                    }
-                });
+function logging(){
+    var today = new Date();
+    var lastWriting = new Date(Date.parse(STORE.history.lastWriting));
+    if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
+        STORE.history.lastWriting = today.toLocaleString("en"); // timestamp
+        console.log("History is lastWritten today", today.toLocaleString("en"));
+        $.each(STORE.records, function(i, rec){
+            $.each(STORE.history.logBooks, function(j, logBook){
+                if(rec.id == logBook.recordId){
+                    var yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate()-1);
+                    logBook.logs.push(new Log(yesterday.toLocaleString("en")/* timestamp */, rec.counterLog)); // save the daily every time you save
+                    rec.counterLog = 0;
+                }
             });
-            Cookies.set("history", STORE.history, cookieOptions);
-            console.log("Logging saved!");
-        }
+        });
+        saveDB();
+        console.log("Logging saved! history: ", STORE.history);
     }
-    saveDB();
-    console.log("COOKIE STORE", STORE);
 }
 
 function toggleDropdown(){
@@ -291,23 +265,24 @@ function changeTitle(){
     var index = recIndexByID($rec.attr('data-id'));
     STORE.records[index].title = newTitle;
     setRecordTitle($rec.attr('data-id'), newTitle); // DOM
-    saveSTORE("records");
+    saveDB();
 }
 
 function deleteRecord(){
     var $rec = $(this).closest('.record');
+    console.log("$rec.attr('data-id')", $rec.attr('data-id')); 
     if($('.record').length == 1){
         alert("Delete aborted. It is the only record you have..");
     }
     else if(confirm('Are you sure to delete "' + $rec.attr('data-title') + '"?')){
         STORE.records = STORE.records.filter(el => el.id != $rec.attr('data-id'));
-        STORE.history.logBooks = STORE.history.logBooks.filter((el, i) => i !== $rec.attr('data-index'));
+        STORE.history.logBooks = STORE.history.logBooks.filter(el => el.recordId !== $rec.attr('data-id'));
         $('#record-'+$rec.attr('data-id')).remove();
         if($rec.attr('data-id') == selectedRecord.id){
             selectRecord(); // the first index
             fillSelectedRecord();
         }
-        saveSTORE();
+        saveDB();
     }
 }
 
@@ -423,7 +398,6 @@ function drawChart(recID, showBy){
             }
             point.x = new Date(_date.getFullYear(), _date.getMonth(), _date.getDate());
             dataPoints.push(point);
-            // getIntervalY(point.y);
             if(point.y > maxVal) maxVal = point.y;
             _date.setDate(_date.getDate() + 1);
         }
@@ -442,7 +416,6 @@ function drawChart(recID, showBy){
     /* Add today to chart */
     var rec = STORE.records.find(el => el.id == recID);
     dataPoints.push({x: new Date(today.getFullYear(), today.getMonth(), today.getDate()), y: rec.counterLog});
-    // getIntervalY(rec.counterLog);
     if(rec.counterLog > maxVal) maxVal = rec.counterLog;
     
     console.log("dataPoints", dataPoints, maxVal); 
@@ -522,20 +495,19 @@ function initDB(){
         projectId: 'test-firebase-597da'
     });
     db = firebase.firestore();
+    dbCollection = db.collection("counter-users");
+    STORE = {};
 }
 
 function _fetchDB(){
-    return db.collection("counter-users").where("email", "==", USER.email).get();
+    return dbCollection.where("id", "==", STORE.id).get();
 }
 
 function fetchData(){
-    _fetchDB()
-        .then(function(querySnapshot) {
-            console.log("Connected to Muhannad-Counter database!"); 
+    _fetchDB().then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
-                // console.log(doc.id, " => ", doc.data());
-                USER = doc.data();
-                STORE = USER.store;
+                STORE = doc.data();
+                STORE.id = doc.id;
                 return;
             });
             fillValues();
@@ -545,6 +517,7 @@ function fetchData(){
                 setProgress(selectedRecord.counter);
             }
             initListeners();
+            console.log("Connected to Muhannad-Counter database!"); 
         })
         .catch(function(error){
             console.error(error);
@@ -553,29 +526,28 @@ function fetchData(){
 }
 
 function checkEmail(){
-    USER.email = Cookies.get("email");
-    if(USER.email === undefined || USER.email == null){
-        USER.email = '';
+    STORE.id = Cookies.get("userID");
+    if(STORE.id === undefined || STORE.id == null){
+        STORE.id = '';
         do{
-            USER.email = prompt("Login with username. (will register if doesn't exist)");
-        }while(USER.email == null || USER.email == '');
-        Cookies.set("email", USER.email);
-        return db.collection("counter-users").doc(USER.email).get();
+            STORE.id = prompt("Login with username. (will register if doesn't exist)");
+        }while(STORE.id == null || STORE.id == '');
+        Cookies.set("userID", STORE.id);
+        return _fetchDB();
     }
     else{
-        return "cookie-email";
+        return "cookie-id";
     }
 }
 
 function saveDB(){
-    USER.store = STORE;
-    if(USER.store === undefined || USER.store == {}){
+    if(STORE.records === undefined || STORE.records.length == 0){
         alert("Cannot save empty STORE!");
         return;
     }
-    db.collection("counter-users").doc(USER.email).set(JSON.parse(JSON.stringify(USER)))
+    dbCollection.doc(STORE.id).set(JSON.parse(JSON.stringify(STORE)))
         .then(function() {
-            console.log("DB saved.");
+            console.log("DB saved. STORE: ", STORE);
         })
         .catch(function(error) {
             console.error("Error saving DB: ", error);
@@ -590,8 +562,8 @@ window.onload = init();
         v2 : records objects & panel.
         v3 : logs, charts & prayer-times page.
         v4 : advanced charts.
+        v5 : data stored on cloud firebase, no login required, but some kind of security. offline cache can be provided with firebase.
         
     FUTURE VERSIONS:
-        v5 : export your data to cloud and import them back on another device/browser, organized with google login.
-        v6 : data stored on cloud firebase, no login required, but some kind of security. offline cache can be provided with firebase.
+        v6 : log in and out and provide user info: name, email, pass, backup
 */
