@@ -276,7 +276,7 @@ function deleteRecord(){
     }
     else if(confirm('Are you sure to delete "' + $rec.attr('data-title') + '"?')){
         STORE.records = STORE.records.filter(el => el.id != $rec.attr('data-id'));
-        STORE.history.logBooks = STORE.history.logBooks.filter(el => el.recordId !== $rec.attr('data-id'));
+        STORE.history.logBooks = STORE.history.logBooks.filter(el => el.recordId != $rec.attr('data-id'));
         $('#record-'+$rec.attr('data-id')).remove();
         if($rec.attr('data-id') == selectedRecord.id){
             selectRecord(); // the first index
@@ -485,7 +485,8 @@ function drawChart(recID, showBy){
 function newID(arr, idProp){
     if(arr === undefined) arr = STORE.records;
     if(idProp === undefined) idProp = 'id';
-    return arr[arr.length-1][idProp] + 1;
+    if(arr.length > 0)
+        return arr[arr.length-1][idProp] + 1;
 }
 // =========================================== DATABASE ==========================================
 function initDB(){
