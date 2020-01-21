@@ -557,7 +557,7 @@ function checkEmail(){
     if(USER.email === undefined || USER.email == null){
         USER.email = '';
         do{
-            USER.email = prompt("Enter a username/email to log in. (Register if not exist)");
+            USER.email = prompt("Login with username. (will register if doesn't exist)");
         }while(USER.email == null || USER.email == '');
         Cookies.set("email", USER.email);
         return db.collection("counter-users").doc(USER.email).get();
