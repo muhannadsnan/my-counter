@@ -79,9 +79,9 @@ function fillValues(){
     }
     /* insure that every record has Logbook */
     $.each(STORE.records, function(i, rec){
-        if(!STORE.history.all.some(el => el.recordId == rec.id)){
+        if(!STORE.history.logBooks.some(el => el.recordId == rec.id)){
             console.log("Generating daily Log for record ("+rec.title+")");
-            STORE.history.all.push(new Logbook(rec.id));
+            STORE.history.logBooks.push(new Logbook(rec.id));
         }
     });
     // Cookies.remove('history', { path: '' }) // removed!
@@ -181,15 +181,15 @@ function onClosePanel(){
 
 function showRecords(){
     $panel.find('.record').remove();
-    STORE.records.forEach(record => {
-        addRecordToPanel(record);
+    STORE.records.forEach((record, i) => {
+        addRecordToPanel(record, i);
     });
 }
 
-function addRecordToPanel(record){
+function addRecordToPanel(record, index){
     console.log(record); 
     var tpl = $templates.find('.record-tpl').clone(true);
-    tpl.attr('id', 'record-'+record.id).attr('data-id', record.id).attr('data-title', record.title);
+    tpl.attr('id', 'record-'+record.id).attr('data-id', record.id).attr('data-title', record.title).attr('data-index', index);
     tpl.removeClass('d-none record-tpl').addClass('record').toggleClass('color-primary active', selectedRecord.id == record.id);
     tpl.find('.title').text(record.title);
     tpl.find('.counter').text(record.counter);
@@ -208,7 +208,7 @@ function createRecord(){
         var newRecord = new Record(newID(), $input.val());
         STORE.records.push(newRecord);
         addRecordToPanel(newRecord, STORE.records.length-1);
-        STORE.history.all.push(new Logbook(newRecord.id, new Log(Date.now(), newRecord.counter)));
+        STORE.history.logBooks.push(new Logbook(newRecord.id, new Log(new Date().toLocaleString("en"), newRecord.counter)));
         saveSTORE(); // records + selectedIndex + history
         $input.val('');
         pulse($panel.find('.record').first(), 1);
@@ -246,7 +246,7 @@ function saveSTORE(toSave, record){
             STORE.history.lastWriting = today.toLocaleString("en"); // timestamp
             console.log("History is lastWritten today", today.toLocaleString("en"));
             $.each(STORE.records, function(i, rec){
-                $.each(STORE.history.all, function(j, logBook){
+                $.each(STORE.history.logBooks, function(j, logBook){
                     if(rec.id == logBook.recordId){
                         var yesterday = new Date();
                         yesterday.setDate(yesterday.getDate()-1);
@@ -301,12 +301,11 @@ function deleteRecord(){
     }
     else if(confirm('Are you sure to delete "' + $rec.attr('data-title') + '"?')){
         STORE.records = STORE.records.filter(el => el.id != $rec.attr('data-id'));
-        STORE.history.all = STORE.history.all.filter(el => el.recordId != $rec.attr('data-id'));
+        STORE.history.logBooks = STORE.history.logBooks.filter((el, i) => i !== $rec.attr('data-index'));
         $('#record-'+$rec.attr('data-id')).remove();
         if($rec.attr('data-id') == selectedRecord.id){
             selectRecord(); // the first index
             fillSelectedRecord();
-            return;
         }
         saveSTORE();
     }
@@ -376,7 +375,7 @@ function closeChartpanel(){
 
 function drawChart(recID, showBy){
     if(showBy === undefined) showBy = "5-days";
-    var logBook = STORE.history.all.find(el => el.recordId == recID);
+    var logBook = STORE.history.logBooks.find(el => el.recordId == recID);
     if(logBook === undefined){
         alert("No data was found for this record");
         closeChartpanel();
@@ -570,7 +569,7 @@ function checkEmail(){
 
 function saveDB(){
     USER.store = STORE;
-    if(USER.store === undefined){
+    if(USER.store === undefined || USER.store == {}){
         alert("Cannot save empty STORE!");
         return;
     }

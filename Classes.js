@@ -14,8 +14,8 @@ class Record{
 }
 
 class History{
-    constructor(all, lastWriting){
-        this.all = all || [];
+    constructor(logBooks, lastWriting){
+        this.logBooks = logBooks || [];
         this.lastWriting = lastWriting || 0;
         this.print();
     }
