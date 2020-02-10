@@ -6,6 +6,7 @@ function init() {
         showLoginPanel();
     }
     else{
+        console.log("Welcome back " + STORE.id + '!!' ); 
         $('body').addClass('animated');
         fillValues();
         initListeners();
@@ -26,7 +27,6 @@ function initListeners(){
     $('#showPrayers').on('click', showPrayers);
     $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
     $('.showChart').on('click', showChart);
-    $('#login').on('click', login);
     $('#logout').on('click', logout);
     $chartPanel.find('.close').on('click', closeChartpanel);
     $chartPanel.find('select.showBy').on('change', onChangeShowBy);
@@ -522,6 +522,7 @@ function fetchData(){
 }
 
 function showLoginPanel(){
+    $('#login').on('click', login);
     $loginPanel = $('#login-panel');
     $loginPanel.addClass('show');
 }
@@ -532,25 +533,12 @@ function isLoggedIn(){
 }
 
 function login(){
-    // var login = isLoggedIn();
-    alert();
-    if(login){ // logged in and I remember you
-        Cookies.set("userID", STORE.id);
-        // return _fetchDB();
+    if(STORE === undefined) STORE = {};
+    STORE.id = $loginPanel.find('.username').val();
+    if(STORE.id != ''){
         fetchData();
-    }
-    else if(typeof login === "object"){
-        login.then(function(data) {
-            console.log("============== User found ! ==============");
-            fetchData();
-        })
-        .catch(function(error) {
-            console.log("Registering user...");
-            _fetchDB().then(function(data){
-                console.log("Successfully registered!!!");
-                fetchData();
-            });
-        });
+        Cookies.set("userID", STORE.id);
+        $loginPanel.removeClass('show');
     }
     else{
         alert("Cannot login! Please provide all login fields.");
