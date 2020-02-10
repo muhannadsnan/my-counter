@@ -7,8 +7,6 @@ function init() {
     }
     else{
         console.log("Welcome back " + STORE.id + '!!' , 'STORE', STORE); 
-        $('#please-login .welcomeback').text('Welcome back ' + STORE.id);
-        $('body').addClass('animated');
         fetchData();
     }
 }
