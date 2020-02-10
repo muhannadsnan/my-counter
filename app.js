@@ -5,6 +5,11 @@ function init() {
     if(!isLoggedIn()){
         showLoginPanel();
     }
+    else{
+        $(body).addClass('animated');
+        initListeners();
+        fillValues();
+    }
 }
 
 function initListeners(){
@@ -528,6 +533,7 @@ function isLoggedIn(){
 
 function login(){
     // var login = isLoggedIn();
+    alert();
     if(login){ // logged in and I remember you
         Cookies.set("userID", STORE.id);
         // return _fetchDB();

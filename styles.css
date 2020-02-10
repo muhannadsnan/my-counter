@@ -166,6 +166,7 @@ button#showPanel, button#reset, #counter{top: -200%;}
 footer{bottom: -100%;}
 
 .animated button#showPanel{top: 0; transition: all .5s ease .3s;}
+.animated #please-login{display: none;}
 .animated #counter{top: 0; transition: all .5s ease .4s;}
 .animated button#reset{top: 0; transition: all .5s ease .5s;}
 .animated #progress{left: 1rem; transition: all .5s ease .8s;}
