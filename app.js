@@ -6,7 +6,7 @@ function init() {
         showLoginPanel();
     }
     else{
-        $(body).addClass('animated');
+        $('body').addClass('animated');
         initListeners();
         fillValues();
     }
