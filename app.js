@@ -7,6 +7,7 @@ function init() {
     }
     else{
         console.log("Welcome back " + STORE.id + '!!' ); 
+        $('#please-login .welcomeback').text('Welcome back ' + STORE.id);
         $('body').addClass('animated');
         fillValues();
         initListeners();
@@ -53,13 +54,8 @@ function fillValues(){
         STORE.selectedIndex = 0;
     }
     if(STORE.records === undefined) {
-        var title = '';
-        do{
-            title = prompt("No records yet. Create one !", 'أستغفر الله');
-        }while(title == null);
-        if(title.trim() == '')
-            title = '';
-        var newRec = new Record(1, title);
+        alert("No records yet. Create one ! e.g. أستغفر الله");
+        var newRec = new Record(1);
         STORE.records = [newRec];
         STORE.selectedIndex = 0;
         selectedRecord = newRec;
