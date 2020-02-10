@@ -2,7 +2,7 @@ class Record{
     constructor(id, title, counter, total, isActive, counterLog){
         // this.id = uniqID();
         this.id = id || null;
-        this.title = title.trim() || "Untitled";
+        this.title = title || "Untitled";
         this.counter = counter || 0;
         this.total = total || 0;
         this.counterLog = counterLog || 0;
