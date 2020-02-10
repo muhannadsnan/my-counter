@@ -7,8 +7,8 @@ function init() {
     }
     else{
         $('body').addClass('animated');
-        initListeners();
         fillValues();
+        initListeners();
     }
 }
 
@@ -572,7 +572,7 @@ function saveDB(){
 }
 
 function logout(){
-    Cookies.set("userID", null);
+    Cookies.set("userID", '');
     window.location = window.location;
 }
 
