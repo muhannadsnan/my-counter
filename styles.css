@@ -1,6 +1,7 @@
 body{z-index: 0; cursor: pointer; position: fixed; top: 0; bottom: 0; right: 0; left: 0; background: #2f2f2f; color: #fff; font-family: Lalezar, Audiowide, tahoma; margin: 0; font-size: 5rem;}
 h1, h2, h3, h4, h5, h6{margin: 3rem 0; text-align: center;}
 p{margin: 0;}
+input[type=text]{background: transparent; width: 100%; font-size: 4rem; font-family: Lalezar, Audiowide, tahoma; color: #c6ff00; border: 0;}
 button{font-family: Lalezar, Audiowide, tahoma; background: transparent; cursor: pointer; border: 0; color: #c6ff00; font-size: 7rem; z-index: 101; position: relative; line-height: 2rem; vertical-align: middle; padding: 0;}
 select{font-size: 5rem; background: transparent; color: #c6ff00; text-align: center; padding: 1rem; border: 1px solid #c6ff00; border-radius: 1rem;}
 i{line-height: unset;} button span{font-size: 5rem;}
@@ -44,7 +45,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel #showAddRecord, #panel #hideAddRecord{position: absolute; top: 0; left: 0; padding: 2rem;}
 #panel .panel-heading{text-align: center; font-size: 6rem;}
 #panel .panel-body{/*  */}
-#panel input[type=text]{background: transparent; width: 100%; font-size: 4rem; font-family: Lalezar, Audiowide, tahoma; color: #c6ff00; border: 0;}
+/* #panel input[type=text]{background: transparent; width: 100%; font-size: 4rem; font-family: Lalezar, Audiowide, tahoma; color: #c6ff00; border: 0;} */
 #panel .add-record{height: 0px; overflow: hidden;}
 #panel.showAddRecord .add-record{height: 12rem;}
 #panel .add-record input{width: 100%; border-bottom: .25rem solid #c6ff00;}
@@ -94,6 +95,8 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 .btn-block{font-size: 5rem; padding: 2rem; border: .25rem solid #0a8c3f; border-radius: 1rem; margin-top: 2rem; color: #0a8c3f; width: 100%;}
 #showPrayers img{width: 10rem; float: left;}
 #showPrayers span{line-height: 10rem; float: left; vertical-align: middle;}
+
+#login-panel{position: absolute; right: 0; left: 0; top: 0; bottom: 0; z-index: 9999;}
 
 /************************ FONTS *************************/
 @font-face{font-family: 'MeriendaOne'; src: local('Merienda One'), local('MeriendaOne-Regular'), url(https://fonts.gstatic.com/s/meriendaone/v10/H4cgBXaMndbflEq6kyZ1ht6ohYaz.woff2) format('woff2'); unicode-range: U+0020-024F;}

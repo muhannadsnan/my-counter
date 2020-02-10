@@ -1,24 +1,7 @@
-var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $chart, $panelRecord, $templates, db, STORE, dbCollection;
+var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $loginPanel, $chart, $panelRecord, $templates, db, STORE, dbCollection;
 
 function init() {
     initDB();
-    var checkemail = checkEmail();
-    if(checkemail === "cookie-id"){ // logged in and I remember you
-        fetchData();
-    }
-    else if(typeof checkemail === "object"){
-        checkemail.then(function(data) {
-            console.log("============== User found ! ==============");
-            fetchData();
-        })
-        .catch(function(error) {
-            console.log("Registering user...");
-            _fetchDB().then(function(data){
-                console.log("Successfully registered!!!");
-                fetchData();
-            });
-        });
-    }
 }
 
 function initListeners(){
@@ -35,6 +18,7 @@ function initListeners(){
     $('#showPrayers').on('click', showPrayers);
     $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
     $('.showChart').on('click', showChart);
+    $('#login').on('click', login);
     $('#logout').on('click', logout);
     $chartPanel.find('.close').on('click', closeChartpanel);
     $chartPanel.find('select.showBy').on('change', onChangeShowBy);
@@ -53,6 +37,7 @@ function fillValues(){
     $panel = $('#panel');
     $templates = $('#templates');
     $chartPanel = $('#chart-panel');
+    $loginPanel = $('#login-panel');
 
     if(STORE.history === undefined) {// All histories of records
         STORE.history = new History();
@@ -529,18 +514,30 @@ function fetchData(){
         });
 }
 
-function checkEmail(){
+function isLoggedIn(){
     STORE.id = Cookies.get("userID");
-    if(STORE.id === undefined || STORE.id == null || STORE.id == ''){
-        STORE.id = '';
-        do{
-            STORE.id = prompt("Login with username. (will register if doesn't exist)");
-        }while(STORE.id == null || STORE.id == '');
+    return !(STORE.id === undefined || STORE.id == null || STORE.id == '');
+}
+
+function login(){
+    var login = isLoggedIn();
+    if(login){ // logged in and I remember you
         Cookies.set("userID", STORE.id);
-        return _fetchDB();
+        // return _fetchDB();
+        fetchData();
     }
-    else{
-        return "cookie-id";
+    else if(typeof login === "object"){
+        login.then(function(data) {
+            console.log("============== User found ! ==============");
+            fetchData();
+        })
+        .catch(function(error) {
+            console.log("Registering user...");
+            _fetchDB().then(function(data){
+                console.log("Successfully registered!!!");
+                fetchData();
+            });
+        });
     }
 }
 
