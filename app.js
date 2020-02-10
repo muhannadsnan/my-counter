@@ -1,9 +1,9 @@
-var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $panel, $chartPanel, $chart, $panelRecord, $templates, db, STORE, dbCollection;
+var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $chart, $panelRecord, $templates, db, STORE, dbCollection;
 
 function init() {
     initDB();
     var checkemail = checkEmail();
-    if(checkemail === "cookie-id"){
+    if(checkemail === "cookie-id"){ // logged in and I remember you
         fetchData();
     }
     else if(typeof checkemail === "object"){
@@ -35,6 +35,7 @@ function initListeners(){
     $('#showPrayers').on('click', showPrayers);
     $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
     $('.showChart').on('click', showChart);
+    $('#logout').on('click', logout);
     $chartPanel.find('.close').on('click', closeChartpanel);
     $chartPanel.find('select.showBy').on('change', onChangeShowBy);
     $('body').addClass('animated');
@@ -46,6 +47,7 @@ function fillValues(){
     $total = $("#total");
     $progress = $("#progress");
     $counter = $("#counter");
+    $user = $("#user");
     $today = $("#today");
     $title = $("#recordTitle");
     $panel = $('#panel');
@@ -92,6 +94,7 @@ function fillSelectedRecord(){
     $counter.text(selectedRecord.counter);
     $today.text((selectedRecord.counterLog === undefined) ? 0 : selectedRecord.counterLog);
     $total.text(selectedRecord.total);
+    $user.text(STORE.id);
     setProgress(selectedRecord.counter);
     activeChanged = true;
 }
@@ -528,7 +531,7 @@ function fetchData(){
 
 function checkEmail(){
     STORE.id = Cookies.get("userID");
-    if(STORE.id === undefined || STORE.id == null){
+    if(STORE.id === undefined || STORE.id == null || STORE.id == ''){
         STORE.id = '';
         do{
             STORE.id = prompt("Login with username. (will register if doesn't exist)");
@@ -553,6 +556,11 @@ function saveDB(){
         .catch(function(error) {
             console.error("Error saving DB: ", error);
         });
+}
+
+function logout(){
+    Cookies.set("userID", null);
+    window.location = window.location;
 }
 
 window.onload = init();
