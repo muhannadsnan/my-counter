@@ -19,6 +19,7 @@ i{line-height: unset;} button span{font-size: 5rem;}
 .trans-right{-webkit-transition-property: right; -moz-transition-property: right; -o-transition-property: right; transition-property: right; }
 /**********************************/
 #please-login{z-index: -100; position: relative;}
+#please-login .loading{text-align: center; width: 100%;}
 #clicker{position: absolute; width: 100%; height: 100vh; border: 0px solid green; z-index: 100; top: 0; right: 0; cursor: copy;}
 #counter{position: absolute; top: 3rem; right: 8rem; left: 8rem; font-size: 9rem; color: #c6ff00; margin: 0 auto; line-height: 7rem; text-align: center;}
 .main{position: absolute; top: 2rem; bottom: 8rem; right: 1rem; left: 1rem;}
