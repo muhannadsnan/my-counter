@@ -18,7 +18,7 @@ i{line-height: unset;} button span{font-size: 5rem;}
 .trans-left{-webkit-transition-property: left; -moz-transition-property: left; -o-transition-property: left; transition-property: left; }
 .trans-right{-webkit-transition-property: right; -moz-transition-property: right; -o-transition-property: right; transition-property: right; }
 /**********************************/
-
+#please-login{z-index: -100; position: relative;}
 #clicker{position: absolute; width: 100%; height: 100vh; border: 0px solid green; z-index: 100; top: 0; right: 0; cursor: copy;}
 #counter{position: absolute; top: 3rem; right: 8rem; left: 8rem; font-size: 9rem; color: #c6ff00; margin: 0 auto; line-height: 7rem; text-align: center;}
 .main{position: absolute; top: 2rem; bottom: 8rem; right: 1rem; left: 1rem;}
@@ -96,7 +96,8 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #showPrayers img{width: 10rem; float: left;}
 #showPrayers span{line-height: 10rem; float: left; vertical-align: middle;}
 
-#login-panel{position: absolute; right: 0; left: 0; top: 0; bottom: 0; z-index: 9999;}
+#login-panel{background: #000; position: absolute; right: -100%; left: 100%; top: 0; bottom: 0; z-index: -99;}
+#login-panel.show{position: absolute; right: 0; left: 0; top: 0; bottom: 0; z-index: 9999;}
 
 /************************ FONTS *************************/
 @font-face{font-family: 'MeriendaOne'; src: local('Merienda One'), local('MeriendaOne-Regular'), url(https://fonts.gstatic.com/s/meriendaone/v10/H4cgBXaMndbflEq6kyZ1ht6ohYaz.woff2) format('woff2'); unicode-range: U+0020-024F;}

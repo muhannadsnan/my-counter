@@ -2,6 +2,9 @@ var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions,
 
 function init() {
     initDB();
+    if(!isLoggedIn()){
+        showLoginPanel();
+    }
 }
 
 function initListeners(){
@@ -37,7 +40,6 @@ function fillValues(){
     $panel = $('#panel');
     $templates = $('#templates');
     $chartPanel = $('#chart-panel');
-    $loginPanel = $('#login-panel');
 
     if(STORE.history === undefined) {// All histories of records
         STORE.history = new History();
@@ -514,13 +516,18 @@ function fetchData(){
         });
 }
 
+function showLoginPanel(){
+    $loginPanel = $('#login-panel');
+    $loginPanel.addClass('show');
+}
+
 function isLoggedIn(){
     STORE.id = Cookies.get("userID");
     return !(STORE.id === undefined || STORE.id == null || STORE.id == '');
 }
 
 function login(){
-    var login = isLoggedIn();
+    // var login = isLoggedIn();
     if(login){ // logged in and I remember you
         Cookies.set("userID", STORE.id);
         // return _fetchDB();
@@ -538,6 +545,9 @@ function login(){
                 fetchData();
             });
         });
+    }
+    else{
+        alert("Cannot login! Please provide all login fields.");
     }
 }
 
