@@ -6,7 +6,7 @@ function init() {
         showLoginPanel();
     }
     else{
-        console.log("Welcome back " + STORE.id + '!!' ); 
+        console.log("Welcome back " + STORE.id + '!!' , 'STORE', STORE); 
         $('#please-login .welcomeback').text('Welcome back ' + STORE.id);
         $('body').addClass('animated');
         fillValues();
@@ -521,6 +521,7 @@ function showLoginPanel(){
     $('#login').on('click', login);
     $loginPanel = $('#login-panel');
     $loginPanel.addClass('show');
+    $loginPanel.find('.username').focus();
 }
 
 function isLoggedIn(){
