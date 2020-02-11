@@ -236,7 +236,8 @@ function onClickRecordBody(){
     $rec.addClass('color-primary active');
     selectRecord($rec.attr('data-id'));
     fillSelectedRecord();
-    pulse($rec);
+    // pulse($rec);
+    onClosePanel();
 }
 
 function recIndexByID(id){
