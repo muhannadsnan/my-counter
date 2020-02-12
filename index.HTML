@@ -27,17 +27,17 @@
                 <div class="val c-0 trans-all-5s trans-width-delay-08s"></div>
             </div>
             <div class="info">
-                <div class="user color-secondary" class="m-0">
+                <div class="user color-secondary mb-1">
                     <i class="far fa-user"></i>
                     <span id="user">User Not Logged In !!</span>
                 </div>
-                <div class="today" class="m-0">
-                    <p class="label">Today</p>
-                    <p id="today" class="number">...</p>
+                <div class="today">
+                    <span class="label mb-2">Today</span>
+                    <span id="today" class="number">...</span>
                 </div>
-                <div class="total" class="m-0">
-                    <p class="label">Total</p>
-                    <p id="total" class="number m-0">...</p>
+                <div class="total">
+                    <span class="label mb-2">Total</span>
+                    <span id="total" class="number m-0">...</span>
                 </div>
             </div>
         </div>
@@ -84,14 +84,15 @@
         </div>
 
         <div id="login-panel" class="p-2 color-primary">
-            <h4>LOGIN</h4>
-            <div class="d-flex p-2">
-                <i class="fas fa-user mr-2"></i><input type="text" class="username" placeholder="Username...">
+            <h4 class="bg-primary py-1 mt-0">DIGITAL COUNTER (MDC)</h4>
+            <div class="d-flex border mb-2 color-primary">
+                <i class="fas fa-user mr-2 p-2"></i><input type="text" class="username p-2" placeholder="Username...">
             </div>
-            <div class="d-flex p-2">
-                <i class="fas fa-key mr-2"></i><input type="text" class="password" placeholder="Password...">
+            <div class="d-flex border color-primary">
+                <i class="fas fa-key mr-2 p-2"></i><input type="text" class="password p-2" placeholder="Password...">
             </div>
-            <button id="login" class="btn-block p-3">Login</button>
+            <button id="login" class="btn-block p-3 bg-green border-0 mt-3">LOGIN</button>
+            <p class="font-3 color-grey mt-3">Enter a username to login. If you don't have one, then it will be created for you. Username cannot be changed later!</p>
         </div>
 
         <footer class="p-2">
