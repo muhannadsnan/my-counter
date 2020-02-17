@@ -1,9 +1,10 @@
 class Record{
-    constructor(id, title, counter, total, isActive, counterLog){
+    constructor(id, title, counter, goal, total, isActive, counterLog){
         // this.id = uniqID();
         this.id = id || null;
         this.title = title || "Untitled";
         this.counter = counter || 0;
+        this.goal = goal || 100;
         this.total = total || 0;
         this.counterLog = counterLog || 0;
         this.print();

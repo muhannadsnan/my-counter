@@ -21,6 +21,7 @@ function initListeners(){
     $('button.details').on('click', toggleDropdown);
     $('.record-body').on('click', onClickRecordBody);
     $('.changeTitle').on('click', changeTitle);
+    $('.changeGoal').on('click', changeGoal);
     $('.deleteRecord').on('click', deleteRecord);
     $('#showPrayers').on('click', showPrayers);
     $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
@@ -79,9 +80,18 @@ function fillSelectedRecord(){
     $counter.text(selectedRecord.counter);
     $today.text((selectedRecord.counterLog === undefined) ? 0 : selectedRecord.counterLog);
     $total.text(selectedRecord.total);
+    $progress.find('.percent').text(goalPercent()+'%');
     $user.text(STORE.id);
-    setProgress(selectedRecord.counter);
+    setProgress(goalPercent());
     activeChanged = true;
+}
+
+function goalPercent(){
+    if(selectedRecord.counterLog == 0) 
+        return 0;
+    if(selectedRecord.goal == 0 || selectedRecord.goal === undefined || selectedRecord.goal === null) 
+        selectedRecord.goal = 100;
+    return parseInt(selectedRecord.counterLog/selectedRecord.goal*100);
 }
 
 function selectRecord(recID){
@@ -106,38 +116,37 @@ function increaseCounter(){
     selectedRecord.counter++; 
     selectedRecord.total++;
     selectedRecord.counterLog++;
-    var refreshCounter = selectedRecord.counter % 10 == 0;
+    var refreshPercent = selectedRecord.counterLog % 10 == 0;
     var today = selectedRecord.counterLog % 10 == 0 ? selectedRecord.counterLog : undefined;
-    setProgress(selectedRecord.counter, refreshCounter, today);
+    setProgress(goalPercent(), refreshPercent, today);
     saveSelectedRecord();
-    if(selectedRecord.counter % 100 == 0){
-        pulse($counter, 1);
-    }
-    if(selectedRecord.counterLog % 100 == 0){
-        pulse($today, 2);
-    }
+    if(selectedRecord.counter % 10 == 0) $counter.text(selectedRecord.counter);
+    if(selectedRecord.counter % 100 == 0) pulse($counter, 1);
+    if(selectedRecord.counterLog % 100 == 0) pulse($today, 2);
     if(selectedRecord.total % 100 == 0){
         $total.text(selectedRecord.total);
         pulse($total, 1);
     }
 }
 
-function setProgress(counter, refreshCounter, today){
-    if(refreshCounter === undefined) refreshCounter = true;
+function setProgress(value, refreshPercent, today){
+    if(refreshPercent === undefined) refreshPercent = false;
     if(today === undefined) today = -1;
-    if(refreshCounter){
-        $counter.text(counter); 
+    if(refreshPercent){
+        $progress.find('.percent').text(value+'%');
     }
     if(today != -1){
         $today.text(today); 
     }
-    $progress.find('.val').attr('class', 'val c-'+(counter%100));
+    if(value >= 100) $progress.addClass('color-green').find('.val').attr('class', 'val c-100 goal-achieved');
+    else $progress.removeClass('color-green').find('.val').attr('class', 'val c-'+(value%100));
     pulse($progress);
 }
 
 function reset(){
     selectedRecord.counter = 0; 
-    setProgress(0);
+    $counter.text(0);
+    setProgress(goalPercent());
     saveSelectedRecord();
 }
 
@@ -170,7 +179,7 @@ function showRecords(){
 function addRecordToPanel(record, index){
     console.log(record); 
     var tpl = $templates.find('.record-tpl').clone(true);
-    tpl.attr('id', 'record-'+record.id).attr('data-id', record.id).attr('data-title', record.title).attr('data-index', index);
+    tpl.attr('id', 'record-'+record.id).attr('data-id', record.id).attr('data-title', record.title || 'N/A').attr('data-index', index).attr('data-goal', record.goal || 100);
     tpl.removeClass('d-none record-tpl').addClass('record').toggleClass('color-primary active', selectedRecord.id == record.id);
     tpl.find('.title').text(record.title);
     tpl.find('.counter').text(record.counter);
@@ -247,13 +256,26 @@ function recIndexByID(id){
 function changeTitle(){
     var $rec = $(this).closest('.record');
     var newTitle = prompt("New title:", $rec.attr('data-title'));
-    while(newTitle.trim() == '' || newTitle == null){
+    while(newTitle != null/*cancelled*/ && newTitle.trim() == ''){
         alert('You cannot enter an empty title!');
         newTitle = prompt("New title:", $rec.attr('data-title'));
     }
     var index = recIndexByID($rec.attr('data-id'));
     STORE.records[index].title = newTitle;
     setRecordTitle($rec.attr('data-id'), newTitle); // DOM
+    saveDB();
+}
+
+function changeGoal(){
+    var $rec = $(this).closest('.record');
+    var newGoal = prompt("New Goal:", $rec.attr('data-goal'));
+    while(newGoal != null/*!cancelled*/ && (newGoal.trim() == '' || newGoal === parseInt(newGoal, 10)/*is int*/)){
+        alert('The goal must be a number!');
+        newGoal = prompt("New Goal:", $rec.attr('data-goal'));
+    }
+    var index = recIndexByID($rec.attr('data-id'));
+    STORE.records[index].goal = newGoal;
+    setProgress(goalPercent(), true);
     saveDB();
 }
 
@@ -501,10 +523,10 @@ function fetchData(){
                 return;
             });
             fillValues();
-            if( selectedRecord === undefined){
+            if(selectedRecord === undefined){
                 setProgress(0);
             }else{
-                setProgress(selectedRecord.counter);
+                setProgress(goalPercent());
             }
             initListeners();
             console.log("Connected to Muhannad-Counter database!"); 
@@ -563,12 +585,14 @@ window.onload = init();
 
 /* 
     VERSIONS:
-        v1 : simple counter with circle.
-        v2 : records objects & panel.
-        v3 : logs, charts & prayer-times page.
-        v4 : advanced charts.
-        v5 : data stored on cloud firebase, no login required, but some kind of security. offline cache can be provided with firebase.
+        v1   : simple counter with circle.
+        v2   : records objects & panel.
+        v3   : logs, charts & prayer-times page.
+        v4   : advanced charts.
+        v5   : data stored on cloud firebase, no login required, but some kind of security. offline cache can be provided with firebase.
+        v5.3 : log in and out and provide user info: name, email, pass, backup
+        v5.5 : set record goal, progress comes from it
         
     FUTURE VERSIONS:
-        v6 : log in and out and provide user info: name, email, pass, backup
+        v8 : GROUPS
 */
