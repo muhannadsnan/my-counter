@@ -65,7 +65,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .record .record-body span{position: absolute; line-height: 2.5rem; vertical-align: middle; margin: 0; font-size: 2.5rem; color: #fff; }
 #panel .record .record-body .today{top: 1rem;  }
 #panel .record .record-body .progress{top: 5rem;}
-#panel .record .record-body .title .label{left: 21rem; color: #c6ff00; line-height: 4rem; font-size: 4rem; white-space: pre-wrap; height: 95%; vertical-align: middle; overflow: hidden; right: 5rem; display: flex; align-items: center;}
+#panel .record .record-body .title .label{left: 21rem; color: #c6ff00; line-height: 4rem; font-size: 4rem; white-space: pre-wrap; height: 9rem; vertical-align: middle; overflow: hidden; right: 5rem; display: flex; align-items: center;}
 #panel .record .record-body .title .done{left: 15rem; position: absolute; top: 2rem; font-size: 5rem;}
 
 #panel .record .dropdown{height: 0px; border: 0px solid #fff; border-top: 0; background: #3c3b3b; overflow: hidden; position: relative;}
