@@ -308,7 +308,7 @@ function deleteRecord(){
 }
 
 function setRecordTitle(id, newTitle){ // DOM only
-    $('#record-'+id).find('.title').text(newTitle);
+    $('#record-'+id).find('.title .label').text(newTitle);
     if(id == selectedRecord.id){
         $('#recordTitle').text(newTitle);
     }
