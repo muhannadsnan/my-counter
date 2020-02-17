@@ -87,7 +87,6 @@ function fillSelectedRecord(){
 }
 
 function goalPercent(counterLog, goal){
-    console.log(counterLog, goal, ); 
     if(counterLog === undefined) counterLog = parseInt(selectedRecord.counterLog);
     if(goal === undefined) goal = parseInt(selectedRecord.goal);
     if(counterLog == 0) 
@@ -293,7 +292,6 @@ function changeGoal(){
 
 function deleteRecord(){
     var $rec = $(this).closest('.record');
-    console.log("$rec.attr('data-id')", $rec.attr('data-id')); 
     if($('.record').length == 1){
         alert("Delete aborted. It is the only record you have..");
     }
