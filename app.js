@@ -86,12 +86,15 @@ function fillSelectedRecord(){
     activeChanged = true;
 }
 
-function goalPercent(){
-    if(selectedRecord.counterLog == 0) 
+function goalPercent(counterLog, goal){
+    console.log(counterLog, goal, ); 
+    if(counterLog === undefined) counterLog = parseInt(selectedRecord.counterLog);
+    if(goal === undefined) goal = parseInt(selectedRecord.goal);
+    if(counterLog == 0) 
         return 0;
-    if(selectedRecord.goal == 0 || selectedRecord.goal === undefined || selectedRecord.goal === null) 
-        selectedRecord.goal = 100;
-    return parseInt(selectedRecord.counterLog/selectedRecord.goal*100);
+    if(goal == 0 || goal === null || goal === undefined) 
+        goal = 100;
+    return parseInt(counterLog/goal*100);
 }
 
 function selectRecord(recID){
@@ -179,12 +182,15 @@ function showRecords(){
 function addRecordToPanel(record, index){
     console.log(record); 
     var tpl = $templates.find('.record-tpl').clone(true);
-    tpl.attr('id', 'record-'+record.id).attr('data-id', record.id).attr('data-title', record.title || 'N/A').attr('data-index', index).attr('data-goal', record.goal || 100);
+    tpl.attr('id', 'record-'+record.id).attr('data-id', record.id).attr('data-title', record.title || 'N/A').attr('data-index', index).attr('data-counter-log', record.counterLog || 0).attr('data-goal', record.goal || 100);
     tpl.removeClass('d-none record-tpl').addClass('record').toggleClass('color-primary active', selectedRecord.id == record.id);
-    tpl.find('.title').text(record.title);
-    tpl.find('.counter').text(record.counter);
+    tpl.find('.title .label').text(record.title);
+    var percent = goalPercent(record.counterLog, record.goal);
+    tpl.find('.progress').text(percent+'%');
+    tpl.find('.goal').text('GOAL '+record.goal);
     tpl.find('.today').text((record.counterLog || 0) + ' today');
     tpl.find('.total').text('TOTAL ' + record.total);
+    tpl.find('.title i.done').toggleClass('d-none', percent < 100);
     tpl.prependTo( $panel.find('.records') );
 }
 
@@ -269,13 +275,19 @@ function changeTitle(){
 function changeGoal(){
     var $rec = $(this).closest('.record');
     var newGoal = prompt("New Goal:", $rec.attr('data-goal'));
-    while(newGoal != null/*!cancelled*/ && (newGoal.trim() == '' || newGoal === parseInt(newGoal, 10)/*is int*/)){
+    if(newGoal == null) return;
+    while(newGoal.trim() == '' || newGoal === parseInt(newGoal, 10)/*is int*/){
         alert('The goal must be a number!');
         newGoal = prompt("New Goal:", $rec.attr('data-goal'));
     }
     var index = recIndexByID($rec.attr('data-id'));
-    STORE.records[index].goal = newGoal;
-    setProgress(goalPercent(), true);
+    STORE.records[index].goal = parseInt(newGoal);
+    var percent = goalPercent();
+    setProgress(percent, true);
+    $rec.attr('data-goal', newGoal);
+    $rec.find('.goal').text('GOAL ' + newGoal);
+    $rec.find('.progress').text(goalPercent($rec.attr('data-counter-log'), newGoal)+'%');
+    $rec.find('.title i.done').toggleClass('d-none', percent < 100);
     saveDB();
 }
 

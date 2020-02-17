@@ -64,8 +64,9 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .record .record-body i{padding: 1.7rem 0;}
 #panel .record .record-body span{position: absolute; line-height: 2.5rem; vertical-align: middle; margin: 0; font-size: 2.5rem; color: #fff; }
 #panel .record .record-body .today{top: 1rem;  }
-#panel .record .record-body .counter{top: 5rem; }
-#panel .record .record-body .title{width: 92%; top: 3rem; left: 12rem; color: #c6ff00; line-height: 6rem; font-size: 4rem;}
+#panel .record .record-body .progress{top: 5rem;}
+#panel .record .record-body .title .label{width: 92%; top: 3rem; left: 21rem; color: #c6ff00; line-height: 6rem; font-size: 4rem;}
+#panel .record .record-body .title .done{left: 15rem; position: absolute; top: 2rem; font-size: 6rem;}
 
 #panel .record .dropdown{height: 0px; border: 0px solid #fff; border-top: 0; background: #3c3b3b; overflow: hidden; position: relative;}
 #panel .record .dropdown div.buttons{position: absolute; right: 2rem; left: 2rem;}
@@ -74,6 +75,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .record .dropdown .activate .on{display: none;}
 #panel .record .dropdown span{position: absolute;}
 #panel .record .dropdown .total{top: 1rem; font-size: 3rem; line-height: 3rem;}
+#panel .record .dropdown .goal{left: 50%; top: 1rem; font-size: 3rem; line-height: 3rem;}
 
 #panel .record.showDropdown button.details .show{display: none;}
 #panel .record.showDropdown button.details .close{display: block;}
