@@ -118,9 +118,9 @@ function increaseCounter(){
     selectedRecord.counter++; 
     selectedRecord.total++;
     selectedRecord.counterLog++;
-    var refreshPercent = selectedRecord.counterLog % 10 == 0;
+    // var refreshPercent = selectedRecord.counterLog % 10 == 0;
     var today = selectedRecord.counterLog % 10 == 0 ? selectedRecord.counterLog : undefined;
-    setProgress(goalPercent(), refreshPercent, today);
+    setProgress(goalPercent(), true, today);
     saveSelectedRecord();
     if(selectedRecord.counter % 10 == 0) $counter.text(selectedRecord.counter);
     if(selectedRecord.counter % 100 == 0) pulse($counter, 1);
