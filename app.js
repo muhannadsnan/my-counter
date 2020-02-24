@@ -181,7 +181,7 @@ function showRecords(){
 function addRecordToPanel(record, index){
     console.log(record); 
     var tpl = $templates.find('.record-tpl').clone(true);
-    tpl.attr('id', 'record-'+record.id).attr('data-id', record.id).attr('data-title', record.title || 'N/A').attr('data-index', index).attr('data-counter-log', record.counterLog || 0).attr('data-goal', record.goal || 100);
+    tpl.attr('data-id', record.id).attr('data-title', record.title || 'N/A').attr('data-index', index).attr('data-counter-log', record.counterLog || 0).attr('data-goal', record.goal || 100);
     tpl.removeClass('d-none record-tpl').addClass('record').toggleClass('color-primary active', selectedRecord.id == record.id);
     tpl.find('.title .label').text(record.title);
     var percent = goalPercent(record.counterLog, record.goal);
@@ -296,10 +296,12 @@ function deleteRecord(){
         alert("Delete aborted. It is the only record you have..");
     }
     else if(confirm('Are you sure to delete "' + $rec.attr('data-title') + '"?')){
-        STORE.records = STORE.records.filter(el => el.id != $rec.attr('data-id'));
-        STORE.history.logBooks = STORE.history.logBooks.filter(el => el.recordId != $rec.attr('data-id'));
-        $('#record-'+$rec.attr('data-id')).remove();
-        if($rec.attr('data-id') == selectedRecord.id){
+        var _data_id = $rec.attr('data-id');
+        STORE.records = STORE.records.filter(el => el.id != _data_id);
+        STORE.history.logBooks = STORE.history.logBooks.filter(el => el.recordId != _data_id);
+        $('#record-'+_data_id).remove();
+        $('.record[data-id='+_data_id+']').remove();
+        if(_data_id == selectedRecord.id){
             selectRecord(); // the first index
             fillSelectedRecord();
         }
@@ -508,6 +510,7 @@ function newID(arr, idProp){
     if(idProp === undefined) idProp = 'id';
     if(arr.length > 0)
         return arr[arr.length-1][idProp] + 1;
+    // TODO: double check if the new ID already exists in the records array
 }
 // =========================================== DATABASE ==========================================
 function initDB(){
