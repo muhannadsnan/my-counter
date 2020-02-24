@@ -186,7 +186,7 @@ function addRecordToPanel(record, index){
     tpl.find('.title .label').text(record.title);
     var percent = goalPercent(record.counterLog, record.goal);
     tpl.find('.progress').text(percent+'%');
-    tpl.find('.goal').text('GOAL/DAY '+record.goal);
+    tpl.find('.goal').text('DAILY GOAL '+record.goal);
     tpl.find('.today').text((record.counterLog || 0) + ' today');
     tpl.find('.total').text('TOTAL ' + record.total);
     tpl.find('.title i.done').toggleClass('d-none', percent < 100);
