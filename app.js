@@ -236,6 +236,8 @@ function logging(){
         });
         saveDB();
         console.log("Logging saved! history: ", STORE.history);
+        /* BACKUP_DATABASE() */
+        BACKUP_USER();
     }
 }
 
@@ -530,7 +532,6 @@ function fetchData(){
     _fetchDB().then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
                 STORE = doc.data();
-                console.log("", STORE); 
                 STORE.id = doc.id;
                 return;
             });
@@ -593,6 +594,25 @@ function logout(){
     window.location = window.location;
 }
 
+function BACKUP_DATABASE(){
+    var users = [];
+    dbCollection.get().then(function(querySnapshot){
+        querySnapshot.docs.map(doc => users.push(doc.data()));
+        console.log(JSON.stringify(users));
+    });
+}
+
+function BACKUP_USER(){
+    var _db = firebase.firestore();
+    _db.collection("_BACKUP-counter-users").doc(STORE.id).set(JSON.parse(JSON.stringify(STORE)))
+        .then(function() {
+            console.log("DB backup was taken!", STORE);
+        })
+        .catch(function(error) {
+            console.error("Error backing up DB: ", error);
+        });
+}
+
 window.onload = init();
 
 /* 
@@ -604,6 +624,7 @@ window.onload = init();
         v5   : data stored on cloud firebase, no login required, but some kind of security. offline cache can be provided with firebase.
         v5.3 : log in and out and provide user info: name, email, pass, backup
         v5.5 : set record goal, progress comes from it
+        v6   : auto user backup on logging everyday!
         
     FUTURE VERSIONS:
         v8 : GROUPS
