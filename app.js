@@ -181,7 +181,7 @@ function showRecords(){
 function addRecordToPanel(record, index){
     console.log(record); 
     var tpl = $templates.find('.record-tpl').clone(true);
-    tpl.attr('data-id', record.id).attr('data-title', record.title || 'N/A').attr('data-index', index).attr('data-counter-log', record.counterLog || 0).attr('data-goal', record.goal || 100);
+    tpl.attr('data-id', record.id).attr('data-title', record.title || 'N/A').attr('data-counter-log', record.counterLog || 0).attr('data-goal', record.goal || 100);
     tpl.removeClass('d-none record-tpl').addClass('record').toggleClass('color-primary active', selectedRecord.id == record.id);
     tpl.find('.title .label').text(record.title);
     var percent = goalPercent(record.counterLog, record.goal);
@@ -200,7 +200,7 @@ function createRecord(){
     }
     else{
         pulse($(this), 1);
-        var newRecord = new Record(newID(), $input.val());
+        var newRecord = new Record(autoID(), $input.val());
         STORE.records.push(newRecord);
         addRecordToPanel(newRecord, STORE.records.length-1);
         STORE.history.logBooks.push(new Logbook(newRecord.id, new Log(new Date().toLocaleString("en"), newRecord.counter)));
@@ -505,12 +505,10 @@ function drawChart(recID, showBy){
     console.log("Chart done!");
 }
 
-function newID(arr, idProp){
+function autoID(arr, idProp){
     if(arr === undefined) arr = STORE.records;
     if(idProp === undefined) idProp = 'id';
-    if(arr.length > 0)
-        return arr[arr.length-1][idProp] + 1;
-    // TODO: double check if the new ID already exists in the records array
+    return Math.max.apply(Math, arr.map(function(el){ return el[idProp]; })) + 1;
 }
 // =========================================== DATABASE ==========================================
 function initDB(){
@@ -532,6 +530,7 @@ function fetchData(){
     _fetchDB().then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
                 STORE = doc.data();
+                console.log("", STORE); 
                 STORE.id = doc.id;
                 return;
             });
@@ -546,7 +545,7 @@ function fetchData(){
         })
         .catch(function(error){
             console.error(error);
-            alert("Couldn't connect to the Counter!");
+            alert("Error occured when loading data!");
         });
 }
 
