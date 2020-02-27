@@ -226,7 +226,7 @@ function logging(){
         console.log("History is lastWritten today", today.toLocaleString("en"));
         $.each(STORE.records, function(i, rec){
             $.each(STORE.history.logBooks, function(j, logBook){
-                if(rec.id == logBook.recordId){
+                if(rec.id == logBook.recordId && rec.counterLog > 0){ // no logging if today's log is 0
                     var yesterday = new Date();
                     yesterday.setDate(yesterday.getDate()-1);
                     logBook.logs.push(new Log(yesterday.toLocaleString("en")/* timestamp */, rec.counterLog)); // save the daily every time you save
@@ -413,7 +413,7 @@ function drawChart(recID, showBy){
         startDate.setDate(today.getDate() - chartX);
         var _date = startDate;
         for(var i = 0; i < chartX; i++){
-            var log = logBook.logs.find(el => new Date(el.date).getDate() == _date.getDate());
+            var log = logBook.logs.find(el => new Date(el.date).getDate() == _date.getDate() && new Date(el.date).getMonth() == _date.getMonth() && new Date(el.date).getFullYear() == _date.getFullYear());
             var point = {};
             if(log !== undefined){
                 point.y = log.value;
@@ -443,7 +443,7 @@ function drawChart(recID, showBy){
     dataPoints.push({x: new Date(today.getFullYear(), today.getMonth(), today.getDate()), y: rec.counterLog});
     if(rec.counterLog > maxVal) maxVal = rec.counterLog;
     
-    console.log("dataPoints", dataPoints, maxVal); 
+    console.log("maxVal", maxVal, "dataPoints", dataPoints); 
     var title = {'5-days': 'Last 5 days', '30-days': 'Last 30 days'};
     var chart = new CanvasJS.Chart("chart-container", { /* https://canvasjs.com/jquery-charts/dynamic-chart/ */
         animationEnabled: true,
