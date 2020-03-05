@@ -62,14 +62,21 @@ function fillValues(){
     }
     /* insure that every record has Logbook */
     $.each(STORE.records, function(i, rec){
-        if(!STORE.history.logBooks.some(el => el.recordId == rec.id)){
+        if(rec == null){
+            delete STORE.records[i];
+            console.log("deleted record becuse it's null!", ); 
+            return;
+        }
+        if(!STORE.history.logBooks.some(function(el){ el.recordId == rec.id; })){
             console.log("Generating daily Log for record ("+rec.title+")");
             STORE.history.logBooks.push(new Logbook(rec.id));
         }
     });
-    selectedIndex = STORE.selectedIndex;
+    if(STORE.records[STORE.selectedIndex] == null){
+        STORE.selectedIndex = 0;
+    } 
+    selectedIndex = STORE.selectedIndex; // verify if selectedIndex was not found
     selectedRecord = STORE.records[selectedIndex];
-    if(selectedRecord == null || selectedRecord === undefined) selectedRecord = STORE.records[0];
     activeChanged = false; // must be after fillSelectedRecord()   
     logging();
     fillSelectedRecord();
@@ -225,6 +232,7 @@ function logging(){
         STORE.history.lastWriting = today.toLocaleString("en"); // timestamp
         console.log("History is lastWritten today", today.toLocaleString("en"));
         $.each(STORE.records, function(i, rec){
+            if(rec == null) return;
             $.each(STORE.history.logBooks, function(j, logBook){
                 if(rec.id == logBook.recordId && rec.counterLog > 0){ // no logging if today's log is 0
                     var yesterday = new Date();
@@ -237,7 +245,7 @@ function logging(){
         saveDB();
         console.log("Logging saved! history: ", STORE.history);
         /* BACKUP_DATABASE() */
-        BACKUP_USER();
+        BACKUP_USER(STORE.history.lastWriting);
     }
 }
 
@@ -312,7 +320,7 @@ function deleteRecord(){
 }
 
 function setRecordTitle(id, newTitle){ // DOM only
-    $('#record-'+id).find('.title .label').text(newTitle);
+    $('[data-id="'+id+'"]').find('.title .label').text(newTitle);
     if(id == selectedRecord.id){
         $('#recordTitle').text(newTitle);
     }
@@ -531,8 +539,7 @@ function _fetchDB(){
 function fetchData(){
     _fetchDB().then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
-                STORE = doc.data();
-                STORE.id = doc.id;
+                STORE = doc.data(); // STORE.id = doc.id;
                 return;
             });
             fillValues();
@@ -563,9 +570,9 @@ function isLoggedIn(){
 }
 
 function login(){
-    if(STORE === undefined) STORE = {};
-    STORE.id = $loginPanel.find('.username').val();
-    if(STORE.id != ''){
+    if(STORE == null) STORE = {};
+    STORE.id = $loginPanel.find('.username').val() || false;
+    if(STORE.id != null){
         fetchData();
         Cookies.set("userID", STORE.id);
         $loginPanel.removeClass('show');
@@ -602,15 +609,35 @@ function BACKUP_DATABASE(){
     });
 }
 
-function BACKUP_USER(){
+function BACKUP_USER(lastWriting){
     var _db = firebase.firestore();
-    _db.collection("_BACKUP-counter-users").doc(STORE.id).set(JSON.parse(JSON.stringify(STORE)))
-        .then(function() {
-            console.log("DB backup was taken!", STORE);
-        })
-        .catch(function(error) {
-            console.error("Error backing up DB: ", error);
+    _db.collection("_BACKUP-counter-users").where("id", "==", STORE.id).get().then(function(querySnapshot){
+        querySnapshot.forEach(function(doc) {
+            lastWriting = new Date(Date.parse(lastWriting));
+            var lastBackup = new Date(doc.data().history.lastWriting) || false;
+            console.log("lastBackup", lastBackup); 
+            if(!lastBackup){
+                alert("Couldn't take auto backup!");
+                return;
+            }
+            if(lastWriting.getDate() != lastBackup.getDate() || lastWriting.getMonth() != lastBackup.getMonth() || lastWriting.getFullYear() != lastBackup.getFullYear()){
+                console.log("lastBackup", lastBackup); 
+                _db.collection("_BACKUP-counter-users").doc(STORE.id).set(JSON.parse(JSON.stringify(STORE)))
+                    .then(function() {
+                        console.log("User auto backup was taken!", STORE);
+                    })
+                    .catch(function(error) {
+                        console.error("Backup unsuccessfull! ", error);
+                        alert("Backup unsuccessfull! " + error);
+                    });
+            }
+            return;
         });
+    })
+    .catch(function(error) {
+        console.error("Error backing up User: ", error);
+        alert("Couldn't take auto backup! " + error);
+    });
 }
 
 window.onload = init();
