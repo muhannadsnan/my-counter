@@ -45,12 +45,9 @@ function fillValues(){
     $templates = $('#templates');
     $chartPanel = $('#chart-panel');
 
-    if(STORE.history === undefined) {// All histories of records
-        STORE.history = new History();
-    }
-    if(STORE.selectedIndex === undefined) {
-        STORE.selectedIndex = 0;
-    }
+    if(STORE.history === undefined) STORE.history = new History();// All histories of records
+    if(STORE.selectedIndex === undefined) STORE.selectedIndex = 0;
+    if(STORE.history.logBooks === undefined) STORE.history.logBooks = [];
     if(STORE.records === undefined) {
         alert("No records yet. Create one ! e.g. أستغفر الله");
         var newRec = new Record(1);
@@ -62,14 +59,14 @@ function fillValues(){
     }
     /* insure that every record has Logbook */
     $.each(STORE.records, function(i, rec){
-        if(rec == null){
+        if(rec == null){ // empty records
             delete STORE.records[i];
             console.log("deleted record becuse it's null!", ); 
-            return;
-        }
-        if(!STORE.history.logBooks.some(function(el){ el.recordId == rec.id; })){
-            console.log("Generating daily Log for record ("+rec.title+")");
-            STORE.history.logBooks.push(new Logbook(rec.id));
+        }else{
+            if(!STORE.history.logBooks.some(el => el.recordId == rec.id)){
+                console.log("Generating daily Log for record ("+rec.title+")");
+                STORE.history.logBooks.push(new Logbook(rec.id));
+            }
         }
     });
     if(STORE.records[STORE.selectedIndex] == null){
