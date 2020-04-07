@@ -1,4 +1,4 @@
-var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $loginPanel, $chart, $panelRecord, $templates, db, STORE, dbCollection;
+var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $loginPanel, $chart, $panelRecord, $templates, db, STORE, dbCollection, isTouched;
 
 function init() {
     initDB();
@@ -13,7 +13,8 @@ function init() {
 
 function initListeners(){
     $('body').on('click', function(e) {e.stopPropagation();});
-    $('#clicker').on('mouseup', increaseCounter);
+    $('#clicker').on('click touchend', increaseCounter);
+    // $('#clicker').on('touchend', function(){ $('#clicker').trigger('click'); });
     $('#reset').on('click', reset);
     $('#showPanel').on('click', onShowPanel);
     $('#closePanel').on('click', onClosePanel);
@@ -44,6 +45,7 @@ function fillValues(){
     $panel = $('#panel');
     $templates = $('#templates');
     $chartPanel = $('#chart-panel');
+    isTouched = false;
 
     if(STORE.history === undefined) STORE.history = new History();// All histories of records
     if(STORE.selectedIndex === undefined) STORE.selectedIndex = 0;
@@ -118,7 +120,13 @@ function selectRecord(recID){
     saveDB();
 }
 
-function increaseCounter(){
+function increaseCounter(e){
+    if(isTouched){
+        isTouched = false;
+        return;
+    }
+    console.log(e.type);
+    if(e.type == 'touchend') isTouched = true;
     selectedRecord.counter++; 
     selectedRecord.total++;
     selectedRecord.counterLog++;
