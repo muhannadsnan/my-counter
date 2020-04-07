@@ -121,7 +121,7 @@ function selectRecord(recID){
 }
 
 function increaseCounter(e){
-    if(isTouched){
+    if(isTouched && e.type == 'click'){
         isTouched = false;
         return;
     }
