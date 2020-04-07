@@ -187,3 +187,4 @@ footer{bottom: -100%;}
 .color-green{color: #0a8c3f !important; border-color: #0a8c3f !important;}
 .color-dark{color: #2f2f2f !important; border-color: #2f2f2f !important;}
 .bg-green{background: #0a8c3f; color: #2f2f2f}.bg-primary{background: #c6ff00; color: #2f2f2f}
+/* NO TEXT SELECTION */ body{-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
