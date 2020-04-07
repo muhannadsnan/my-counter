@@ -13,7 +13,7 @@ function init() {
 
 function initListeners(){
     $('body').on('click', function(e) {e.stopPropagation();});
-    $('#clicker').on('click touchend', increaseCounter);
+    $('#clicker').on('mouseup', increaseCounter);
     $('#reset').on('click', reset);
     $('#showPanel').on('click', onShowPanel);
     $('#closePanel').on('click', onClosePanel);
