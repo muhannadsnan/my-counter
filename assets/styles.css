@@ -156,10 +156,14 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 
 @media screen and (orientation:portrait) {
     html{font-size: 16px;}
+    .main{bottom: 8rem;}
+    .main .info{bottom: 5%;}
     #chart-panel canvas{height: 35vh !important;}
 }
 @media screen and (orientation:landscape) {
     html{font-size: 9px;}
+    .main{bottom: 6rem;}
+    .main .info{bottom: -1rem;}
     #chart-panel canvas{height: 84vh !important;}
 }
 
