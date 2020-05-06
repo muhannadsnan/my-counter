@@ -85,7 +85,7 @@ function fillSelectedRecord(){
     $title.text(selectedRecord.title);
     $counter.text(selectedRecord.counter);
     $today.text((selectedRecord.counterLog === undefined) ? 0 : selectedRecord.counterLog);
-    $total.text(selectedRecord.total);
+    $total.text( thousandFormat(selectedRecord.total) );
     $progress.find('.percent').text(goalPercent()+'%');
     $user.text(STORE.id);
     setProgress(goalPercent());
@@ -138,7 +138,7 @@ function increaseCounter(e){
     if(selectedRecord.counter % 100 == 0) pulse($counter, 1);
     if(selectedRecord.counterLog % 100 == 0) pulse($today, 2);
     if(selectedRecord.total % 100 == 0){
-        $total.text(selectedRecord.total);
+        $total.text( thousandFormat(selectedRecord.total) );
         pulse($total, 1);
     }
 }
@@ -524,6 +524,12 @@ function autoID(arr, idProp){
     if(arr === undefined) arr = STORE.records;
     if(idProp === undefined) idProp = 'id';
     return Math.max.apply(Math, arr.map(function(el){ return el[idProp]; })) + 1;
+}
+
+function thousandFormat(n){
+    if (n < 1000) return n;
+    else if (n >= 1000 && n < 1000000) return +(n / 1000).toFixed(1) + "K";
+    else if (n >= 1000000 && n < 1000000000) return +(n / 1000000).toFixed(1) + "M";
 }
 // =========================================== DATABASE ==========================================
 function initDB(){
