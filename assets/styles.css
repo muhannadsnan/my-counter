@@ -74,13 +74,13 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .record .dropdown .deleteRecord{color: #de3434;}
 #panel .record .dropdown .activate{float: right;}
 #panel .record .dropdown .activate .on{display: none;}
-#panel .record .dropdown p{}
+#panel .record .dropdown small{font-size: 3rem; display: block; padding-top: 2rem;}
 #panel .record .dropdown .total{top: 1rem; font-size: 3rem; line-height: 3rem;}
 #panel .record .dropdown .goal{left: 50%; top: 1rem; font-size: 3rem; line-height: 3rem;}
 
 #panel .record.showDropdown button.details .show{display: none;}
 #panel .record.showDropdown button.details .close{display: block;}
-#panel .record.showDropdown .dropdown{height: 17rem;}
+#panel .record.showDropdown .dropdown{height: 20rem;}
 #panel .record.showDropdown p{color: #fff;}
 #panel .panel-footer{color: #fff; font-size: 3rem; text-align: center;}
 
