@@ -581,7 +581,20 @@ function isLoggedIn(){
     return !(STORE.id === undefined || STORE.id == null || STORE.id == '');
 }
 
-function login(){
+function login(e){
+    e.preventDefault();
+    if($loginPanel.find('.username').val() == ''){
+        if($loginPanel.find('.username').val() == ''){
+            $loginPanel.find('.username').focus();
+            $loginPanel.find('.username').closest('div').css('border-color', 'red');
+        }
+        // TODO password
+        // if($loginPanel.find('.password').val() == ''){
+        //     $loginPanel.find('.password').closest('div').css('border-color', 'red');
+        // }
+        return;
+    }
+    
     if(STORE == null) STORE = {};
     STORE.id = $loginPanel.find('.username').val() || false;
     if(STORE.id != null){

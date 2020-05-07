@@ -23,7 +23,7 @@ i{line-height: unset;} button span{font-size: 5rem;}
 .main .info{position: absolute; text-align: center; color: #777; bottom: 5%; left: 14rem; right: 0rem;}
 .main .info .today{color: #fff;}
 .main .info .label{font-size: 4rem; line-height: 4rem; height: 4rem; vertical-align: middle; width: 15rem; display: inline-block;}
-.main .info .number{font-size: 6rem; line-height: 5rem; }
+.main .info .number{font-size: 6rem; line-height: 5rem;}
 
 #recordTitle{position: absolute; top: 12rem; right: 0; left: 13rem; font-size: 7rem; color: #fff; font-family:  Lalezar, Audiowide, tahoma; text-align: center;}
 #progress{border: 1rem solid #777; position: absolute; top: 9rem; bottom: 0rem; left: 1rem; width: 10rem; border-radius: 2rem;}
@@ -66,7 +66,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .record .record-body span{position: absolute; line-height: 2.5rem; vertical-align: middle; margin: 0; font-size: 2.5rem; color: #fff; }
 #panel .record .record-body .today{top: 1rem;  }
 #panel .record .record-body .progress{top: 5rem;}
-#panel .record .record-body .title .label{left: 21rem; color: #c6ff00; line-height: 4rem; font-size: 4rem; white-space: pre-wrap; height: 9rem; vertical-align: middle; overflow: hidden; right: 5rem; display: flex; align-items: center;}
+#panel .record .record-body .title .label{left: 21rem; color: #c6ff00; line-height: 4rem; font-size: 4rem; white-space: pre-wrap; height: 8.5rem; vertical-align: middle; overflow: hidden; right: 5rem; display: flex; align-items: center;}
 #panel .record .record-body .title .done{left: 15rem; position: absolute; top: 2rem; font-size: 5rem;}
 
 #panel .record .dropdown{height: 0px; border: 0px solid #fff; border-top: 0; background: #3c3b3b; overflow: hidden; position: relative;}
@@ -97,9 +97,9 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 .pulseText{animation: pulseText 1s;}
 .pulseTextLong{animation: pulseText 4s;}
 
-.btn-block{font-size: 5rem; padding: 2rem; border: .25rem solid #0a8c3f; border-radius: 1rem; margin-top: 2rem; color: #0a8c3f; width: 100%;}
+.btn-block{font-size: 5rem; padding: 2rem; border-radius: 1rem; margin-top: 2rem; color: #fff; width: 100%;}
 #showPrayers img{width: 10rem; float: left;}
-#showPrayers span{line-height: 10rem; float: left; vertical-align: middle;}
+#showPrayers span{line-height: 10rem; vertical-align: middle;}
 
 #login-panel{background: #2f2f2f; position: absolute; right: -100%; left: 100%; top: 0; bottom: 0; z-index: -99;}
 #login-panel.show{position: absolute; right: 0; left: 0; top: 0; bottom: 0; z-index: 9999;}
@@ -188,7 +188,8 @@ footer{bottom: -100%;}
 .color-secondary{color: #638000; border-color: #638000;}
 .color-danger{color: #ff3737 !important; border-color: #ff3737 !important;}
 .color-grey{color: #777 !important; border-color: #777 !important;}
-.color-green{color: #0a8c3f !important; border-color: #0a8c3f !important;}
+.color-green{color: #00722d !important; border-color: #00722d !important;}
 .color-dark{color: #2f2f2f !important; border-color: #2f2f2f !important;}
-.bg-green{background: #0a8c3f; color: #2f2f2f}.bg-primary{background: #c6ff00; color: #2f2f2f}
+.text-white{color: #fff !important;}
+.bg-green{background: #00722d; color: #2f2f2f}.bg-primary{background: #c6ff00; color: #2f2f2f}.bg-grey{background: #777;}
 /* NO TEXT SELECTION */ body{-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
