@@ -101,8 +101,8 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #showPrayers img{width: 10rem; float: left;}
 #showPrayers span{line-height: 10rem; vertical-align: middle;}
 
-#login-panel{background: #2f2f2f; position: absolute; right: -100%; left: 100%; top: 0; bottom: 0; z-index: -99;}
-#login-panel.show{position: absolute; right: 0; left: 0; top: 0; bottom: 0; z-index: 9999;}
+#login-panel{display: none; background: #2f2f2f; position: absolute; right: 0; left: 0; top: 0; bottom: 0; z-index: 9999;}
+#login-panel.show{display: block;}
 
 /************************ FONTS *************************/
 @font-face{font-family: 'MeriendaOne'; src: local('Merienda One'), local('MeriendaOne-Regular'), url(https://fonts.gstatic.com/s/meriendaone/v10/H4cgBXaMndbflEq6kyZ1ht6ohYaz.woff2) format('woff2'); unicode-range: U+0020-024F;}
@@ -154,17 +154,23 @@ button#closePanel{position: absolute; top: 0; right: 0;}
     }
 }
 
-@media screen and (orientation:portrait) {
+@media all and (orientation:portrait) {
     html{font-size: 16px;}
     .main{bottom: 8rem;}
     .main .info{bottom: 5%;}
     #chart-panel canvas{height: 35vh !important;}
 }
-@media screen and (orientation:landscape) {
+@media all and (orientation:landscape) {
     html{font-size: 9px;}
     .main{bottom: 6rem;}
     .main .info{bottom: -1rem;}
     #chart-panel canvas{height: 84vh !important;}
+}
+@media all and (max-device-width: 992px) {
+    body{width: 100% !important; margin: 0 !important;}
+}
+@media all and (min-device-width: 992px) {
+    body{width: 60% !important; margin: auto !important;}
 }
 
 /* STARTUP ANIMATION EFFECT */
