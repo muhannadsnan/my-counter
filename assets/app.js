@@ -1,4 +1,4 @@
-var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $loginPanel, $chart, $panelRecord, $templates, db, STORE, dbCollection, isTouched;
+var counter, total, selectedRecord, selectedIndex, activeChanged, cookie, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $loginPanel, $chart, $panelRecord, $templates, db, STORE, dbCollection, isTouched;
 
 function init() {
     initDB();
@@ -35,7 +35,6 @@ function initListeners(){
 
 function fillValues(){
     counter = 0;
-    cookieOptions = {expires: 3650};
     $total = $("#total");
     $progress = $("#progress");
     $counter = $("#counter");
@@ -46,6 +45,7 @@ function fillValues(){
     $templates = $('#templates');
     $chartPanel = $('#chart-panel');
     isTouched = false;
+    cookie = new Cookie();
 
     if(STORE.history === undefined) STORE.history = new History();// All histories of records
     if(STORE.selectedIndex === undefined) STORE.selectedIndex = 0;
@@ -577,7 +577,8 @@ function showLoginPanel(){
 }
 
 function isLoggedIn(){
-    STORE.id = Cookies.get("userID");
+    cookie = new Cookie();
+    STORE.id = cookie.get("userID");
     return !(STORE.id === undefined || STORE.id == null || STORE.id == '');
 }
 
@@ -599,7 +600,7 @@ function login(e){
     STORE.id = $loginPanel.find('.username').val() || false;
     if(STORE.id != null){
         fetchData();
-        Cookies.set("userID", STORE.id, cookieOptions);
+        cookie.set("userID", STORE.id, 30); 
         $loginPanel.removeClass('show');
     }
     else{
@@ -622,7 +623,7 @@ function saveDB(){
 }
 
 function logout(){
-    Cookies.set("userID", '');
+    cookie.set("userID", '');
     window.location = window.location;
 }
 
