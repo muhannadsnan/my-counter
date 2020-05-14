@@ -45,7 +45,6 @@ function fillValues(){
     $templates = $('#templates');
     $chartPanel = $('#chart-panel');
     isTouched = false;
-    cookie = new Cookie();
 
     if(STORE.history === undefined) STORE.history = new History();// All histories of records
     if(STORE.selectedIndex === undefined) STORE.selectedIndex = 0;
