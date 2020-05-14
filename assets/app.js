@@ -359,10 +359,6 @@ function toggleAddRecord(){
     pulse($('#showAddRecord, #hideAddRecord'), 2);
 }
 
-function uniqID(){
-    return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-}
-
 function onChangeShowBy(){
     $chartPanel.find('.chart-container canvas').remove();
     var showBy = $(this).val();

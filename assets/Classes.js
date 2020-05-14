@@ -48,7 +48,7 @@ class Logbook{
         console.log("Logbook instantiated! id: "+this.recordId);
     }
 }
-// =========================================== DATABASE ==========================================
+// =========================================== COOKIE ==========================================
 class Cookie{
     constructor(){ }
 
@@ -74,10 +74,6 @@ class Cookie{
         }
         return "";
     }
-}
-
-function uniqID(){
-    return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
 /* 
 GRAPHS:
