@@ -595,7 +595,7 @@ function login(e){
     STORE.id = $loginPanel.find('.username').val() || false;
     if(STORE.id != null){
         fetchData();
-        cookie.set("userID", STORE.id, 30); 
+        cookie.set("userID", STORE.id, 90); 
         $loginPanel.removeClass('show');
     }
     else{
