@@ -277,9 +277,12 @@ function recIndexByID(id){
 function changeTitle(){
     var $rec = $(this).closest('.record');
     var newTitle = prompt("New title:", $rec.attr('data-title'));
-    while(newTitle != null/*cancelled*/ || newTitle.trim() == ''){
+    while(newTitle.trim() === ''){
         alert('You cannot enter an empty title!');
         newTitle = prompt("New title:", $rec.attr('data-title'));
+    }
+    if(newTitle === null){ // cancelled
+        return;
     }
     var index = recIndexByID($rec.attr('data-id'));
     STORE.records[index].title = newTitle;
