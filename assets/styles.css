@@ -79,7 +79,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 
 #panel .record.showDropdown button.details .show{display: none;}
 #panel .record.showDropdown button.details .close{display: block;}
-#panel .record.showDropdown .dropdown{height: 24rem;}
+#panel .record.showDropdown .dropdown{height: 25rem;}
 #panel .record.showDropdown p{color: #fff;}
 #panel .panel-footer{color: #fff; font-size: 3rem; text-align: center;}
 
