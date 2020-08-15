@@ -277,7 +277,7 @@ function recIndexByID(id){
 function changeTitle(){
     var $rec = $(this).closest('.record');
     var newTitle = prompt("New title:", $rec.attr('data-title'));
-    while(newTitle != null/*cancelled*/ && newTitle.trim() == ''){
+    while(newTitle != null/*cancelled*/ || newTitle.trim() == ''){
         alert('You cannot enter an empty title!');
         newTitle = prompt("New title:", $rec.attr('data-title'));
     }
@@ -326,7 +326,7 @@ function deleteRecord(){
 }
 
 function setRecordTitle(id, newTitle){ // DOM only
-    $('[data-id="'+id+'"]').find('.title .label').text(newTitle);
+    $('[data-id="'+id+'"]').attr('data-title', newTitle).find('.title .label').text(newTitle);
     if(id == selectedRecord.id){
         $('#recordTitle').text(newTitle);
     }
