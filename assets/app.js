@@ -255,9 +255,9 @@ function logging(){
 }
 
 function toggleDropdown(){
-    $('.record').removeClass('showDropdown');
-    var $this = $(this);
-    $this.closest('.record').toggleClass('showDropdown');
+    var $parent = $(this).closest('.record');
+    $parent.toggleClass('showDropdown');
+    $('.record').not($parent).removeClass('showDropdown');
 }
 
 function onClickRecordBody(){
