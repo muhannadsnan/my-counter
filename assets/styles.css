@@ -76,7 +76,10 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .record .dropdown .activate .on{display: none;}
 #panel .record .dropdown small{font-size: 3rem; display: block; padding-top: 2rem;}
 #panel .record .dropdown .total, #panel .record .dropdown .goal{font-size: 3rem;}
+#panel .record .dropdown .total span{padding-left: 12.5rem;}
+#panel .record .dropdown .goal span{padding-left: 1rem;}
 
+#panel .record.showDropdown{padding-bottom: 2rem;}
 #panel .record.showDropdown button.details .show{display: none;}
 #panel .record.showDropdown button.details .close{display: block;}
 #panel .record.showDropdown .dropdown{height: 25rem;}
