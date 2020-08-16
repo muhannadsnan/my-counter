@@ -84,7 +84,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .record.showDropdown button.details .show{display: none;}
 #panel .record.showDropdown button.details .close{display: block;}
 #panel .record.showDropdown .dropdown{height: 25rem;}
-#panel .record.showDropdown p{color: #fff; line-height: 3rem;}
+#panel .record.showDropdown p{color: #fff; line-height: 4rem;}
 #panel .panel-footer{color: #fff; font-size: 3rem; text-align: center;}
 
 #chart-panel{position: absolute; left: -200%; right: 200%; background: #2f2f2f; border: .3rem solid #c6ff00; top: 0; bottom: 0; /* border-top-width: 2rem; border-bottom-width: 2rem; */}
