@@ -80,6 +80,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .record .dropdown .goal span{padding-left: 1rem;}
 
 #panel .record.showDropdown{padding-bottom: 2rem;}
+#panel .record.showDropdown button small{padding-bottom: 1rem;}
 #panel .record.showDropdown button.details .show{display: none;}
 #panel .record.showDropdown button.details .close{display: block;}
 #panel .record.showDropdown .dropdown{height: 25rem;}
