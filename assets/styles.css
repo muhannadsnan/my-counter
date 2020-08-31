@@ -58,6 +58,8 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .record.color-primary button{color: #c6ff00;}
 #panel .record button.details{top: 0rem; font-size: 5rem;}
 #panel .record button.details .close{display: none;}
+#panel .record button small{padding-bottom: 1rem;}
+#panel .record p{color: #fff; line-height: 4rem;}
 
 #panel .record.active{opacity: 1;}
 
@@ -75,13 +77,14 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .record .dropdown .activate{float: right;}
 #panel .record .dropdown .activate .on{display: none;}
 #panel .record .dropdown small{font-size: 3rem; display: block; padding-top: 2rem;}
-#panel .record .dropdown .total{top: 1rem; font-size: 3rem; line-height: 3rem;}
-#panel .record .dropdown .goal{left: 50%; top: 1rem; font-size: 3rem; line-height: 3rem;}
+#panel .record .dropdown .total, #panel .record .dropdown .goal{font-size: 3rem;}
+#panel .record .dropdown .total span{padding-left: 12.5rem;}
+#panel .record .dropdown .goal span{padding-left: 1rem;}
 
+#panel .record.showDropdown{padding-bottom: 2rem;}
 #panel .record.showDropdown button.details .show{display: none;}
 #panel .record.showDropdown button.details .close{display: block;}
 #panel .record.showDropdown .dropdown{height: 23rem;}
-#panel .record.showDropdown p{color: #fff;}
 #panel .panel-footer{color: #fff; font-size: 3rem; text-align: center;}
 
 #chart-panel{position: absolute; left: -200%; right: 200%; background: #2f2f2f; border: .3rem solid #c6ff00; top: 0; bottom: 0; /* border-top-width: 2rem; border-bottom-width: 2rem; */}

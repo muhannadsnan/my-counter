@@ -197,9 +197,9 @@ function addRecordToPanel(record, index){
     tpl.find('.title .label').text(record.title);
     var percent = goalPercent(record.counterLog, record.goal);
     tpl.find('.progress').text(percent+'%');
-    tpl.find('.goal').text('DAILY GOAL '+record.goal);
     tpl.find('.today').text((record.counterLog || 0) + ' today');
-    tpl.find('.total').text('TOTAL ' + record.total);
+    tpl.find('.goal span').text(record.goal);
+    tpl.find('.total span').text(record.total);
     tpl.find('.title i.done').toggleClass('d-none', percent < 100);
     tpl.prependTo( $panel.find('.records') );
 }
@@ -254,9 +254,9 @@ function logging(){
 }
 
 function toggleDropdown(){
-    var $this = $(this);
-    $this.closest('.record').toggleClass('showDropdown');
-    $('.record').not($this.closest('.record')).removeClass('showDropdown');
+    var $parent = $(this).closest('.record');
+    $parent.toggleClass('showDropdown');
+    $('.record').not($parent).removeClass('showDropdown');
 }
 
 function onClickRecordBody(){
@@ -276,9 +276,12 @@ function recIndexByID(id){
 function changeTitle(){
     var $rec = $(this).closest('.record');
     var newTitle = prompt("New title:", $rec.attr('data-title'));
-    while(newTitle != null/*cancelled*/ && newTitle.trim() == ''){
+    while(newTitle.trim() === ''){
         alert('You cannot enter an empty title!');
         newTitle = prompt("New title:", $rec.attr('data-title'));
+    }
+    if(newTitle === null){ // cancelled
+        return;
     }
     var index = recIndexByID($rec.attr('data-id'));
     STORE.records[index].title = newTitle;
@@ -325,7 +328,7 @@ function deleteRecord(){
 }
 
 function setRecordTitle(id, newTitle){ // DOM only
-    $('[data-id="'+id+'"]').find('.title .label').text(newTitle);
+    $('[data-id="'+id+'"]').attr('data-title', newTitle).find('.title .label').text(newTitle);
     if(id == selectedRecord.id){
         $('#recordTitle').text(newTitle);
     }
