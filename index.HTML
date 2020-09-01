@@ -7,6 +7,8 @@
         <link rel="apple-touch-icon" href="img/favicon.png" sizes="180x180">
         <link rel="icon" type="image/png" href="img/favicon.png" sizes="32x32">
         <link rel="shortcut icon" href="img/favicon.png">
+
+<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
         
 		<link rel="stylesheet" href="assets/styles.css">
     </head>
@@ -51,7 +53,7 @@
 
         <footer class="p-2">
             <p class="my-0">Digital Counter</p>
-            <p class="version p-2 m-0">v6.7</p>
+            <p class="version p-2 m-0">v7.0</p>
         </footer>
  
 
@@ -124,27 +126,55 @@
                 <div class="loading d-flex"><i class="fas fa-compact-disc fa-spin"></i></div>
             </div>
 
-            <div id="login-panel" class="p-2 color-primary">
-                <h4 class="bg-primary py-1 mt-0 mb-2">DIGITAL COUNTER (MDC)</h4>
-                <div class="d-flex border mb-2 color-primary">
-                    <i class="fas fa-user mr-2 p-2"></i><input type="text" class="username p-2" placeholder="Username...">
+            <div id="auth-panel" class="p-2 color-primary">
+                <h4 class="color-primary py-1 m-0">M-DIGITAL COUNTER</h4>
+                <div class="switch switch-auth px-3 mb-2">
+                    <button class="active btn-block p-2" data-auth="login-panel">LOGIN</button>
+                    <button class="btn-block p-2" data-auth="register-panel">REGISTER</button>
                 </div>
-                <div class="d-flex border color-primary">
-                    <i class="fas fa-key mr-2 p-2"></i><input type="text" class="password p-2" placeholder="Password...">
+                <div class="active auth login-panel">
+                    <div class="d-flex border mb-2 color-primary">
+                        <i class="fas fa-user mr-2 p-2"></i><input type="text" class="focus-me username p-2" placeholder="Username...">
+                    </div>
+                    <div class="d-flex border color-primary">
+                        <i class="fas fa-key mr-2 p-2"></i><input type="text" class="password p-2" placeholder="Password...">
+                    </div>
+                    <div class="text-align-center px-3">
+                        <button id="login" class="btn-block p-3 bg-primary mt-2">LOGIN</button>
+                    </div>
+                    <p class="font-3 color-grey mt-3">Enter a username to login. If you don't have one, then it will be created for you. Username cannot be changed later!</p>
                 </div>
-                <button id="login" class="btn-block p-3 bg-green border-0 mt-2">LOGIN</button>
-                <p class="font-3 color-grey mt-3">Enter a username to login. If you don't have one, then it will be created for you. Username cannot be changed later!</p>
+                <div class="auth register-panel">
+                    <div class="d-flex border mb-2 color-green">
+                        <i class="fas fa-user mr-2 p-2"></i><input type="text" class="focus-me username p-2" placeholder="New username...">
+                    </div>
+                    <div class="d-flex border mb-2 color-green">
+                        <i class="fas fa-key mr-2 p-2"></i><input type="text" class="email p-2" placeholder="New email...">
+                    </div>
+                    <div class="d-flex border color-green">
+                        <i class="fas fa-key mr-2 p-2"></i><input type="text" class="password p-2" placeholder="Password...">
+                    </div>
+                    <div class="text-align-center px-3">
+                        <button id="register" class="btn-block p-3 bg-primary mt-2">REGISTER</button>
+                    </div>
+                </div>
             </div>
         </div>
         
         <script src="assets/jquery-3.4.1.min.js"></script>
-        <script src="assets/Classes.js"></script>
-        <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+        <script src="assets/js-cookie.min.js"></script>
+        <script src="assets/jquery.canvasjs.min.js"></script>
+        <script src="assets/firebase-app_7.6.1.js"></script>
+        <script src="assets/firebase-firestore_7.6.1.js"></script>
+        <script src="assets/firebase-auth_7.19.1.js"></script>
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-firestore.js"></script>
-
+        <script src="assets/Classes.js"></script>
         <script src="assets/app.js" charset="utf-8"></script>
+
+        <!-- 
+            firebase logout
+            firebase login +encrypt password
+            DB class, firebase class
+         -->
     </body>    
 </html>

@@ -1,12 +1,12 @@
-var counter, total, selectedRecord, selectedIndex, activeChanged, cookie, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $loginPanel, $chart, $panelRecord, $templates, db, STORE, dbCollection, isTouched;
+var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $authPanel, $chart, $panelRecord, $templates, db, STORE, dbCollection, isTouched, username_already_exists;
 
 function init() {
     initDB();
     if(!isLoggedIn()){
-        showLoginPanel();
+        showAuthPanel();
     }
     else{
-        console.log("Welcome back " + STORE.id + '!!' , 'STORE', STORE); 
+        console.log("Welcome back " + STORE.username + '!!'); 
         fetchData();
     }
 }
@@ -14,7 +14,6 @@ function init() {
 function initListeners(){
     $('body').on('click', function(e) {e.stopPropagation();});
     $('#clicker').on('click touchend', increaseCounter);
-    // $('#clicker').on('touchend', function(){ $('#clicker').trigger('click'); });
     $('#reset').on('click', reset);
     $('#showPanel').on('click', onShowPanel);
     $('#closePanel').on('click', onClosePanel);
@@ -35,6 +34,7 @@ function initListeners(){
 
 function fillValues(){
     counter = 0;
+    cookieOptions = {expires: 3650};
     $total = $("#total");
     $progress = $("#progress");
     $counter = $("#counter");
@@ -56,13 +56,13 @@ function fillValues(){
         STORE.selectedIndex = 0;
         selectedRecord = newRec;
         selectedIndex = 0;
-        console.log("records init", STORE.records); 
+        // console.log("records init", STORE.records); 
     }
     /* insure that every record has Logbook */
     $.each(STORE.records, function(i, rec){
         if(rec == null){ // empty records
             delete STORE.records[i];
-            console.log("deleted record becuse it's null!", ); 
+            // console.log("deleted record because it's null!", ); 
         }else{
             if(!STORE.history.logBooks.some(el => el.recordId == rec.id)){
                 console.log("Generating daily Log for record ("+rec.title+")");
@@ -86,7 +86,7 @@ function fillSelectedRecord(){
     $today.text((selectedRecord.counterLog === undefined) ? 0 : selectedRecord.counterLog);
     $total.text( thousandFormat(selectedRecord.total) );
     $progress.find('.percent').text(goalPercent()+'%');
-    $user.text(STORE.id);
+    $user.text(STORE.username);
     setProgress(goalPercent());
     activeChanged = true;
 }
@@ -124,7 +124,7 @@ function increaseCounter(e){
         isTouched = false;
         return;
     }
-    console.log(e.type);
+    // console.log(e.type);
     if(e.type == 'touchend') isTouched = true;
     selectedRecord.counter++; 
     selectedRecord.total++;
@@ -190,7 +190,7 @@ function showRecords(){
 }
 
 function addRecordToPanel(record, index){
-    console.log(record); 
+    // console.log(record); 
     var tpl = $templates.find('.record-tpl').clone(true);
     tpl.attr('data-id', record.id).attr('data-title', record.title || 'N/A').attr('data-counter-log', record.counterLog || 0).attr('data-goal', record.goal || 100);
     tpl.removeClass('d-none record-tpl').addClass('record').toggleClass('color-primary active', selectedRecord.id == record.id);
@@ -362,6 +362,10 @@ function toggleAddRecord(){
     pulse($('#showAddRecord, #hideAddRecord'), 2);
 }
 
+function uniqID(){
+    return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+}
+
 function onChangeShowBy(){
     $chartPanel.find('.chart-container canvas').remove();
     var showBy = $(this).val();
@@ -455,7 +459,7 @@ function drawChart(recID, showBy){
     dataPoints.push({x: new Date(today.getFullYear(), today.getMonth(), today.getDate()), y: rec.counterLog});
     if(rec.counterLog > maxVal) maxVal = rec.counterLog;
     
-    console.log("maxVal", maxVal, "dataPoints", dataPoints); 
+    // console.log("maxVal", maxVal, "dataPoints", dataPoints); 
     var title = {'5-days': 'Last 5 days', '30-days': 'Last 30 days'};
     var chart = new CanvasJS.Chart("chart-container", { /* https://canvasjs.com/jquery-charts/dynamic-chart/ */
         animationEnabled: true,
@@ -516,7 +520,7 @@ function drawChart(recID, showBy){
         height: 500
     });
     chart.render();
-    console.log("Chart done!");
+    // console.log("Chart done!");
 }
 
 function autoID(arr, idProp){
@@ -529,6 +533,14 @@ function thousandFormat(n){
     if (n < 1000) return n;
     else if (n >= 1000 && n < 1000000) return +(n / 1000).toFixed(1) + "K";
     else if (n >= 1000000 && n < 1000000000) return +(n / 1000000).toFixed(1) + "M";
+}
+
+function switchAuthPanel(){
+    $('.switch-auth button').removeClass('active');
+    $(this).addClass('active');
+    $('#auth-panel .auth').removeClass('active');
+    $('#auth-panel .auth.'+$(this).attr("data-auth")).addClass('active');
+    $authPanel.find('.username').focus();
 }
 // =========================================== DATABASE ==========================================
 function initDB(){
@@ -543,13 +555,13 @@ function initDB(){
 }
 
 function _fetchDB(){
-    return dbCollection.where("id", "==", STORE.id).get();
+    return dbCollection.where("username", "==", STORE.username).get();
 }
 
 function fetchData(){
     _fetchDB().then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
-                STORE = doc.data(); // STORE.id = doc.id;
+                STORE = doc.data(); // STORE.username = doc.id;
                 return;
             });
             fillValues();
@@ -567,42 +579,64 @@ function fetchData(){
         });
 }
 
-function showLoginPanel(){
+function showAuthPanel(){
     $('#login').on('click', login);
-    $loginPanel = $('#login-panel');
-    $loginPanel.addClass('show');
-    $loginPanel.find('.username').focus();
+    $('#register').on('click', register);
+    $('.switch-auth button').on('click', switchAuthPanel);
+    $authPanel = $('#auth-panel');
+    $authPanel.addClass('show');
+    $authPanel.find('.focus-me').focus();
+    username_already_exists = false;
+}
+
+function register(){
+    var username = $authPanel.find('.register-panel .username').val().trim() || "";
+    var email = $authPanel.find('.register-panel .email').val().trim() || "";
+    var password = $authPanel.find('.register-panel .password').val().trim() || "";
+    if(username.trim() && email.trim() && password.trim()){
+        /* if username exists */
+        dbCollection.where("username", "==", username).get().then(function(querySnapshot){
+            querySnapshot.forEach(function(doc) {
+                username_already_exists = doc.exists;
+            });
+        });
+        if(!username_already_exists){
+            // REGISTER USER
+            firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
+                alert("Welcome "+username+" to M-Digital Counter!");
+                // LOGIN THE NEW USER
+                STORE.email = email;
+                STORE.username = username;
+                fetchData();
+                Cookies.set("userID", STORE.username, cookieOptions);
+                $authPanel.removeClass('show');
+            }).catch(function(error) {
+                alert(error.message); console.log(error.code); console.log(error.message);
+            });
+        }else{
+            alert("Username already exists. Choose a different one.");
+        }
+    }
+    else{
+        alert("Registeration failed! Please provide all fields.");
+    }
 }
 
 function isLoggedIn(){
-    cookie = new Cookie();
-    STORE.id = cookie.get("userID");
-    return !(STORE.id === undefined || STORE.id == null || STORE.id == '');
+    STORE.username = Cookies.get("userID");
+    return !(STORE.username === undefined || STORE.username == null || STORE.username == '');
 }
 
-function login(e){
-    e.preventDefault();
-    if($loginPanel.find('.username').val() == ''){
-        if($loginPanel.find('.username').val() == ''){
-            $loginPanel.find('.username').focus();
-            $loginPanel.find('.username').closest('div').css('border-color', 'red');
-        }
-        // TODO password
-        // if($loginPanel.find('.password').val() == ''){
-        //     $loginPanel.find('.password').closest('div').css('border-color', 'red');
-        // }
-        return;
-    }
-    
+function login(){
     if(STORE == null) STORE = {};
-    STORE.id = $loginPanel.find('.username').val() || false;
-    if(STORE.id != null){
+    STORE.username = $authPanel.find('.username').val().trim() || false;
+    if(STORE.username != null){
         fetchData();
-        cookie.set("userID", STORE.id, 90); 
-        $loginPanel.removeClass('show');
+        Cookies.set("userID", STORE.username, cookieOptions);
+        $authPanel.removeClass('show');
     }
     else{
-        alert("Cannot login! Please provide all login fields.");
+        alert("Login failed! Please provide all fields.");
     }
 }
 
@@ -611,9 +645,9 @@ function saveDB(){
         alert("Cannot save empty STORE!");
         return;
     }
-    dbCollection.doc(STORE.id).set(JSON.parse(JSON.stringify(STORE)))
+    dbCollection.doc(STORE.username).set(JSON.parse(JSON.stringify(STORE)))
         .then(function() {
-            console.log("DB saved. STORE: ", STORE);
+            ("DB saved. ");
         })
         .catch(function(error) {
             console.error("Error saving DB: ", error);
@@ -621,7 +655,7 @@ function saveDB(){
 }
 
 function logout(){
-    cookie.set("userID", '');
+    Cookies.set("userID", '');
     window.location = window.location;
 }
 
@@ -629,13 +663,13 @@ function BACKUP_DATABASE(){
     var users = [];
     dbCollection.get().then(function(querySnapshot){
         querySnapshot.docs.map(doc => users.push(doc.data()));
-        console.log(JSON.stringify(users));
+        // console.log(JSON.stringify(users));
     });
 }
 
 function BACKUP_USER(lastWriting){
     var _db = firebase.firestore();
-    _db.collection("_BACKUP-counter-users").where("id", "==", STORE.id).get().then(function(querySnapshot){
+    _db.collection("_BACKUP-counter-users").where("id", "==", STORE.email).get().then(function(querySnapshot){
         querySnapshot.forEach(function(doc) {
             lastWriting = new Date(Date.parse(lastWriting));
             var lastBackup = new Date(doc.data().history.lastWriting) || false;
@@ -645,8 +679,8 @@ function BACKUP_USER(lastWriting){
                 return;
             }
             if(lastWriting.getDate() != lastBackup.getDate() || lastWriting.getMonth() != lastBackup.getMonth() || lastWriting.getFullYear() != lastBackup.getFullYear()){
-                console.log("lastBackup", lastBackup); 
-                _db.collection("_BACKUP-counter-users").doc(STORE.id).set(JSON.parse(JSON.stringify(STORE)))
+                // console.log("lastBackup", lastBackup); 
+                _db.collection("_BACKUP-counter-users").doc(STORE.email).set(JSON.parse(JSON.stringify(STORE)))
                     .then(function() {
                         console.log("User auto backup was taken!", STORE);
                     })

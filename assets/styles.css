@@ -9,6 +9,7 @@ i{line-height: unset;} button span{font-size: 5rem;}
 .hide{opacity: 0;}
 .border{border: .25rem solid #777; border-radius: 1rem;}.border-0{border:0}
 .pos-right{position: absolute; right: 0;}
+.text-align-center{text-align: center;}
 .font-3{font-size: 3rem}
 .transition{-webkit-transition-duration: 0.3s;-moz-transition-duration: 0.3s; -o-transition-duration: 0.3s; transition-duration: 0.3s; -webkit-transition-timing-function: ease-out; -moz-transition-timing-function: ease-out; -o-transition-timing-function: ease-out; transition-timing-function: ease-out; -webkit-transition-delay: 0; -moz-transition-delay: 0; -o-transition-delay: 0; transition-delay: 0;}
 .trans-height{-webkit-transition-property: height; -moz-transition-property: height; -o-transition-property: height; transition-property: height; }
@@ -23,7 +24,7 @@ i{line-height: unset;} button span{font-size: 5rem;}
 .main .info{position: absolute; text-align: center; color: #777; bottom: 5%; left: 14rem; right: 0rem;}
 .main .info .today{color: #fff;}
 .main .info .label{font-size: 4rem; line-height: 4rem; height: 4rem; vertical-align: middle; width: 15rem; display: inline-block;}
-.main .info .number{font-size: 6rem; line-height: 5rem;}
+.main .info .number{font-size: 6rem; line-height: 5rem; }
 
 #recordTitle{position: absolute; top: 12rem; right: 0; left: 13rem; font-size: 7rem; color: #fff; font-family:  Lalezar, Audiowide, tahoma; text-align: center;}
 #progress{border: 1rem solid #777; position: absolute; top: 9rem; bottom: 0rem; left: 1rem; width: 10rem; border-radius: 2rem;}
@@ -100,12 +101,19 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 .pulseText{animation: pulseText 1s;}
 .pulseTextLong{animation: pulseText 4s;}
 
-.btn-block{font-size: 5rem; padding: 2rem; border-radius: 1rem; margin-top: 2rem; color: #fff; width: 100%;}
+.btn-block{font-size: 5rem; padding: 2rem; border: .25rem solid #0a8c3f; border-radius: 1rem; margin-top: 2rem; color: #0a8c3f; width: 100%;}
 #showPrayers img{width: 10rem; float: left;}
-#showPrayers span{line-height: 10rem; vertical-align: middle;}
+#showPrayers span{line-height: 10rem; float: left; vertical-align: middle;}
 
-#login-panel{display: none; background: #2f2f2f; position: absolute; right: 0; left: 0; top: 0; bottom: 0; z-index: 9999;}
-#login-panel.show{display: block;}
+#auth-panel{background: #2f2f2f; position: absolute; right: -100%; left: 100%; top: 0; bottom: 0; z-index: -99;}
+#auth-panel.show{position: absolute; right: 0; left: 0; top: 0; bottom: 0; z-index: 9999;}
+#auth-panel .switch{display: flex;}
+#auth-panel .auth{display: none;}
+#auth-panel .auth.active{display: block;}
+#auth-panel .switch button{background: #2f2f2f; color: #638000; border-color: #777;}
+#auth-panel .switch button.active{background: #2f2f2f; color: #c6ff00; border-color: #0a8c3f;}
+#auth-panel .switch :first-child{border-radius: 1rem 0 0 1rem;}
+#auth-panel .switch :last-child{border-radius: 0 1rem 1rem 0;}
 
 /************************ FONTS *************************/
 @font-face{font-family: 'MeriendaOne'; src: local('Merienda One'), local('MeriendaOne-Regular'), url(https://fonts.gstatic.com/s/meriendaone/v10/H4cgBXaMndbflEq6kyZ1ht6ohYaz.woff2) format('woff2'); unicode-range: U+0020-024F;}
@@ -157,23 +165,17 @@ button#closePanel{position: absolute; top: 0; right: 0;}
     }
 }
 
-@media all and (orientation:portrait) {
+@media screen and (orientation:portrait) {
     html{font-size: 16px;}
     .main{bottom: 8rem;}
     .main .info{bottom: 5%;}
     #chart-panel canvas{height: 35vh !important;}
 }
-@media all and (orientation:landscape) {
+@media screen and (orientation:landscape) {
     html{font-size: 9px;}
     .main{bottom: 6rem;}
     .main .info{bottom: -1rem;}
     #chart-panel canvas{height: 84vh !important;}
-}
-@media all and (max-device-width: 992px) {
-    body{width: 100% !important; margin: 0 !important;}
-}
-@media all and (min-device-width: 992px) {
-    body{width: 60% !important; margin: auto !important;}
 }
 
 /* STARTUP ANIMATION EFFECT */
@@ -197,8 +199,7 @@ footer{bottom: -100%;}
 .color-secondary{color: #638000; border-color: #638000;}
 .color-danger{color: #ff3737 !important; border-color: #ff3737 !important;}
 .color-grey{color: #777 !important; border-color: #777 !important;}
-.color-green{color: #00722d !important; border-color: #00722d !important;}
+.color-green{color: #0a8c3f !important; border-color: #0a8c3f !important;}
 .color-dark{color: #2f2f2f !important; border-color: #2f2f2f !important;}
-.text-white{color: #fff !important;}
-.bg-green{background: #00722d; color: #2f2f2f}.bg-primary{background: #c6ff00; color: #2f2f2f}.bg-grey{background: #777;}
+.bg-green{background: #0a8c3f; color: #2f2f2f}.bg-primary{background: #c6ff00; color: #2f2f2f}
 /* NO TEXT SELECTION */ body{-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
