@@ -111,7 +111,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #auth-panel .auth{display: none;}
 #auth-panel .auth.active{display: block;}
 #auth-panel .switch button{background: #2f2f2f; color: #638000; border-color: #777;}
-#auth-panel .switch button.active{background: #2f2f2f; color: #c6ff00; border-color: #0a8c3f;}
+#auth-panel .switch button.active{background: #c6ff00; color: #2f2f2f; border-color: #c6ff00;}
 #auth-panel .switch :first-child{border-radius: 1rem 0 0 1rem;}
 #auth-panel .switch :last-child{border-radius: 0 1rem 1rem 0;}
 
