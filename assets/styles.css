@@ -1,5 +1,5 @@
 body{z-index: 0; cursor: pointer; position: fixed; top: 0; bottom: 0; right: 0; left: 0; background: #c6ff00; color: #2f2f2f; font-family: Lalezar, Audiowide, tahoma; margin: 0; font-size: 5rem;}
-h1, h2, h3, h4, h5, h6{margin: 3rem 0; text-align: center;}
+h1, h2, h3, h4, h5, h6{margin: 3rem 0; text-align: center;} h5{font-weight: 100; font-size: 4.65rem;}
 p{margin: 0;}
 input[type=text]{background: transparent; width: 100%; font-size: 4rem; font-family: Lalezar, Audiowide, tahoma; color: #c6ff00; border: 0;}
 button{font-family: Lalezar, Audiowide, tahoma; background: transparent; cursor: pointer; border: 0; color: #c6ff00; font-size: 7rem; z-index: 101; position: relative; line-height: 2rem; vertical-align: middle; padding: 0;}
@@ -47,8 +47,6 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel.show{right: 0;}
 #panel #showAddRecord, #panel #hideAddRecord{position: absolute; top: 0; left: 0; padding: 2rem;}
 #panel .panel-heading{text-align: center; font-size: 6rem;}
-#panel .panel-body{/*  */}
-/* #panel input[type=text]{background: transparent; width: 100%; font-size: 4rem; font-family: Lalezar, Audiowide, tahoma; color: #c6ff00; border: 0;} */
 #panel .add-record{height: 0px; overflow: hidden;}
 #panel.showAddRecord .add-record{height: 12rem;}
 #panel .add-record input{width: 100%; border-bottom: .25rem solid #c6ff00;}
@@ -94,7 +92,6 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #chart-panel .title{text-align: center;}
 #chart-panel .chart-container{width: 100%;}
 #chart-panel canvas{width: 100% !important; height: 50vh !important;}
-/* .canvasjs-chart-credit{display: none;} */
 
 .pulse{animation: pulse 1s;}
 .pulseLong{animation: pulse 3s;}

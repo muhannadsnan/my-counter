@@ -1,4 +1,4 @@
-var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $authPanel, $chart, $panelRecord, $templates, db, STORE, dbCollection, isTouched, username_already_exists;
+var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $authPanel, $chart, $panelRecord, $templates, db, USER, dbCollection, isTouched;
 
 function init() {
     initDB();
@@ -6,8 +6,8 @@ function init() {
         showAuthPanel();
     }
     else{
-        console.log("Welcome back " + STORE.username + '!!'); 
-        fetchData();
+        console.log("Welcome back " + USER.username + '!!'); 
+        bootApp();
     }
 }
 
@@ -46,35 +46,35 @@ function fillValues(){
     $chartPanel = $('#chart-panel');
     isTouched = false;
 
-    if(STORE.history === undefined) STORE.history = new History();// All histories of records
-    if(STORE.selectedIndex === undefined) STORE.selectedIndex = 0;
-    if(STORE.history.logBooks === undefined) STORE.history.logBooks = [];
-    if(STORE.records === undefined) {
+    if(USER.history === undefined) USER.history = new History();// All histories of records
+    if(USER.selectedIndex === undefined) USER.selectedIndex = 0;
+    if(USER.history.logBooks === undefined) USER.history.logBooks = [];
+    if(USER.records === undefined) {
         alert("No records yet. Create one ! e.g. أستغفر الله");
         var newRec = new Record(1);
-        STORE.records = [newRec];
-        STORE.selectedIndex = 0;
+        USER.records = [newRec];
+        USER.selectedIndex = 0;
         selectedRecord = newRec;
         selectedIndex = 0;
-        // console.log("records init", STORE.records); 
+        // console.log("records init", USER.records); 
     }
     /* insure that every record has Logbook */
-    $.each(STORE.records, function(i, rec){
+    $.each(USER.records, function(i, rec){
         if(rec == null){ // empty records
-            delete STORE.records[i];
+            delete USER.records[i];
             // console.log("deleted record because it's null!", ); 
         }else{
-            if(!STORE.history.logBooks.some(el => el.recordId == rec.id)){
+            if(!USER.history.logBooks.some(el => el.recordId == rec.id)){
                 console.log("Generating daily Log for record ("+rec.title+")");
-                STORE.history.logBooks.push(new Logbook(rec.id));
+                USER.history.logBooks.push(new Logbook(rec.id));
             }
         }
     });
-    if(STORE.records[STORE.selectedIndex] == null){
-        STORE.selectedIndex = 0;
+    if(USER.records[USER.selectedIndex] == null){
+        USER.selectedIndex = 0;
     } 
-    selectedIndex = STORE.selectedIndex; // verify if selectedIndex was not found
-    selectedRecord = STORE.records[selectedIndex];
+    selectedIndex = USER.selectedIndex; // verify if selectedIndex was not found
+    selectedRecord = USER.records[selectedIndex];
     activeChanged = false; // must be after fillSelectedRecord()   
     logging();
     fillSelectedRecord();
@@ -86,7 +86,7 @@ function fillSelectedRecord(){
     $today.text((selectedRecord.counterLog === undefined) ? 0 : selectedRecord.counterLog);
     $total.text( thousandFormat(selectedRecord.total) );
     $progress.find('.percent').text(goalPercent()+'%');
-    $user.text(STORE.username);
+    $user.text(USER.username);
     setProgress(goalPercent());
     activeChanged = true;
 }
@@ -104,18 +104,18 @@ function goalPercent(counterLog, goal){
 function selectRecord(recID){
     if(recID === undefined){
         selectedIndex = 0;
-        selectedRecord = STORE.records[0];
+        selectedRecord = USER.records[0];
         return;
     }
     else{
-        STORE.records.forEach((rec, i) => {
+        USER.records.forEach((rec, i) => {
             if(rec.id == recID){
                 selectedIndex = i;
                 selectedRecord = rec;
             }
         });    
     }
-    STORE.selectedIndex = selectedIndex;
+    USER.selectedIndex = selectedIndex;
     saveDB();
 }
 
@@ -184,7 +184,7 @@ function onClosePanel(){
 
 function showRecords(){
     $panel.find('.record').remove();
-    STORE.records.forEach((record, i) => {
+    USER.records.forEach((record, i) => {
         addRecordToPanel(record, i);
     });
 }
@@ -212,9 +212,9 @@ function createRecord(){
     else{
         pulse($(this), 1);
         var newRecord = new Record(autoID(), $input.val());
-        STORE.records.push(newRecord);
-        addRecordToPanel(newRecord, STORE.records.length-1);
-        STORE.history.logBooks.push(new Logbook(newRecord.id, new Log(new Date().toLocaleString("en"), newRecord.counter)));
+        USER.records.push(newRecord);
+        addRecordToPanel(newRecord, USER.records.length-1);
+        USER.history.logBooks.push(new Logbook(newRecord.id, new Log(new Date().toLocaleString("en"), newRecord.counter)));
         saveDB();
         $input.val('');
         pulse($panel.find('.record').first(), 1);
@@ -225,19 +225,19 @@ function createRecord(){
 }
 
 function saveSelectedRecord(){
-    STORE.records[selectedIndex] = selectedRecord;
+    USER.records[selectedIndex] = selectedRecord;
     saveDB();
 }
 
 function logging(){
     var today = new Date();
-    var lastWriting = new Date(Date.parse(STORE.history.lastWriting));
+    var lastWriting = new Date(Date.parse(USER.history.lastWriting));
     if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
-        STORE.history.lastWriting = today.toLocaleString("en"); // timestamp
+        USER.history.lastWriting = today.toLocaleString("en"); // timestamp
         console.log("History is lastWritten today", today.toLocaleString("en"));
-        $.each(STORE.records, function(i, rec){
+        $.each(USER.records, function(i, rec){
             if(rec == null) return;
-            $.each(STORE.history.logBooks, function(j, logBook){
+            $.each(USER.history.logBooks, function(j, logBook){
                 if(rec.id == logBook.recordId && rec.counterLog > 0){ // no logging if today's log is 0
                     var yesterday = new Date();
                     yesterday.setDate(yesterday.getDate()-1);
@@ -247,9 +247,9 @@ function logging(){
             });
         });
         saveDB();
-        console.log("Logging saved! history: ", STORE.history);
+        console.log("Logging saved! history: ", USER.history);
         /* BACKUP_DATABASE() */
-        BACKUP_USER(STORE.history.lastWriting);
+        BACKUP_USER(USER.history.lastWriting);
     }
 }
 
@@ -270,7 +270,7 @@ function onClickRecordBody(){
 }
 
 function recIndexByID(id){
-    return STORE.records.findIndex(el => el.id == id);
+    return USER.records.findIndex(el => el.id == id);
 }
 
 function changeTitle(){
@@ -284,7 +284,7 @@ function changeTitle(){
         return;
     }
     var index = recIndexByID($rec.attr('data-id'));
-    STORE.records[index].title = newTitle;
+    USER.records[index].title = newTitle;
     setRecordTitle($rec.attr('data-id'), newTitle); // DOM
     saveDB();
 }
@@ -298,7 +298,7 @@ function changeGoal(){
         newGoal = prompt("New Goal:", $rec.attr('data-goal'));
     }
     var index = recIndexByID($rec.attr('data-id'));
-    STORE.records[index].goal = parseInt(newGoal);
+    USER.records[index].goal = parseInt(newGoal);
     var percent = goalPercent();
     setProgress(percent, true);
     $rec.attr('data-goal', newGoal);
@@ -315,8 +315,8 @@ function deleteRecord(){
     }
     else if(confirm('Are you sure to delete "' + $rec.attr('data-title') + '"?')){
         var _data_id = $rec.attr('data-id');
-        STORE.records = STORE.records.filter(el => el.id != _data_id);
-        STORE.history.logBooks = STORE.history.logBooks.filter(el => el.recordId != _data_id);
+        USER.records = USER.records.filter(el => el.id != _data_id);
+        USER.history.logBooks = USER.history.logBooks.filter(el => el.recordId != _data_id);
         $('#record-'+_data_id).remove();
         $('.record[data-id='+_data_id+']').remove();
         if(_data_id == selectedRecord.id){
@@ -391,7 +391,7 @@ function closeChartpanel(){
 
 function drawChart(recID, showBy){
     if(showBy === undefined) showBy = "5-days";
-    var logBook = STORE.history.logBooks.find(el => el.recordId == recID);
+    var logBook = USER.history.logBooks.find(el => el.recordId == recID);
     if(logBook === undefined){
         alert("No data was found for this record");
         closeChartpanel();
@@ -455,7 +455,7 @@ function drawChart(recID, showBy){
             break;
     }
     /* Add today to chart */
-    var rec = STORE.records.find(el => el.id == recID);
+    var rec = USER.records.find(el => el.id == recID);
     dataPoints.push({x: new Date(today.getFullYear(), today.getMonth(), today.getDate()), y: rec.counterLog});
     if(rec.counterLog > maxVal) maxVal = rec.counterLog;
     
@@ -524,7 +524,7 @@ function drawChart(recID, showBy){
 }
 
 function autoID(arr, idProp){
-    if(arr === undefined) arr = STORE.records;
+    if(arr === undefined) arr = USER.records;
     if(idProp === undefined) idProp = 'id';
     return Math.max.apply(Math, arr.map(function(el){ return el[idProp]; })) + 1;
 }
@@ -551,32 +551,22 @@ function initDB(){
     });
     db = firebase.firestore();
     dbCollection = db.collection("counter-users");
-    STORE = {};
+    USER = {};
 }
 
-function _fetchDB(){
-    return dbCollection.where("username", "==", STORE.username).get();
+function fetchUser(username){
+    return dbCollection.where("username", "==", username).get();
 }
 
-function fetchData(){
-    _fetchDB().then(function(querySnapshot) {
-            querySnapshot.forEach(function(doc) {
-                STORE = doc.data(); // STORE.username = doc.id;
-                return;
-            });
-            fillValues();
-            if(selectedRecord === undefined){
-                setProgress(0);
-            }else{
-                setProgress(goalPercent());
-            }
-            initListeners();
-            console.log("Connected to Muhannad-Counter database!"); 
-        })
-        .catch(function(error){
-            console.error(error);
-            alert("Error occured when loading data!");
-        });
+function bootApp(){
+    fillValues();
+    if(selectedRecord === undefined){
+        setProgress(0);
+    }else{
+        setProgress(goalPercent());
+    }
+    initListeners();
+    console.log("Connected to Muhannad-Counter database!"); 
 }
 
 function showAuthPanel(){
@@ -586,7 +576,6 @@ function showAuthPanel(){
     $authPanel = $('#auth-panel');
     $authPanel.addClass('show');
     $authPanel.find('.focus-me').focus();
-    username_already_exists = false;
 }
 
 function register(){
@@ -594,21 +583,17 @@ function register(){
     var email = $authPanel.find('.register-panel .email').val().trim() || "";
     var password = $authPanel.find('.register-panel .password').val().trim() || "";
     if(username.trim() && email.trim() && password.trim()){
-        /* if username exists */
-        dbCollection.where("username", "==", username).get().then(function(querySnapshot){
-            querySnapshot.forEach(function(doc) {
-                username_already_exists = doc.exists;
-            });
-        });
-        if(!username_already_exists){
+        fetchUser().then()
+        
+        if(!username_already_exists(username)){
             // REGISTER USER
             firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
                 alert("Welcome "+username+" to M-Digital Counter!");
                 // LOGIN THE NEW USER
-                STORE.email = email;
-                STORE.username = username;
-                fetchData();
-                Cookies.set("userID", STORE.username, cookieOptions);
+                USER.email = email;
+                USER.username = username;
+                bootApp();
+                Cookies.set("userID", USER.username, cookieOptions);
                 $authPanel.removeClass('show');
             }).catch(function(error) {
                 alert(error.message); console.log(error.code); console.log(error.message);
@@ -623,29 +608,44 @@ function register(){
 }
 
 function isLoggedIn(){
-    STORE.username = Cookies.get("userID");
-    return !(STORE.username === undefined || STORE.username == null || STORE.username == '');
+    USER.username = Cookies.get("userID");
+    return !(USER.username === undefined || USER.username == null || USER.username == '');
 }
 
 function login(){
-    if(STORE == null) STORE = {};
-    STORE.username = $authPanel.find('.username').val().trim() || false;
-    if(STORE.username != null){
-        fetchData();
-        Cookies.set("userID", STORE.username, cookieOptions);
-        $authPanel.removeClass('show');
+    var username = $authPanel.find('.username').val().trim() || false;
+    if(username != null){
+        fetchUser(username).then(function(querySnapshot){
+            querySnapshot.forEach(function(doc) {
+                USER = doc;
+                return;
+            });
+            if(USER.exists){
+                USER = USER.data(); 
+                bootApp();
+                Cookies.set("userID", USER.username, cookieOptions);
+                $authPanel.removeClass('show');
+            }else{
+                alert("This user is not registered.");
+            }
+        })
+        .catch(function(error){
+            console.error(error);
+            alert("Failed to load user!");
+            return false;
+        });
     }
     else{
-        alert("Login failed! Please provide all fields.");
+        alert("Login failed! username cannot be empty.");
     }
 }
 
 function saveDB(){
-    if(STORE.records === undefined || STORE.records.length == 0){
-        alert("Cannot save empty STORE!");
+    if(USER.records === undefined || USER.records.length == 0){
+        alert("Cannot save empty USER!");
         return;
     }
-    dbCollection.doc(STORE.username).set(JSON.parse(JSON.stringify(STORE)))
+    dbCollection.doc(USER.username).set(JSON.parse(JSON.stringify(USER)))
         .then(function() {
             ("DB saved. ");
         })
@@ -669,7 +669,7 @@ function BACKUP_DATABASE(){
 
 function BACKUP_USER(lastWriting){
     var _db = firebase.firestore();
-    _db.collection("_BACKUP-counter-users").where("id", "==", STORE.email).get().then(function(querySnapshot){
+    _db.collection("_BACKUP-counter-users").where("id", "==", USER.email).get().then(function(querySnapshot){
         querySnapshot.forEach(function(doc) {
             lastWriting = new Date(Date.parse(lastWriting));
             var lastBackup = new Date(doc.data().history.lastWriting) || false;
@@ -680,9 +680,9 @@ function BACKUP_USER(lastWriting){
             }
             if(lastWriting.getDate() != lastBackup.getDate() || lastWriting.getMonth() != lastBackup.getMonth() || lastWriting.getFullYear() != lastBackup.getFullYear()){
                 // console.log("lastBackup", lastBackup); 
-                _db.collection("_BACKUP-counter-users").doc(STORE.email).set(JSON.parse(JSON.stringify(STORE)))
+                _db.collection("_BACKUP-counter-users").doc(USER.email).set(JSON.parse(JSON.stringify(USER)))
                     .then(function() {
-                        console.log("User auto backup was taken!", STORE);
+                        console.log("User auto backup was taken!", USER);
                     })
                     .catch(function(error) {
                         console.error("Backup unsuccessfull! ", error);
