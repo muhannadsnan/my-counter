@@ -555,7 +555,7 @@ function initDB(){
 }
 
 function fetchUser(username){
-    return dbCollection.where("username", "==", username).get();
+    return dbCollection.where("name", "==", username).get();
 }
 
 function bootApp(){
