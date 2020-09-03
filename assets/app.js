@@ -6,7 +6,7 @@ function init() {
         showAuthPanel();
     }
     else{
-        console.log("Welcome back " + USER.name + '!!'); 
+        console.log("Welcome back " + USER.id + '!!'); 
         bootApp();
     }
 }
@@ -86,7 +86,7 @@ function fillSelectedRecord(){
     $today.text((selectedRecord.counterLog === undefined) ? 0 : selectedRecord.counterLog);
     $total.text( thousandFormat(selectedRecord.total) );
     $progress.find('.percent').text(goalPercent()+'%');
-    $user.text(USER.name);
+    $user.text( $authPanel.find('.username').val().trim() );
     setProgress(goalPercent());
     activeChanged = true;
 }
@@ -555,7 +555,8 @@ function initDB(){
 }
 
 function fetchUser(username){
-    return dbCollection.where("name", "==", username).get();
+    // return dbCollection.where("I", "==", username).get();
+    return dbCollection.doc(username).get(); // get by id
 }
 
 function bootApp(){
@@ -589,9 +590,9 @@ function register(){
                 firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
                     alert("Welcome "+username+" to M-Digital Counter!");
                     // LOGIN THE NEW USER
-                    USER = {email: email, name: username};
+                    USER = {email: email};
                     bootApp();
-                    Cookies.set("userID", USER.name, cookieOptions);
+                    Cookies.set("userID", USER.id, cookieOptions);
                     $authPanel.removeClass('show');
                 }).catch(function(error) {
                     alert(error.message); console.log(error.code); console.log(error.message);
@@ -612,19 +613,18 @@ function register(){
 }
 
 function isLoggedIn(){
-    USER.name = Cookies.get("userID");
-    return !(USER.name === undefined || USER.name == null || USER.name == '');
+    USER.id = Cookies.get("userID");
+    return !(USER.id === undefined || USER.id == null || USER.id == '');
 }
 
 function login(){
     var username = $authPanel.find('.username').val().trim() || false;
     if(username != null){
-        fetchUser(username).then(function(querySnapshot){
-            USER = querySnapshot.docs[0] || false; // querySnapshot.size > 0
-            if(USER.exists){
-                USER = USER.data(); 
+        fetchUser(username).then(function(docRef){
+            USER = docRef.data() || false;
+            if(USER){
                 bootApp();
-                Cookies.set("userID", USER.name, cookieOptions);
+                Cookies.set("userID", username, cookieOptions);
                 $authPanel.removeClass('show');
             }else{
                 alert("This user is not registered.");
@@ -646,9 +646,9 @@ function saveDB(){
         alert("Cannot save empty USER!");
         return;
     }
-    dbCollection.doc(USER.name).set(JSON.parse(JSON.stringify(USER)))
+    dbCollection.doc(USER.id).set(JSON.parse(JSON.stringify(USER)))
         .then(function() {
-            ("DB saved. ");
+            // console.log("DB saved.");
         })
         .catch(function(error) {
             console.error("Error saving DB: ", error);
