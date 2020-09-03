@@ -1,4 +1,4 @@
-var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $authPanel, $chart, $panelRecord, $templates, db, USER, dbCollection, isTouched;
+var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $authPanel, $chart, $panelRecord, $templates, db, USER, dbCollection, isTouched, userID;
 
 function init() {
     initDB();
@@ -73,11 +73,11 @@ function fillValues(){
     if(USER.records[USER.selectedIndex] == null){
         USER.selectedIndex = 0;
     } 
-    selectedIndex = USER.selectedIndex; // verify if selectedIndex was not found
+    selectedIndex = USER.selectedIndex;
     selectedRecord = USER.records[selectedIndex];
-    activeChanged = false; // must be after fillSelectedRecord()   
-    logging();
+    activeChanged = false;  
     fillSelectedRecord();
+    logging();
 }
 
 function fillSelectedRecord(){
@@ -86,7 +86,7 @@ function fillSelectedRecord(){
     $today.text((selectedRecord.counterLog === undefined) ? 0 : selectedRecord.counterLog);
     $total.text( thousandFormat(selectedRecord.total) );
     $progress.find('.percent').text(goalPercent()+'%');
-    $user.text( $authPanel.find('.username').val().trim() );
+    $user.text(userID);
     setProgress(goalPercent());
     activeChanged = true;
 }
@@ -584,18 +584,19 @@ function register(){
     var email = $authPanel.find('.register-panel .email').val().trim() || "";
     var password = $authPanel.find('.register-panel .password').val().trim() || "";
     if(username.trim() && email.trim() && password.trim()){
-        fetchUser(username).then(function(querySnapshot){
-            if(querySnapshot.size == 0){
+        fetchUser(username).then(function(docRef){
+            if(!docRef.data()){
                 // REGISTER USER
                 firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
                     alert("Welcome "+username+" to M-Digital Counter!");
                     // LOGIN THE NEW USER
+                    userID = username; // must be separated from USER bcz we dont need to save it to db
                     USER = {email: email};
                     bootApp();
-                    Cookies.set("userID", USER.id, cookieOptions);
+                    Cookies.set("userID", username, cookieOptions);
                     $authPanel.removeClass('show');
                 }).catch(function(error) {
-                    alert(error.message); console.log(error.code); console.log(error.message);
+                    alert(error.message); console.log(error.code); 
                 });
             }else{
                 alert("Username already exists. Choose a different one.");
@@ -646,7 +647,7 @@ function saveDB(){
         alert("Cannot save empty USER!");
         return;
     }
-    dbCollection.doc(USER.id).set(JSON.parse(JSON.stringify(USER)))
+    dbCollection.doc($user.text()).set(JSON.parse(JSON.stringify(USER)))
         .then(function() {
             // console.log("DB saved.");
         })
