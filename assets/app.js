@@ -6,9 +6,10 @@ function init() {
         showAuthPanel();
     }
     else{
-        console.log("Welcome back " + userID + '!!'); 
-        fetchUser(userID);
+        alert("userID: "+userID)
+        fetchUser();
         bootApp();
+        console.log("Welcome back " + userID + '!!'); 
     }
 }
 
@@ -57,13 +58,11 @@ function fillValues(){
         USER.selectedIndex = 0;
         selectedRecord = newRec;
         selectedIndex = 0;
-        // console.log("records init", USER.records); 
     }
-    /* insure that every record has Logbook */
+    /* ensure that every record has Logbook */
     $.each(USER.records, function(i, rec){
-        if(rec == null){ // empty records
+        if(rec == null){ // delete empty records
             delete USER.records[i];
-            // console.log("deleted record because it's null!", ); 
         }else{
             if(!USER.history.logBooks.some(el => el.recordId == rec.id)){
                 console.log("Generating daily Log for record ("+rec.title+")");
@@ -250,7 +249,7 @@ function logging(){
         saveDB();
         console.log("Logging saved! history: ", USER.history);
         /* BACKUP_DATABASE() */
-        BACKUP_USER(USER.history.lastWriting);
+        BACKUP_USER();
     }
 }
 
@@ -689,7 +688,8 @@ function BACKUP_DATABASE(){
     });
 }
 
-function BACKUP_USER(lastWriting){
+function BACKUP_USER(){
+    var lastWriting = USER.history.lastWriting;
     var _db = firebase.firestore();
     _db.collection("_BACKUP-counter-users").where("id", "==", USER.email).get().then(function(querySnapshot){
         querySnapshot.forEach(function(doc) {
