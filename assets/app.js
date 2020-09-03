@@ -6,9 +6,7 @@ function init() {
         showAuthPanel();
     }
     else{
-        alert("userID: "+userID);
-        fetchUserByID();
-        bootApp();
+        loginUserByCookies();
         console.log("Welcome back " + userID + '!!'); 
     }
 }
@@ -643,7 +641,7 @@ function login(){
     }
 }
 
-function fetchUserByID(){
+function loginUserByCookies(){
     var username = userID;
     fetchUser(username).then(function(docRef){
         USER = docRef.data() || false;
