@@ -605,7 +605,7 @@ function register(){
         })
         .catch(function(error){
             console.error(error);
-            alert("Failed to load user!");
+            alert("Failed to load user! "+error);
             return false;
         });
     }
@@ -651,7 +651,6 @@ function fetchUser(username){
             userID = username;
             bootApp();
             Cookies.set("userID", username, cookieOptions);
-            $authPanel.removeClass('show');
         }else{
             alert("Cannot login user. Try again.");
         }
