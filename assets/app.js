@@ -658,7 +658,7 @@ function fetchUser(username){
     })
     .catch(function(error){
         console.error(error);
-        alert("Failed to login user!");
+        alert("Failed to login user! "+error);
         return false;
     });
 }
