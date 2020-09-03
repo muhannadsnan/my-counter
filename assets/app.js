@@ -6,8 +6,8 @@ function init() {
         showAuthPanel();
     }
     else{
-        alert("userID: "+userID)
-        fetchUser();
+        alert("userID: "+userID);
+        fetchUserByID();
         bootApp();
         console.log("Welcome back " + userID + '!!'); 
     }
@@ -554,7 +554,7 @@ function initDB(){
     USER = {};
 }
 
-function _fetchUser(username){
+function fetchUser(username){
     // return dbCollection.where("I", "==", username).get();
     return dbCollection.doc(username).get(); // get by id
 }
@@ -584,7 +584,7 @@ function register(){
     var email = $authPanel.find('.register-panel .email').val().trim() || "";
     var password = $authPanel.find('.register-panel .password').val().trim() || "";
     if(username.trim() && email.trim() && password.trim()){
-        _fetchUser(username).then(function(docRef){
+        fetchUser(username).then(function(docRef){
             if(!docRef.data()){
                 // REGISTER USER
                 firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
@@ -621,7 +621,7 @@ function isLoggedIn(){
 function login(){
     var username = $authPanel.find('.username').val().trim() || false;
     if(username != null){
-        _fetchUser(username).then(function(docRef){
+        fetchUser(username).then(function(docRef){
             USER = docRef.data() || false;
             if(USER){
                 userID = username;
@@ -643,8 +643,9 @@ function login(){
     }
 }
 
-function fetchUser(username){
-    _fetchUser(username).then(function(docRef){
+function fetchUserByID(){
+    var username = userID;
+    fetchUser(username).then(function(docRef){
         USER = docRef.data() || false;
         if(USER){
             userID = username;
