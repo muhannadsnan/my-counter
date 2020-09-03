@@ -692,28 +692,26 @@ function BACKUP_DATABASE(){
 function BACKUP_USER(){
     var lastWriting = USER.history.lastWriting;
     var _db = firebase.firestore();
-    _db.collection("_BACKUP-counter-users").where("id", "==", USER.email).get().then(function(querySnapshot){
-        querySnapshot.forEach(function(doc) {
-            lastWriting = new Date(Date.parse(lastWriting));
-            var lastBackup = new Date(doc.data().history.lastWriting) || false;
-            console.log("lastBackup", lastBackup); 
-            if(!lastBackup){
-                alert("Couldn't take auto backup!");
-                return;
-            }
-            if(lastWriting.getDate() != lastBackup.getDate() || lastWriting.getMonth() != lastBackup.getMonth() || lastWriting.getFullYear() != lastBackup.getFullYear()){
-                // console.log("lastBackup", lastBackup); 
-                _db.collection("_BACKUP-counter-users").doc(USER.email).set(JSON.parse(JSON.stringify(USER)))
-                    .then(function() {
-                        console.log("User auto backup was taken!", USER);
-                    })
-                    .catch(function(error) {
-                        console.error("Backup unsuccessfull! ", error);
-                        alert("Backup unsuccessfull! " + error);
-                    });
-            }
+    // _db.collection("_BACKUP-counter-users").where("id", "==", USER.email).get().then(function(querySnapshot){
+    _db.collection("_BACKUP-counter-users").doc(userID).get().then(function(docRef){ 
+        lastWriting = new Date(Date.parse(lastWriting));
+        var lastBackup = new Date(docRef.data().history.lastWriting) || false;
+        console.log("lastBackup", lastBackup); 
+        if(!lastBackup){
+            alert("Couldn't take auto backup!");
             return;
-        });
+        }
+        if(lastWriting.getDate() != lastBackup.getDate() || lastWriting.getMonth() != lastBackup.getMonth() || lastWriting.getFullYear() != lastBackup.getFullYear()){
+            // console.log("lastBackup", lastBackup); 
+            _db.collection("_BACKUP-counter-users").doc(userID).set(JSON.parse(JSON.stringify(USER)))
+                .then(function() {
+                    console.log("User auto backup was taken!", USER);
+                })
+                .catch(function(error) {
+                    console.error("Backup unsuccessfull! ", error);
+                    alert("Backup unsuccessfull! " + error);
+                });
+        }
     })
     .catch(function(error) {
         console.error("Error backing up User: ", error);
