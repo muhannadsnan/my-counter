@@ -6,7 +6,8 @@ function init() {
         showAuthPanel();
     }
     else{
-        console.log("Welcome back " + USER.id + '!!'); 
+        console.log("Welcome back " + userID + '!!'); 
+        loginUser(userID);
         bootApp();
     }
 }
@@ -614,8 +615,8 @@ function register(){
 }
 
 function isLoggedIn(){
-    USER.id = Cookies.get("userID");
-    return !(USER.id === undefined || USER.id == null || USER.id == '');
+    userID = Cookies.get("userID");
+    return !(userID === undefined || userID == null || userID == '');
 }
 
 function login(){
@@ -624,6 +625,7 @@ function login(){
         fetchUser(username).then(function(docRef){
             USER = docRef.data() || false;
             if(USER){
+                userID = username;
                 bootApp();
                 Cookies.set("userID", username, cookieOptions);
                 $authPanel.removeClass('show');
@@ -642,12 +644,31 @@ function login(){
     }
 }
 
+function loginUser(username){
+    fetchUser(username).then(function(docRef){
+        USER = docRef.data() || false;
+        if(USER){
+            userID = username;
+            bootApp();
+            Cookies.set("userID", username, cookieOptions);
+            $authPanel.removeClass('show');
+        }else{
+            alert("Cannot login user. Try again.");
+        }
+    })
+    .catch(function(error){
+        console.error(error);
+        alert("Failed to login user!");
+        return false;
+    });
+}
+
 function saveDB(){
     if(USER.records === undefined || USER.records.length == 0){
         alert("Cannot save empty USER!");
         return;
     }
-    dbCollection.doc($user.text()).set(JSON.parse(JSON.stringify(USER)))
+    dbCollection.doc(userID).set(JSON.parse(JSON.stringify(USER)))
         .then(function() {
             // console.log("DB saved.");
         })
