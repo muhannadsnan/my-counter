@@ -1,6 +1,7 @@
 var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $authPanel, $chart, $panelRecord, $templates, db, firebase_db, dbCollection, isTouched, userID, USER;
 
 function init() {
+    db = new Database();
     if(!isLoggedIn()){
         showAuthPanel();
     }
@@ -551,7 +552,6 @@ function bootApp(){
 }
 
 function showAuthPanel(){
-    db = new Database();
     $('#login').on('click', db.login);
     $('#register').on('click', db.register);
     $('.switch-auth button').on('click', switchAuthPanel);
