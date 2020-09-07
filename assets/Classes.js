@@ -49,6 +49,151 @@ class Logbook{
     }
 }
 
+class Database{
+    constructor(){
+        this.init();
+        console.log("DB connection established.");
+    }
+
+    init(){
+        firebase.initializeApp({
+            apiKey: 'AIzaSyBP196irDbj3NgzWnTggEV_5XQJlNhRL5k',
+            authDomain: 'test-firebase-597da.firebaseapp.com',
+            projectId: 'test-firebase-597da'
+        });
+        firebase_db = firebase.firestore();
+        dbCollection = firebase_db.collection("counter-users");
+        USER = {};
+    }
+    
+    fetchUser(username){
+        // return dbCollection.where("I", "==", username).get();
+        return dbCollection.doc(username).get(); // get by id
+    }
+
+    register(){
+        var username = $authPanel.find('.register-panel .username').val().trim() || "";
+        var email = $authPanel.find('.register-panel .email').val().trim() || "";
+        var password = $authPanel.find('.register-panel .password').val().trim() || "";
+        if(username.trim() && email.trim() && password.trim()){
+            Database.prototype.fetchUser(username).then(function(docRef){
+                if(!docRef.data()){
+                    // REGISTER USER
+                    firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
+                        alert("Welcome "+username+" to M-Digital Counter!");
+                        // LOGIN THE NEW USER
+                        userID = username; // must be separated from USER bcz we dont need to save it to db
+                        USER = {email: email};
+                        bootApp();
+                        Cookies.set("userID", username, cookieOptions);
+                        $authPanel.removeClass('show');
+                    }).catch(function(error) {
+                        alert(error.message); console.log(error.code); 
+                    });
+                }else{
+                    alert("Username already exists. Choose a different one.");
+                }
+            })
+            .catch(function(error){
+                console.error(error);
+                alert("Failed to load user! "+error);
+                return false;
+            });
+        }
+        else{
+            alert("Registeration failed! Please provide all fields.");
+        }
+    }
+
+    login(){
+        var username = $authPanel.find('.username').val().trim() || false;
+        if(username != null){
+            Database.prototype.fetchUser(username).then(function(docRef){
+                USER = docRef.data() || false;
+                if(USER){
+                    userID = username;
+                    bootApp();
+                    Cookies.set("userID", username, cookieOptions);
+                    $authPanel.removeClass('show');
+                }else{
+                    alert("This user is not registered.");
+                }
+            })
+            .catch(function(error){
+                console.error(error);
+                alert("Failed to load user!");
+                return false;
+            });
+        }
+        else{
+            alert("Login failed! username cannot be empty.");
+        }
+    }
+    
+    loginUserByCookies(){
+        var username = userID;
+        Database.prototype.fetchUser(username).then(function(docRef){
+            USER = docRef.data() || false;
+            if(USER){
+                userID = username;
+                bootApp();
+                Cookies.set("userID", username, cookieOptions);
+            }else{
+                alert("Cannot login user. Try again.");
+            }
+        })
+        .catch(function(error){
+            console.error(error);
+            alert("Failed to login user! "+error);
+            return false;
+        });
+    }
+    
+    save(){
+        if(USER.records === undefined || USER.records.length == 0){
+            alert("Cannot save empty USER!");
+            return;
+        }
+        dbCollection.doc(userID).set(JSON.parse(JSON.stringify(USER)))
+            .then(function() {
+                // console.log("DB saved.");
+            })
+            .catch(function(error) {
+                console.error("Error saving DB: ", error);
+            });
+    }
+
+    BACKUP_USER(){
+        var lastWriting = USER.history.lastWriting;
+        var _db = firebase.firestore();
+        // _db.collection("_BACKUP-counter-users").where("id", "==", USER.email).get().then(function(querySnapshot){
+        _db.collection("_BACKUP-counter-users").doc(userID).get().then(function(docRef){ 
+            lastWriting = new Date(Date.parse(lastWriting));
+            var lastBackup = new Date(docRef.data().history.lastWriting) || false;
+            console.log("lastBackup", lastBackup); 
+            if(!lastBackup){
+                alert("Couldn't take auto backup!");
+                return;
+            }
+            if(lastWriting.getDate() != lastBackup.getDate() || lastWriting.getMonth() != lastBackup.getMonth() || lastWriting.getFullYear() != lastBackup.getFullYear()){
+                // console.log("lastBackup", lastBackup); 
+                _db.collection("_BACKUP-counter-users").doc(userID).set(JSON.parse(JSON.stringify(USER)))
+                    .then(function() {
+                        console.log("User auto backup was taken!", USER);
+                    })
+                    .catch(function(error) {
+                        console.error("Backup unsuccessfull! ", error);
+                        alert("Backup unsuccessfull! " + error);
+                    });
+            }
+        })
+        .catch(function(error) {
+            console.error("Error backing up User: ", error);
+            alert("Couldn't take auto backup! " + error);
+        });
+    }
+}
+
 function uniqID(){
     return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }

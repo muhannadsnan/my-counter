@@ -1,12 +1,11 @@
-var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $authPanel, $chart, $panelRecord, $templates, db, USER, dbCollection, isTouched, userID;
+var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $authPanel, $chart, $panelRecord, $templates, db, firebase_db, dbCollection, isTouched, userID, USER;
 
 function init() {
-    initDB();
     if(!isLoggedIn()){
         showAuthPanel();
     }
     else{
-        loginUserByCookies();
+        db.loginUserByCookies();
         console.log("Welcome back " + userID + '!!'); 
     }
 }
@@ -114,7 +113,7 @@ function selectRecord(recID){
         });    
     }
     USER.selectedIndex = selectedIndex;
-    saveDB();
+    db.save();
 }
 
 function increaseCounter(e){
@@ -213,7 +212,7 @@ function createRecord(){
         USER.records.push(newRecord);
         addRecordToPanel(newRecord, USER.records.length-1);
         USER.history.logBooks.push(new Logbook(newRecord.id, new Log(new Date().toLocaleString("en"), newRecord.counter)));
-        saveDB();
+        db.save();
         $input.val('');
         pulse($panel.find('.record').first(), 1);
     }
@@ -224,7 +223,7 @@ function createRecord(){
 
 function saveSelectedRecord(){
     USER.records[selectedIndex] = selectedRecord;
-    saveDB();
+    db.save();
 }
 
 function logging(){
@@ -244,10 +243,9 @@ function logging(){
                 }
             });
         });
-        saveDB();
+        db.save();
         console.log("Logging saved! history: ", USER.history);
-        /* BACKUP_DATABASE() */
-        BACKUP_USER();
+        db.BACKUP_USER();
     }
 }
 
@@ -284,7 +282,7 @@ function changeTitle(){
     var index = recIndexByID($rec.attr('data-id'));
     USER.records[index].title = newTitle;
     setRecordTitle($rec.attr('data-id'), newTitle); // DOM
-    saveDB();
+    db.save();
 }
 
 function changeGoal(){
@@ -303,7 +301,7 @@ function changeGoal(){
     $rec.find('.goal').text('GOAL ' + newGoal);
     $rec.find('.progress').text(goalPercent($rec.attr('data-counter-log'), newGoal)+'%');
     $rec.find('.title i.done').toggleClass('d-none', percent < 100);
-    saveDB();
+    db.save();
 }
 
 function deleteRecord(){
@@ -321,7 +319,7 @@ function deleteRecord(){
             selectRecord(); // the first index
             fillSelectedRecord();
         }
-        saveDB();
+        db.save();
     }
 }
 
@@ -540,22 +538,6 @@ function switchAuthPanel(){
     $('#auth-panel .auth.'+$(this).attr("data-auth")).addClass('active');
     $authPanel.find('.username').focus();
 }
-// =========================================== DATABASE ==========================================
-function initDB(){
-    firebase.initializeApp({
-        apiKey: 'AIzaSyBP196irDbj3NgzWnTggEV_5XQJlNhRL5k',
-        authDomain: 'test-firebase-597da.firebaseapp.com',
-        projectId: 'test-firebase-597da'
-    });
-    db = firebase.firestore();
-    dbCollection = db.collection("counter-users");
-    USER = {};
-}
-
-function fetchUser(username){
-    // return dbCollection.where("I", "==", username).get();
-    return dbCollection.doc(username).get(); // get by id
-}
 
 function bootApp(){
     fillValues();
@@ -565,50 +547,17 @@ function bootApp(){
         setProgress(goalPercent());
     }
     initListeners();
-    console.log("Connected to Muhannad-Counter database!"); 
+    console.log(`User '${userID}' is logged in.`); 
 }
 
 function showAuthPanel(){
-    $('#login').on('click', login);
-    $('#register').on('click', register);
+    db = new Database();
+    $('#login').on('click', db.login);
+    $('#register').on('click', db.register);
     $('.switch-auth button').on('click', switchAuthPanel);
     $authPanel = $('#auth-panel');
     $authPanel.addClass('show');
     $authPanel.find('.focus-me').focus();
-}
-
-function register(){
-    var username = $authPanel.find('.register-panel .username').val().trim() || "";
-    var email = $authPanel.find('.register-panel .email').val().trim() || "";
-    var password = $authPanel.find('.register-panel .password').val().trim() || "";
-    if(username.trim() && email.trim() && password.trim()){
-        fetchUser(username).then(function(docRef){
-            if(!docRef.data()){
-                // REGISTER USER
-                firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
-                    alert("Welcome "+username+" to M-Digital Counter!");
-                    // LOGIN THE NEW USER
-                    userID = username; // must be separated from USER bcz we dont need to save it to db
-                    USER = {email: email};
-                    bootApp();
-                    Cookies.set("userID", username, cookieOptions);
-                    $authPanel.removeClass('show');
-                }).catch(function(error) {
-                    alert(error.message); console.log(error.code); 
-                });
-            }else{
-                alert("Username already exists. Choose a different one.");
-            }
-        })
-        .catch(function(error){
-            console.error(error);
-            alert("Failed to load user! "+error);
-            return false;
-        });
-    }
-    else{
-        alert("Registeration failed! Please provide all fields.");
-    }
 }
 
 function isLoggedIn(){
@@ -616,105 +565,9 @@ function isLoggedIn(){
     return !(userID === undefined || userID == null || userID == '');
 }
 
-function login(){
-    var username = $authPanel.find('.username').val().trim() || false;
-    if(username != null){
-        fetchUser(username).then(function(docRef){
-            USER = docRef.data() || false;
-            if(USER){
-                userID = username;
-                bootApp();
-                Cookies.set("userID", username, cookieOptions);
-                $authPanel.removeClass('show');
-            }else{
-                alert("This user is not registered.");
-            }
-        })
-        .catch(function(error){
-            console.error(error);
-            alert("Failed to load user!");
-            return false;
-        });
-    }
-    else{
-        alert("Login failed! username cannot be empty.");
-    }
-}
-
-function loginUserByCookies(){
-    var username = userID;
-    fetchUser(username).then(function(docRef){
-        USER = docRef.data() || false;
-        if(USER){
-            userID = username;
-            bootApp();
-            Cookies.set("userID", username, cookieOptions);
-        }else{
-            alert("Cannot login user. Try again.");
-        }
-    })
-    .catch(function(error){
-        console.error(error);
-        alert("Failed to login user! "+error);
-        return false;
-    });
-}
-
-function saveDB(){
-    if(USER.records === undefined || USER.records.length == 0){
-        alert("Cannot save empty USER!");
-        return;
-    }
-    dbCollection.doc(userID).set(JSON.parse(JSON.stringify(USER)))
-        .then(function() {
-            // console.log("DB saved.");
-        })
-        .catch(function(error) {
-            console.error("Error saving DB: ", error);
-        });
-}
-
 function logout(){
     Cookies.set("userID", '');
     window.location = window.location;
-}
-
-function BACKUP_DATABASE(){
-    var users = [];
-    dbCollection.get().then(function(querySnapshot){
-        querySnapshot.docs.map(doc => users.push(doc.data()));
-        // console.log(JSON.stringify(users));
-    });
-}
-
-function BACKUP_USER(){
-    var lastWriting = USER.history.lastWriting;
-    var _db = firebase.firestore();
-    // _db.collection("_BACKUP-counter-users").where("id", "==", USER.email).get().then(function(querySnapshot){
-    _db.collection("_BACKUP-counter-users").doc(userID).get().then(function(docRef){ 
-        lastWriting = new Date(Date.parse(lastWriting));
-        var lastBackup = new Date(docRef.data().history.lastWriting) || false;
-        console.log("lastBackup", lastBackup); 
-        if(!lastBackup){
-            alert("Couldn't take auto backup!");
-            return;
-        }
-        if(lastWriting.getDate() != lastBackup.getDate() || lastWriting.getMonth() != lastBackup.getMonth() || lastWriting.getFullYear() != lastBackup.getFullYear()){
-            // console.log("lastBackup", lastBackup); 
-            _db.collection("_BACKUP-counter-users").doc(userID).set(JSON.parse(JSON.stringify(USER)))
-                .then(function() {
-                    console.log("User auto backup was taken!", USER);
-                })
-                .catch(function(error) {
-                    console.error("Backup unsuccessfull! ", error);
-                    alert("Backup unsuccessfull! " + error);
-                });
-        }
-    })
-    .catch(function(error) {
-        console.error("Error backing up User: ", error);
-        alert("Couldn't take auto backup! " + error);
-    });
 }
 
 window.onload = init();
