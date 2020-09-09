@@ -66,6 +66,11 @@ class Database{
         USER = {};
     }
     
+    validate_auth(){
+        $authPanel.find('#login').prop('disabled', $(this).val().trim() == false);
+        $authPanel.find('#register').prop('disabled', $(this).val().trim() == false);
+    }
+
     fetchUser(username){
         // return dbCollection.where("I", "==", username).get();
         return dbCollection.doc(username).get(); // get by id
@@ -107,23 +112,41 @@ class Database{
 
     login(){
         var username = $authPanel.find('.username').val().trim() || false;
-        if(username != null){
-            Database.prototype.fetchUser(username).then(function(docRef){
-                USER = docRef.data() || false;
-                if(USER){
+        if(username){
+            var password = $authPanel.find('.login-panel .password').val().trim() || false;
+            if(!password){ // BEFORE ENTERING PASSWORD
+                $authPanel.find('#login').prop('disabled', true).find('span.1, i').toggleClass('d-none');
+                if(!Object.keys(USER).length){ // FETCH USER IF HAVE'NT
+                    Database.prototype.fetchUser(username).then(function(docRef){
+                        USER = docRef.data() || false;
+                        if(!USER){ 
+                            alert("This user is not registered.");
+                            $authPanel.find('#login').prop('disabled', false).find('span.1, i').toggleClass('d-none');
+                        }else{
+                            $authPanel.find('.login-panel .swipe-container .swipe-1').toggleClass('pass show');
+                            $authPanel.find('.login-panel .swipe-container .swipe-2').toggleClass('show pass').focus();
+                            $authPanel.find('#login').prop('disabled', true).find('span.3, i').toggleClass('d-none');
+                        }
+                    })
+                    .catch(function(error){
+                        console.error(error);
+                        alert("Failed to load user!");
+                        $authPanel.find('#login').find('span.1, i').toggleClass('d-none');
+                    });
+                }else{ // USER FOUND
+                    $authPanel.find('#login').prop('disabled', false).find('span.1, i').toggleClass('d-none');
+                    // clearTimeout(timeout);
+                }
+            }else{ // USER HAS ENTERED PASSWORD
+                if(/* is_password_correct */true){
                     userID = username;
                     bootApp();
                     Cookies.set("userID", username, cookieOptions);
                     $authPanel.removeClass('show');
                 }else{
-                    alert("This user is not registered.");
+                    //
                 }
-            })
-            .catch(function(error){
-                console.error(error);
-                alert("Failed to load user!");
-                return false;
-            });
+            }
         }
         else{
             alert("Login failed! username cannot be empty.");

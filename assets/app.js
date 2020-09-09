@@ -1,4 +1,4 @@
-var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $authPanel, $chart, $panelRecord, $templates, db, firebase_db, dbCollection, isTouched, userID, USER;
+var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $authPanel, $chart, $panelRecord, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout;
 
 function init() {
     db = new Database();
@@ -552,6 +552,7 @@ function bootApp(){
 }
 
 function showAuthPanel(){
+    $('#auth-panel input').on('input', db.validate_auth);
     $('#login').on('click', db.login);
     $('#register').on('click', db.register);
     $('.switch-auth button').on('click', switchAuthPanel);
@@ -559,6 +560,7 @@ function showAuthPanel(){
     $authPanel.addClass('show');
     $authPanel.find('.focus-me').focus();
 }
+
 
 function isLoggedIn(){
     userID = Cookies.get("userID");
