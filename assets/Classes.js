@@ -123,8 +123,7 @@ class Database{
                             alert("This user is not registered.");
                             $authPanel.find('#login').prop('disabled', false).find('span.1, i').toggleClass('d-none');
                         }else{
-                            $authPanel.find('.login-panel .swipe-container .swipe-1').toggleClass('pass show');
-                            $authPanel.find('.login-panel .swipe-container .swipe-2').toggleClass('show pass').focus();
+                            $authPanel.find('.login-panel .swipe-container').addClass('show-2').find('.password').focus();
                             $authPanel.find('#login').prop('disabled', true).find('span.3, i').toggleClass('d-none');
                         }
                     })

@@ -558,7 +558,7 @@ function showAuthPanel(){
     $('.switch-auth button').on('click', switchAuthPanel);
     $authPanel = $('#auth-panel');
     $authPanel.addClass('show');
-    $authPanel.find('.focus-me').focus();
+    $authPanel.find('.username').focus();
 }
 
 
