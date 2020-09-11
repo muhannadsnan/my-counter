@@ -377,7 +377,7 @@ function showChart(){
     if($(this).closest('.record').attr('data-id') !== undefined){
         $chartPanel.attr('data-rec-id', $(this).closest('.record').attr('data-id'));
     }
-    $chartPanel.find('select.showBy').val("5-days").trigger('change');
+    $chartPanel.find('select.showBy').val("7-days").trigger('change');
     $chartPanel.toggleClass('show');
 }
 
@@ -387,7 +387,7 @@ function closeChartpanel(){
 }
 
 function drawChart(recID, showBy){
-    if(showBy === undefined) showBy = "5-days";
+    if(showBy === undefined) showBy = "7-days";
     var logBook = USER.history.logBooks.find(el => el.recordId == recID);
     if(logBook === undefined){
         alert("No data was found for this record");
@@ -404,6 +404,7 @@ function drawChart(recID, showBy){
     var startDate = new Date();
     var chartX = 0;
     var maxVal = 0;
+    var total = 0;
     function getIntervalY(){
         if(maxVal <= 10){
             return 1;
@@ -438,11 +439,14 @@ function drawChart(recID, showBy){
             dataPoints.push(point);
             if(point.y > maxVal) maxVal = point.y;
             _date.setDate(_date.getDate() + 1);
+            total += point.y;
         }
+        total += selectedRecord.counterLog;
+        $("#chart-panel .total span").text(total);
     }
     switch(showBy){
-        case "5-days":
-            makeChartData(5);
+        case "7-days":
+            makeChartData(7);
             break;
         case "30-days":
             makeChartData(30);
@@ -457,7 +461,7 @@ function drawChart(recID, showBy){
     if(rec.counterLog > maxVal) maxVal = rec.counterLog;
     
     // console.log("maxVal", maxVal, "dataPoints", dataPoints); 
-    var title = {'5-days': 'Last 5 days', '30-days': 'Last 30 days'};
+    var title = {'7-days': 'Last 7 days', '30-days': 'Last 30 days'};
     var chart = new CanvasJS.Chart("chart-container", { /* https://canvasjs.com/jquery-charts/dynamic-chart/ */
         animationEnabled: true,
         backgroundColor: "#2f2f2f",
@@ -519,7 +523,7 @@ function drawChart(recID, showBy){
     chart.render();
     // console.log("Chart done!");
 }
-
+/******************************************/
 function autoID(arr, idProp){
     if(arr === undefined) arr = USER.records;
     if(idProp === undefined) idProp = 'id';
@@ -560,7 +564,6 @@ function showAuthPanel(){
     $authPanel.addClass('show');
     $authPanel.find('.username').focus();
 }
-
 
 function isLoggedIn(){
     userID = Cookies.get("userID");
