@@ -167,6 +167,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
     .main{bottom: 6rem;}
     .main .info{bottom: -1rem;}
     #chart-panel canvas{height: 84vh !important;}
+    #chart-panel .title, #chart-panel .total{display: inline-block;}
 }
 
 /* STARTUP ANIMATION EFFECT */
