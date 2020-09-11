@@ -163,7 +163,7 @@ function reset(){
 }
 
 function togglePannel(){
-    $panel.toggleClass('show');
+    $panel.toggleClass('show').removeClass('showAddRecord');
 }
 
 function showPanel(){
@@ -325,6 +325,7 @@ function deleteRecord(){
         if(_data_id == selectedRecord.id){
             selectRecord(); // the first index
             fillSelectedRecord();
+            showRecords();
         }
         db.save();
     }
