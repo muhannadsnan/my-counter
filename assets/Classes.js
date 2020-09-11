@@ -136,15 +136,12 @@ class Database{
                         $authPanel.find('#login').find('span.1, i').toggleClass('d-none');
                     });
                 }else{ // USER FOUND
-                    // $authPanel.find('#login').prop('disabled', false).find('span.1, i').toggleClass('d-none');
                     $authPanel.find('.login-panel .swipe-container').addClass('show-2').find('.password').focus();
-                            $authPanel.find('#login').prop('disabled', true).find('span.3, i').toggleClass('d-none');
+                    $authPanel.find('#login').prop('disabled', true).find('span.3, i').toggleClass('d-none');
                 }
             }else{ // USER HAS ENTERED PASSWORD
                 if(/* is_password_correct */true){
-                    userID = username;
-                    bootApp();
-                    Cookies.set("userID", username, cookieOptions);
+                    Database.prototype._doLogin();
                     $authPanel.removeClass('show');
                 }else{
                     //
@@ -155,15 +152,18 @@ class Database{
             alert("Login failed! username cannot be empty.");
         }
     }
+
+    _doLogin(){
+        userID = USER.name;
+        bootApp();
+        Cookies.set("userID", userID, cookieOptions);
+    }
     
     loginUserByCookies(){
-        var username = userID;
-        Database.prototype.fetchUser(username).then(function(docRef){
+        Database.prototype.fetchUser(userID).then(function(docRef){
             USER = docRef.data() || false;
             if(USER){
-                userID = username;
-                bootApp();
-                Cookies.set("userID", username, cookieOptions);
+                Database.prototype._doLogin();
             }else{
                 alert("Cannot login user. Try again.");
             }
