@@ -126,6 +126,7 @@ class Database{
                             alert("This user is not registered.");
                             $authPanel.find('#login').prop('disabled', false).find('span.1, i').toggleClass('d-none');
                         }else{
+                            userID = username;
                             $authPanel.find('.login-panel .swipe-container').addClass('show-2').find('.password').focus();
                             $authPanel.find('#login').prop('disabled', true).find('span.3, i').toggleClass('d-none');
                         }
@@ -154,7 +155,6 @@ class Database{
     }
 
     _doLogin(){
-        userID = USER.name;
         bootApp();
         Cookies.set("userID", userID, cookieOptions);
     }
