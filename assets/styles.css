@@ -155,20 +155,6 @@ button#closePanel{position: absolute; top: 0; right: 0;}
         text-shadow:  0rem 0rem 0rem #c6ff00;
     }
 }
-@media screen and (orientation:portrait) {
-    html{font-size: 16px;}
-    .main{bottom: 8rem;}
-    .main .info{bottom: 5%;}
-    #chart-panel canvas{height: 35vh !important;}
-}
-@media screen and (orientation:landscape) {
-    html{font-size: 9px;}
-    .main{bottom: 6rem;}
-    .main .info{bottom: -1rem;}
-    #chart-panel canvas{height: 84vh !important;}
-    #chart-panel .title, #chart-panel .total, #chart-panel label, #chart-panel .showBy{display: inline-block;}
-    #chart-panel .total{font-size: 5rem;}
-}
 
 /* STARTUP ANIMATION EFFECT */
 button#showPanel, button#reset, #counter{top: -200%;}
@@ -192,13 +178,29 @@ footer{bottom: -100%;}
 #auth-panel .switch{display: flex;}
 #auth-panel .auth{display: none;}
 #auth-panel .auth.active{display: block;}
-#auth-panel .switch button{background: #2f2f2f; color: #638000; border-color: #777;}
+#auth-panel .switch button{background: #2f2f2f; color: #638000; border-color: #777; line-height: 6rem;}
 #auth-panel .switch button.active{background: #c6ff00; color: #2f2f2f; border-color: #c6ff00;}
 #auth-panel .switch :first-child{border-radius: 1rem 0 0 1rem;}
 #auth-panel .switch :last-child{border-radius: 0 1rem 1rem 0;}
 
 .swipe-container{display: flex; align-items: flex-start; position: relative; right: 0;}
-.swipe-container.show-2{right: 107%;}
+.swipe-container.show-2{right: 106%;}
 .swipe-container.show-3{right: 200%;}
 
-
+/* THESE @media queries MUST STAY AT LAST TO OVERWRITE PREVIOUS ATTRIBUTES */
+@media screen and (orientation:portrait) {
+    html{font-size: 16px;}
+    .main{bottom: 8rem;}
+    .main .info{bottom: 5%;}
+    #chart-panel canvas{height: 35vh !important;}
+    .swipe-container.show-2{right: 111%;}
+}
+@media screen and (orientation:landscape) {
+    html{font-size: 9px;}
+    .main{bottom: 6rem;}
+    .main .info{bottom: -1rem;}
+    #chart-panel canvas{height: 84vh !important;}
+    #chart-panel .title, #chart-panel .total, #chart-panel label, #chart-panel .showBy{display: inline-block;}
+    #chart-panel .total{font-size: 5rem;}
+    .swipe-container.show-2{right: 105%;}
+}
