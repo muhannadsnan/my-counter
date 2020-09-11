@@ -556,7 +556,12 @@ function bootApp(){
 }
 
 function showAuthPanel(){
-    $('#auth-panel input').on('input', db.validate_auth);
+    $('#auth-panel input').on('input keypress', db.validate_auth);
+    $('#auth-panel .auth button.show-1').on('click', function(){ 
+        $('#auth-panel .auth .swipe-container').removeClass('show-2'); 
+        $authPanel.find('#login').find('span').removeClass('d-none');
+        $authPanel.find('#login').prop('disabled', false).find('span.1.3, span.2.3').addClass('d-none');
+    });
     $('#login').on('click', db.login);
     $('#register').on('click', db.register);
     $('.switch-auth button').on('click', switchAuthPanel);

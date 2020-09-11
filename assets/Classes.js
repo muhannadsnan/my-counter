@@ -66,7 +66,10 @@ class Database{
         USER = {};
     }
     
-    validate_auth(){
+    validate_auth(e){
+        if(e.type == "keypress" && (e.keyCode == 13)){
+            $('#auth-panel .auth.active button.do-auth').trigger("click");
+        }
         $authPanel.find('#login').prop('disabled', $(this).val().trim() == false);
         $authPanel.find('#register').prop('disabled', $(this).val().trim() == false);
     }
@@ -110,7 +113,7 @@ class Database{
         }
     }
 
-    login(){
+    login(e){
         var username = $authPanel.find('.username').val().trim() || false;
         if(username){
             var password = $authPanel.find('.login-panel .password').val().trim() || false;
@@ -133,8 +136,9 @@ class Database{
                         $authPanel.find('#login').find('span.1, i').toggleClass('d-none');
                     });
                 }else{ // USER FOUND
-                    $authPanel.find('#login').prop('disabled', false).find('span.1, i').toggleClass('d-none');
-                    // clearTimeout(timeout);
+                    // $authPanel.find('#login').prop('disabled', false).find('span.1, i').toggleClass('d-none');
+                    $authPanel.find('.login-panel .swipe-container').addClass('show-2').find('.password').focus();
+                            $authPanel.find('#login').prop('disabled', true).find('span.3, i').toggleClass('d-none');
                 }
             }else{ // USER HAS ENTERED PASSWORD
                 if(/* is_password_correct */true){

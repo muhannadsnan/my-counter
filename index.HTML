@@ -110,7 +110,7 @@
                 <button class="close p-2 pos-right"><i class="fas fa-times-circle"></i></button>
                 <div class="container hide">
                     <div class="title p-1">
-                        <span class="color-grey">Show</span>
+                        <label class="color-grey">Show</label>
                         <select class="showBy">
                             <option value="7-days">7 days</option>
                             <option value="30-days">30 days</option>
@@ -129,22 +129,29 @@
             <div id="auth-panel" class="p-2 color-primary">
                 <h5 class="color-primary py-1 m-0">M-DIGITAL COUNTER</h5>
                 <div class="switch switch-auth mb-3 mt-2">
-                    <button class="active btn-block py-3 m-0" data-auth="login-panel">LOGIN</button>
-                    <button class="btn-block py-3 m-0" data-auth="register-panel">REGISTER</button>
+                    <button class="active btn-block font-4 py-1 m-0" data-auth="login-panel">LOGIN</button>
+                    <button class="btn-block font-4 py-1 m-0" data-auth="register-panel">REGISTER</button>
                 </div>
-                <div class="active auth login-panel pt-2">
-                    <div class="swipe-container show-1 w-200 transition trans-time-05sX trans-left trans-right">
-                        <div class="col-6 d-flex border color-primary mx-2">
-                            <i class="fas fa-user mr-2 p-2"></i><input type="text" class="username p-2" placeholder="Username...">
+                <div class="active auth login-panel pt-1">
+                    <div class="swipe-container w-200 transition trans-time-05sX trans-left trans-right px-3">
+                        <div class="col-6 d-flex pr-3">
+                            <div class="border color-primary d-flex mr-2">
+                                <i class="fas fa-user mr-2 p-2"></i><input type="text" class="username p-2" placeholder="Username...">
+                            </div>
                         </div>
-                        <div class="col-6 d-flex border color-primary mx-2">
-                            <i class="fas fa-key mr-2 p-2"></i><input type="password" class="password p-2" placeholder="Password...">
+                        <div class="col-6 d-flex mx-2">
+                            <button class="show-1 ml-2"><i class="fas fa-arrow-alt-circle-left mr-2"></i></button>
+                            <div class="border color-primary d-flex">
+                                <i class="fas fa-key mr-2 p-2"></i><input type="password" class="password p-2" placeholder="Password...">
+                            </div>
                         </div>
                     </div>
                     <div class="text-align-center px-3">
-                        <button id="login" class="btn-block p-3 bg-primary mt-3" disabled>
-                            <span class="1">Next</span> <span class="1 3 d-none">Wait..</span> <span class="2 3 d-none">LOGIN</span>
-                            <i class="fas fa-chevron-circle-right"></i> <i class="fas fa-spinner fa-spin d-none"></i></button>
+                        <button id="login" class="do-auth btn-block p-3 bg-primary mt-3" disabled>
+                            <span class="1">Next <i class="fas fa-chevron-circle-right"></i></span>
+                            <span class="1 3 d-none">Wait..</span> <span class="2 3 d-none">ENTER</span>
+                            <i class="fas fa-spinner fa-spin d-none"></i>
+                        </button>
                     </div>
                     <p class="font-3 color-grey mt-3">Login with username & password. If you don't have them, don't hesitate to register a new user <i class="fas fa-smile"></i></p>
                 </div>
@@ -159,7 +166,7 @@
                         <i class="fas fa-key mr-2 p-2"></i><input type="text" class="password p-2" placeholder="Password...">
                     </div>
                     <div class="text-align-center px-3">
-                        <button id="register" class="btn-block p-3 bg-primary mt-2">REGISTER</button>
+                        <button id="register" class="do-auth btn-block p-3 bg-primary mt-2">REGISTER</button>
                     </div>
                 </div>
             </div>
