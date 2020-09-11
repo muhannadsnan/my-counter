@@ -1,4 +1,4 @@
-var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $authPanel, $chart, $panelRecord, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout;
+var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $authPanel, $chart, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout;
 
 function init() {
     db = new Database();
@@ -15,8 +15,8 @@ function initListeners(){
     $('body').on('click', function(e) {e.stopPropagation();});
     $('#clicker').on('click touchend', increaseCounter);
     $('#reset').on('click', reset);
-    $('#showPanel').on('click', onShowPanel);
-    $('#closePanel').on('click', onClosePanel);
+    $('#showPanel').on('click', showPanel);
+    $('#closePanel').on('click', closePanel);
     $('#add-record-btn').on('click', createRecord);
     $('button.details').on('click', toggleDropdown);
     $('.record-body').on('click', onClickRecordBody);
@@ -106,12 +106,13 @@ function selectRecord(recID){
         return;
     }
     else{
-        USER.records.forEach((rec, i) => {
+        $.each(USER.records, (i, rec) => {
             if(rec.id == recID){
                 selectedIndex = i;
                 selectedRecord = rec;
+                return false;
             }
-        });    
+        });   
     }
     USER.selectedIndex = selectedIndex;
     db.save();
@@ -165,13 +166,13 @@ function togglePannel(){
     $panel.toggleClass('show');
 }
 
-function onShowPanel(){
+function showPanel(){
     pulse($('#showPanel, #closePanel'), 2);
     togglePannel();
     showRecords();    
 }
 
-function onClosePanel(){
+function closePanel(){
     pulse($('#showPanel, #closePanel'), 2);
     if(activeChanged){
         pulseAll();
@@ -182,12 +183,12 @@ function onClosePanel(){
 
 function showRecords(){
     $panel.find('.record').remove();
-    USER.records.forEach((record, i) => {
-        addRecordToPanel(record, i);
+    $.each(USER.records, (i, record) => {
+        addRecordToPanel(i, record);
     });
 }
 
-function addRecordToPanel(record, index){
+function addRecordToPanel(index, record){
     // console.log(record); 
     var tpl = $templates.find('.record-tpl').clone(true);
     tpl.attr('data-id', record.id).attr('data-title', record.title || 'N/A').attr('data-counter-log', record.counterLog || 0).attr('data-goal', record.goal || 100);
@@ -211,15 +212,19 @@ function createRecord(){
         pulse($(this), 1);
         var newRecord = new Record(autoID(), $input.val());
         USER.records.push(newRecord);
-        addRecordToPanel(newRecord, USER.records.length-1);
+        addRecordToPanel(USER.records.length-1, newRecord);
         USER.history.logBooks.push(new Logbook(newRecord.id, new Log(new Date().toLocaleString("en"), newRecord.counter)));
         db.save();
         $input.val('');
+        toggleAddRecord();
+        selectRecord(newRecord.id);
+        fillSelectedRecord();
+        $panel.find('.record').removeClass('color-primary active').first().addClass('color-primary active');
         pulse($panel.find('.record').first(), 1);
     }
     pulse($input);
     pulse($(this), 1);
-    $input.focus();
+    // $input.focus();
 }
 
 function saveSelectedRecord(){
@@ -262,8 +267,9 @@ function onClickRecordBody(){
     $rec.addClass('color-primary active');
     selectRecord($rec.attr('data-id'));
     fillSelectedRecord();
+    showRecords();
     // pulse($rec);
-    onClosePanel();
+    closePanel();
 }
 
 function recIndexByID(id){
@@ -353,8 +359,7 @@ function showPrayers(){
 
 function toggleAddRecord(){
     $panel.toggleClass('showAddRecord');
-    $panel.find('#showAddRecord').toggleClass('d-none');
-    $panel.find('#hideAddRecord').toggleClass('d-none');
+    $panel.find('#showAddRecord, #hideAddRecord').toggleClass('d-none');
     $panel.find('#add-record-input').focus();
     pulse($('#showAddRecord, #hideAddRecord'), 2);
 }
