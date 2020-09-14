@@ -1,4 +1,4 @@
-var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $total, $progress, $counter, $today, $user, $panel, $chartPanel, $authPanel, $chart, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout;
+var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $progress, $counter, $today, $week, $total, $user, $panel, $chartPanel, $authPanel, $chart, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout;
 
 function init() {
     db = new Database();
@@ -34,11 +34,12 @@ function initListeners(){
 function fillValues(){
     counter = 0;
     cookieOptions = {expires: 3650};
+    $today = $("#today");
+    $week = $("#week");
     $total = $("#total");
     $progress = $("#progress");
     $counter = $("#counter");
     $user = $("#user");
-    $today = $("#today");
     $title = $("#recordTitle");
     $panel = $('#panel');
     $templates = $('#templates');
@@ -80,7 +81,8 @@ function fillValues(){
 function fillSelectedRecord(){
     $title.text(selectedRecord.title);
     $counter.text(selectedRecord.counter);
-    $today.text((selectedRecord.counterLog === undefined) ? 0 : selectedRecord.counterLog);
+    $today.text(selectedRecord.counterLog || 0);
+    $week.text(selectedRecord.counterWeek || 0);
     $total.text( thousandFormat(selectedRecord.total) );
     $progress.find('.percent').text(goalPercent()+'%');
     $user.text(userID);
@@ -127,27 +129,31 @@ function increaseCounter(e){
     selectedRecord.counter++; 
     selectedRecord.total++;
     selectedRecord.counterLog++;
+    selectedRecord.counterWeek++;
     // var refreshPercent = selectedRecord.counterLog % 10 == 0;
     var today = selectedRecord.counterLog % 10 == 0 ? selectedRecord.counterLog : undefined;
-    setProgress(goalPercent(), true, today);
+    var week = selectedRecord.counterWeek % 100 == 0 ? selectedRecord.counterWeek : undefined;
+    setProgress(goalPercent(), true, today, week);
     saveSelectedRecord();
     if(selectedRecord.counter % 10 == 0) $counter.text(selectedRecord.counter);
     if(selectedRecord.counter % 100 == 0) pulse($counter, 1);
     if(selectedRecord.counterLog % 100 == 0) pulse($today, 2);
+    if(selectedRecord.counterWeek % 100 == 0) pulse($week, 1);
     if(selectedRecord.total % 100 == 0){
         $total.text( thousandFormat(selectedRecord.total) );
         pulse($total, 1);
     }
 }
 
-function setProgress(value, refreshPercent, today){
-    if(refreshPercent === undefined) refreshPercent = false;
-    if(today === undefined) today = -1;
-    if(refreshPercent){
+function setProgress(value, refreshPercent, today, week){
+    if(refreshPercent !== undefined){
         $progress.find('.percent').text(value+'%');
     }
-    if(today != -1){
+    if(today !== undefined){
         $today.text(today); 
+    }
+    if(week !== undefined){
+        $week.text(week); 
     }
     if(value >= 100) $progress.addClass('color-green').find('.val').attr('class', 'val c-100 goal-achieved');
     else $progress.removeClass('color-green').find('.val').attr('class', 'val c-'+(value%100));

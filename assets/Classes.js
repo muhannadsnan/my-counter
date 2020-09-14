@@ -7,6 +7,7 @@ class Record{
         this.goal = goal || 100;
         this.total = total || 0;
         this.counterLog = counterLog || 0;
+        this.counterWeek = counterWeek || 0;
         this.print();
     }
     print(){

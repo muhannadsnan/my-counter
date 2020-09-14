@@ -40,20 +40,24 @@
                     <i class="far fa-user"></i>
                     <span id="user">--</span>
                 </div>
-                <div class="today">
-                    <span class="label mb-2">Today</span>
+                <div class="today color-white">
+                    <span class="label mb-1">Today</span>
                     <span id="today" class="number">...</span>
                 </div>
+                <div class="week">
+                    <span class="label">This week</span>
+                    <span id="week" class="number m-0">...</span>
+                </div>
                 <div class="total">
-                    <span class="label mb-2">Total</span>
+                    <span class="label">Total</span>
                     <span id="total" class="number m-0">...</span>
                 </div>
             </div>
         </div>
 
-        <footer class="p-2">
-            <p class="my-0">Digital Counter</p>
-            <p class="version p-2 m-0">v7.7</p>
+        <footer class="d-flex justify-content-between">
+            <p>v7.7</p>
+            <p>Digital Counter</p>
         </footer>
  
 
@@ -136,13 +140,13 @@
                     <div class="swipe-container w-200 transition trans-time-05sX trans-left trans-right pl-3">
                         <div class="col-6 d-flex pr-3">
                             <div class="w-100 border color-primary d-flex mr-3">
-                                <i class="fas fa-user mr-2 p-2"></i><input type="text" class="username p-2" placeholder="Username...">
+                                <i class="fas fa-user p-2"></i><input type="text" class="username p-2" placeholder="Username...">
                             </div>
                         </div>
                         <div class="col-6 d-flex pl-3">
-                            <button class="show-1 px-3"><i class="fas fa-arrow-alt-circle-left mr-2xx"></i></button>
+                            <button class="show-1 px-3"><i class="fas fa-arrow-alt-circle-left"></i></button>
                             <div class="w-100 border color-primary d-flex">
-                                <i class="fas fa-key mr-2 p-2"></i><input type="password" class="password p-2" placeholder="Password...">
+                                <i class="fas fa-key p-2"></i><input type="password" class="password p-2" placeholder="Password...">
                             </div>
                         </div>
                     </div>
@@ -157,13 +161,13 @@
                 </div>
                 <div class="auth register-panel">
                     <div class="d-flex border mb-2 color-green">
-                        <i class="fas fa-user mr-2 p-2"></i><input type="text" class="username p-2" placeholder="New username...">
+                        <i class="fas fa-user p-2"></i><input type="text" class="username p-2" placeholder="New username...">
                     </div>
                     <div class="d-flex border mb-2 color-green">
-                        <i class="fas fa-envelope  mr-2 p-2"></i><input type="text" class="email p-2" placeholder="New email...">
+                        <i class="fas fa-envelope p-2"></i><input type="text" class="email p-2" placeholder="New email...">
                     </div>
                     <div class="d-flex border color-green">
-                        <i class="fas fa-key mr-2 p-2"></i><input type="text" class="password p-2" placeholder="Password...">
+                        <i class="fas fa-key p-2"></i><input type="text" class="password p-2" placeholder="Password...">
                     </div>
                     <div class="text-align-center px-3">
                         <button id="register" class="do-auth btn-block p-3 bg-primary mt-2">REGISTER</button>
