@@ -54,8 +54,6 @@ function fillValues(){
         var newRec = new Record(1);
         USER.records = [newRec];
         USER.selectedIndex = 0;
-        selectedRecord = newRec;
-        selectedIndex = 0;
     }
     /* ensure that every record has Logbook */
     $.each(USER.records, function(i, rec){
@@ -73,7 +71,7 @@ function fillValues(){
     } 
     selectedIndex = USER.selectedIndex;
     selectedRecord = USER.records[selectedIndex];
-    activeChanged = false;  
+    activeChanged = false;
     fillSelectedRecord();
     logging();
 }
@@ -82,12 +80,30 @@ function fillSelectedRecord(){
     $title.text(selectedRecord.title);
     $counter.text(selectedRecord.counter);
     $today.text(selectedRecord.counterLog || 0);
+    if(new Date(USER.history.lastWriting).getWeekNumber() != new Date().getWeekNumber()){ // new week since the lastWriting
+        selectRecord.counterWeek = 0;
+    }
     $week.text(selectedRecord.counterWeek || 0);
     $total.text( thousandFormat(selectedRecord.total) );
     $progress.find('.percent').text(goalPercent()+'%');
     $user.text(userID);
     setProgress(goalPercent());
     activeChanged = true;
+}
+
+function setProgress(value, refreshPercent, today, week){
+    if(refreshPercent !== undefined){
+        $progress.find('.percent').text(value+'%');
+    }
+    if(today !== undefined){
+        $today.text(today); 
+    }
+    if(week !== undefined){
+        $week.text(week); 
+    }
+    if(value >= 100) $progress.addClass('color-green').find('.val').attr('class', 'val c-100 goal-achieved');
+    else $progress.removeClass('color-green').find('.val').attr('class', 'val c-'+(value%100));
+    pulse($progress);
 }
 
 function goalPercent(counterLog, goal){
@@ -107,7 +123,7 @@ function selectRecord(recID){
         return;
     }
     else{
-        $.each(USER.records, (i, rec) => {
+        $.each(USER.records, function(i, rec){
             if(rec.id == recID){
                 selectedIndex = i;
                 selectedRecord = rec;
@@ -145,21 +161,6 @@ function increaseCounter(e){
     }
 }
 
-function setProgress(value, refreshPercent, today, week){
-    if(refreshPercent !== undefined){
-        $progress.find('.percent').text(value+'%');
-    }
-    if(today !== undefined){
-        $today.text(today); 
-    }
-    if(week !== undefined){
-        $week.text(week); 
-    }
-    if(value >= 100) $progress.addClass('color-green').find('.val').attr('class', 'val c-100 goal-achieved');
-    else $progress.removeClass('color-green').find('.val').attr('class', 'val c-'+(value%100));
-    pulse($progress);
-}
-
 function reset(){
     selectedRecord.counter = 0; 
     $counter.text(0);
@@ -188,7 +189,7 @@ function closePanel(){
 
 function showRecords(){
     $panel.find('.record').remove();
-    $.each(USER.records, (i, record) => {
+    $.each(USER.records, function(i, record){
         addRecordToPanel(i, record);
     });
 }
