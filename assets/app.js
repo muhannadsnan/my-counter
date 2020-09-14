@@ -1,4 +1,4 @@
-var counter, total, selectedRecord, selectedIndex, activeChanged, cookieOptions, $progress, $counter, $today, $week, $total, $user, $panel, $chartPanel, $authPanel, $chart, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout;
+var counter, total, selectedRecord, activeChanged, cookieOptions, $progress, $counter, $today, $week, $total, $user, $panel, $chartPanel, $authPanel, $chart, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout;
 
 function init() {
     db = new Database();
@@ -69,8 +69,7 @@ function fillValues(){
     if(USER.records[USER.selectedIndex] == null){
         USER.selectedIndex = 0;
     } 
-    selectedIndex = USER.selectedIndex;
-    selectedRecord = USER.records[selectedIndex];
+    selectedRecord = USER.records[USER.selectedIndex];
     activeChanged = false;
     fillSelectedRecord();
     logging();
@@ -79,11 +78,11 @@ function fillValues(){
 function fillSelectedRecord(){
     $title.text(selectedRecord.title);
     $counter.text(selectedRecord.counter);
-    $today.text(selectedRecord.counterLog || 0);
+    $today.text(selectedRecord.counterDay);
     if(new Date(USER.history.lastWriting).getWeekNumber() != new Date().getWeekNumber()){ // new week since the lastWriting
         selectRecord.counterWeek = 0;
     }
-    $week.text(selectedRecord.counterWeek || 0);
+    $week.text(selectedRecord.counterWeek);
     $total.text( thousandFormat(selectedRecord.total) );
     $progress.find('.percent').text(goalPercent()+'%');
     $user.text(userID);
@@ -106,59 +105,63 @@ function setProgress(value, refreshPercent, today, week){
     pulse($progress);
 }
 
-function goalPercent(counterLog, goal){
-    if(counterLog === undefined) counterLog = parseInt(selectedRecord.counterLog);
+function goalPercent(counterDay, goal){
+    if(counterDay === undefined) counterDay = parseInt(selectedRecord.counterDay);
     if(goal === undefined) goal = parseInt(selectedRecord.goal);
-    if(counterLog == 0) 
+    if(counterDay == 0) 
         return 0;
     if(goal == 0 || goal === null || goal === undefined) 
         goal = 100;
-    return parseInt(counterLog/goal*100);
+    return parseInt(counterDay/goal*100);
 }
 
 function selectRecord(recID){
     if(recID === undefined){
-        selectedIndex = 0;
+        USER.selectedIndex = 0;
         selectedRecord = USER.records[0];
         return;
     }
     else{
         $.each(USER.records, function(i, rec){
             if(rec.id == recID){
-                selectedIndex = i;
+                USER.selectedIndex = i;
                 selectedRecord = rec;
                 return false;
             }
         });   
     }
-    USER.selectedIndex = selectedIndex;
     db.save();
 }
 
 function increaseCounter(e){
-    if(isTouched && e.type == 'click'){
-        isTouched = false;
-        return;
+    if(!(isTouched && e.type == 'click')){
+        if(e.type == 'touchend') isTouched = true;
+        if(selectedRecord.counter === undefined) selectedRecord.counter = 0;
+        if(selectedRecord.counterDay === undefined) selectedRecord.counterDay = 0;
+        if(selectedRecord.counterWeek === undefined) selectedRecord.counterWeek = 0;
+        if(selectedRecord.total === undefined) selectedRecord.total = 0;
+        selectedRecord.counter++; 
+        selectedRecord.counterDay++;
+        selectedRecord.counterWeek++;
+        selectedRecord.total++;
+        var today = selectedRecord.counterDay % 10 == 0 ? selectedRecord.counterDay : undefined;
+        var week = selectedRecord.counterWeek % 100 == 0 ? selectedRecord.counterWeek : undefined;
+        setProgress(goalPercent(), true, today, week);
+        saveSelectedRecord();
+        if(selectedRecord.counter % 10 == 0) $counter.text(selectedRecord.counter);
+        if(selectedRecord.counter % 100 == 0) pulse($counter, 1);
+        if(selectedRecord.counterDay % 100 == 0) pulse($today, 2);
+        if(selectedRecord.counterWeek % 100 == 0) pulse($week, 1);
+        if(selectedRecord.total % 100 == 0){
+            $total.text( thousandFormat(selectedRecord.total) );
+            pulse($total, 1);
+        }
     }
-    // console.log(e.type);
-    if(e.type == 'touchend') isTouched = true;
-    selectedRecord.counter++; 
-    selectedRecord.total++;
-    selectedRecord.counterLog++;
-    selectedRecord.counterWeek++;
-    // var refreshPercent = selectedRecord.counterLog % 10 == 0;
-    var today = selectedRecord.counterLog % 10 == 0 ? selectedRecord.counterLog : undefined;
-    var week = selectedRecord.counterWeek % 100 == 0 ? selectedRecord.counterWeek : undefined;
-    setProgress(goalPercent(), true, today, week);
-    saveSelectedRecord();
-    if(selectedRecord.counter % 10 == 0) $counter.text(selectedRecord.counter);
-    if(selectedRecord.counter % 100 == 0) pulse($counter, 1);
-    if(selectedRecord.counterLog % 100 == 0) pulse($today, 2);
-    if(selectedRecord.counterWeek % 100 == 0) pulse($week, 1);
-    if(selectedRecord.total % 100 == 0){
-        $total.text( thousandFormat(selectedRecord.total) );
-        pulse($total, 1);
-    }
+}
+
+function saveSelectedRecord(){
+    USER.records[USER.selectedIndex] = selectedRecord;
+    db.save();
 }
 
 function reset(){
@@ -197,12 +200,12 @@ function showRecords(){
 function addRecordToPanel(index, record){
     // console.log(record); 
     var tpl = $templates.find('.record-tpl').clone(true);
-    tpl.attr('data-id', record.id).attr('data-title', record.title || 'N/A').attr('data-counter-log', record.counterLog || 0).attr('data-goal', record.goal || 100);
+    tpl.attr('data-id', record.id).attr('data-title', record.title || 'N/A').attr('data-counter-log', record.counterDay || 0).attr('data-goal', record.goal || 100);
     tpl.removeClass('d-none record-tpl').addClass('record').toggleClass('color-primary active', selectedRecord.id == record.id);
     tpl.find('.title .label').text(record.title);
-    var percent = goalPercent(record.counterLog, record.goal);
+    var percent = goalPercent(record.counterDay, record.goal);
     tpl.find('.progress').text(percent+'%');
-    tpl.find('.today').text((record.counterLog || 0) + ' today');
+    tpl.find('.today').text((record.counterDay || 0) + ' today');
     tpl.find('.goal span').text(record.goal);
     tpl.find('.total span').text(record.total);
     tpl.find('.title i.done').toggleClass('d-none', percent < 100);
@@ -233,11 +236,6 @@ function createRecord(){
     // $input.focus();
 }
 
-function saveSelectedRecord(){
-    USER.records[selectedIndex] = selectedRecord;
-    db.save();
-}
-
 function logging(){
     var today = new Date();
     var lastWriting = new Date(Date.parse(USER.history.lastWriting));
@@ -247,11 +245,11 @@ function logging(){
         $.each(USER.records, function(i, rec){
             if(rec == null) return;
             $.each(USER.history.logBooks, function(j, logBook){
-                if(rec.id == logBook.recordId && rec.counterLog > 0){ // no logging if today's log is 0
+                if(rec.id == logBook.recordId && rec.counterDay > 0){ // no logging if today's log is 0
                     var yesterday = new Date();
                     yesterday.setDate(yesterday.getDate()-1);
-                    logBook.logs.push(new Log(yesterday.toLocaleString("en")/* timestamp */, rec.counterLog)); // save the daily every time you save
-                    rec.counterLog = 0;
+                    logBook.logs.push(new Log(yesterday.toLocaleString("en")/* timestamp */, rec.counterDay)); // save the daily every time you save
+                    rec.counterDay = 0;
                 }
             });
         });
@@ -453,7 +451,7 @@ function drawChart(recID, showBy){
             _date.setDate(_date.getDate() + 1);
             total += point.y;
         }
-        total += selectedRecord.counterLog;
+        total += selectedRecord.counterDay;
         $("#chart-panel .total span").text(total);
     }
     switch(showBy){
@@ -469,8 +467,8 @@ function drawChart(recID, showBy){
     }
     /* Add today to chart */
     var rec = USER.records.find(el => el.id == recID);
-    dataPoints.push({x: new Date(today.getFullYear(), today.getMonth(), today.getDate()), y: rec.counterLog});
-    if(rec.counterLog > maxVal) maxVal = rec.counterLog;
+    dataPoints.push({x: new Date(today.getFullYear(), today.getMonth(), today.getDate()), y: rec.counterDay});
+    if(rec.counterDay > maxVal) maxVal = rec.counterDay;
     
     // console.log("maxVal", maxVal, "dataPoints", dataPoints); 
     var title = {'7-days': 'Last 7 days', '30-days': 'Last 30 days'};
