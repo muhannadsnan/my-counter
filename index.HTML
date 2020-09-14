@@ -4,12 +4,11 @@
         <meta http-equiv="Cache-control" content="public">  
         <title>My Counter - Muhannad Senan</title>
         
-        <link rel="apple-touch-icon" href="img/favicon.png" sizes="180x180">
-        <link rel="icon" type="image/png" href="img/favicon.png" sizes="32x32">
-        <link rel="shortcut icon" href="img/favicon.png">
+        <link rel="apple-touch-icon" href="assets/img/favicon.png" sizes="180x180">
+        <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32">
+        <link rel="shortcut icon" href="assets/img/favicon.png">
 
-<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
-        
+        <!-- <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />         -->
 		<link rel="stylesheet" href="assets/styles.css">
     </head>
     
@@ -36,19 +35,19 @@
                 </div>
             </div>
             <div class="info">
-                <div class="user color-secondary mb-1">
-                    <i class="far fa-user"></i>
-                    <span id="user">--</span>
+                <div class="user d-flex color-secondary mb-1">
+                    <i class="label far fa-user"></i>
+                    <span id="user" class="number">--</span>
                 </div>
-                <div class="today color-white">
-                    <span class="label mb-1">Today</span>
+                <div class="today d-flex color-white mb-1">
+                    <span class="label">Today</span>
                     <span id="today" class="number">...</span>
                 </div>
-                <div class="week">
+                <div class="week d-flex mb-1">
                     <span class="label">This week</span>
                     <span id="week" class="number m-0">...</span>
                 </div>
-                <div class="total">
+                <div class="total d-flex mb-1">
                     <span class="label">Total</span>
                     <span id="total" class="number m-0">...</span>
                 </div>
@@ -56,7 +55,7 @@
         </div>
 
         <footer class="d-flex justify-content-between">
-            <p>v7.7</p>
+            <p>v7.8</p>
             <p>Digital Counter</p>
         </footer>
  
@@ -96,7 +95,7 @@
                     </div>
                     <div class="records"> </div>
                     <button id="showPrayers" class="btn-block mt-2">
-                        <img src="img/ico-muslimpro.png" class="pr-2">
+                        <img src="assets/img/ico-muslimpro.png" class="pr-2">
                         <span>Show prayers</span>
                     </button>
                     <button id="logout" class="btn-block mt-2 color-grey">

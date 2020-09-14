@@ -25,11 +25,11 @@ i{line-height: unset;} button span{font-size: 5rem;} /* MY BOOTSTRAP */.d-none{d
 #clicker{position: absolute; width: 100%; height: 100vh; border: 0px solid green; z-index: 100; top: 0; right: 0; cursor: copy;}
 #counter{position: absolute; top: 3rem; right: 8rem; left: 8rem; font-size: 9rem; color: #c6ff00; margin: 0 auto; line-height: 7rem; text-align: center;}
 .main{position: absolute; top: 2rem; bottom: 8rem; right: 2rem; left: 2rem;}
-.main .info{position: absolute; text-align: center; color: #777; bottom: 5%; left: 14rem; right: 0rem;}
+.main .info{position: absolute; text-align: center; color: #777; bottom: 5%; left: 12rem; right: 0rem;}
 .main .info .label{font-size: 4rem; line-height: 4rem; height: 4rem; vertical-align: middle; width: 22rem; display: inline-block; text-align: right;}
-.main .info .number{font-size: 6rem; line-height: 5rem; text-align: left; width: 10rem; display: inline-block;}
+.main .info .number{font-size: 6rem; line-height: 5rem; text-align: left; width: 13rem; text-align: right;}
 
-#recordTitle{position: absolute; top: 12rem; right: 0; left: 13rem; font-size: 7rem; color: #fff; font-family: Almarai, Oxanium, tahoma; text-align: center;}
+#recordTitle{position: absolute; top: 12rem; right: 0; left: 12rem; font-size: 7rem; color: #fff; font-family: Almarai, Oxanium, tahoma; text-align: center;}
 #progress{border: .7rem solid #777; position: absolute; top: 8.5rem; bottom: 0rem; left: 0; width: 9.7rem; border-radius: 1.8rem;}
 #progress .val{transition: all .5s, width .5s ease .8s; background: #c6ff00; width: 100%; height: 0%; bottom: 0; position: absolute; left: 0rem; border-radius: 0 0 1rem 1rem;}
 #progress .val .goal-achieved-label{display: none; font-size: 2.5rem; line-height: 5rem; height: 80%; vertical-align: middle; flex-flow: wrap; text-align: center; margin-left: auto; margin-right: auto; overflow: hidden;}
@@ -76,7 +76,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 #panel .record .dropdown .deleteRecord{color: #de3434;}
 #panel .record .dropdown .activate{float: right;}
 #panel .record .dropdown .activate .on{display: none;}
-#panel .record .dropdown small{font-size: 3rem; display: block;}
+#panel .record .dropdown small{font-size: 3rem; display: block; padding-bottom: .5rem}
 #panel .record .dropdown .total, #panel .record .dropdown .goal{font-size: 3rem;}
 #panel .record .dropdown .total span{padding-left: 10rem; font-weight: bold;}
 #panel .record .dropdown .goal span{padding-left: 1rem; font-weight: bold;}
@@ -176,7 +176,7 @@ footer{bottom: -100%;}
 #auth-panel .switch{display: flex;}
 #auth-panel .auth{display: none;}
 #auth-panel .auth.active{display: block;}
-#auth-panel .switch button{background: #2f2f2f; color: #638000; border-color: #777; line-height: 6rem; vertical-align: middle;}
+#auth-panel .switch button{background: #2f2f2f; color: #638000; border-color: #777; line-height: 6rem; vertical-align: middle; padding-top: .5rem;}
 #auth-panel .switch button.active{background: #c6ff00; color: #2f2f2f; border-color: #c6ff00;}
 #auth-panel .switch :first-child{border-radius: 1rem 0 0 1rem;}
 #auth-panel .switch :last-child{border-radius: 0 1rem 1rem 0;}
@@ -196,7 +196,7 @@ footer{bottom: -100%;}
 @media screen and (orientation:landscape) {
   html{font-size: 9px;}
   .main{bottom: 5.3rem;}
-  .main .info{bottom: -1rem;}
+  .main .info{bottom: -1rem; left: 33%;}
   #chart-panel canvas{height: 84vh !important;}
   #chart-panel .title, #chart-panel .total, #chart-panel label, #chart-panel .showBy{display: inline-block;}
   #chart-panel .total{font-size: 5rem;}
