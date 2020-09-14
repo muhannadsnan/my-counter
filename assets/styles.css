@@ -26,8 +26,8 @@ i{line-height: unset;} button span{font-size: 5rem;} /* MY BOOTSTRAP */.d-none{d
 #counter{position: absolute; top: 3rem; right: 8rem; left: 8rem; font-size: 9rem; color: #c6ff00; margin: 0 auto; line-height: 7rem; text-align: center;}
 .main{position: absolute; top: 2rem; bottom: 8rem; right: 2rem; left: 2rem;}
 .main .info{position: absolute; text-align: center; color: #777; bottom: 5%; left: 12rem; right: 0rem;}
-.main .info .label{font-size: 4rem; line-height: 4rem; height: 4rem; vertical-align: middle; width: 22rem; display: inline-block; text-align: right;}
-.main .info .number{font-size: 6rem; line-height: 5rem; text-align: left; width: 13rem; text-align: right;}
+.main .info .label{font-size: 4rem; line-height: 4rem; height: 4rem; vertical-align: middle; width: 20rem; display: inline-block; text-align: right;}
+.main .info .number{font-size: 6rem; line-height: 5rem;}
 
 #recordTitle{position: absolute; top: 12rem; right: 0; left: 12rem; font-size: 7rem; color: #fff; font-family: Almarai, Oxanium, tahoma; text-align: center;}
 #progress{border: .7rem solid #777; position: absolute; top: 8.5rem; bottom: 0rem; left: 0; width: 9.7rem; border-radius: 1.8rem;}
