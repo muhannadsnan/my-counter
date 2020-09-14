@@ -178,7 +178,7 @@ footer{bottom: -100%;}
 #auth-panel .switch{display: flex;}
 #auth-panel .auth{display: none;}
 #auth-panel .auth.active{display: block;}
-#auth-panel .switch button{background: #2f2f2f; color: #638000; border-color: #777; line-height: 6rem;}
+#auth-panel .switch button{background: #2f2f2f; color: #638000; border-color: #777; line-height: 6rem; vertical-align: middle;}
 #auth-panel .switch button.active{background: #c6ff00; color: #2f2f2f; border-color: #c6ff00;}
 #auth-panel .switch :first-child{border-radius: 1rem 0 0 1rem;}
 #auth-panel .switch :last-child{border-radius: 0 1rem 1rem 0;}

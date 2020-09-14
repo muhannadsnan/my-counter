@@ -52,7 +52,6 @@ class Logbook{
 class Database{
     constructor(){
         this.init();
-        console.log("DB connection established.");
     }
 
     init(){
@@ -63,6 +62,7 @@ class Database{
         });
         firebase_db = firebase.firestore();
         dbCollection = firebase_db.collection("counter-users");
+        console.log("DB connection established.");
         USER = {};
     }
     
@@ -93,7 +93,6 @@ class Database{
                         userID = username; // must be separated from USER bcz we dont need to save it to db
                         USER = {email: email};
                         bootApp();
-                        Cookies.set("userID", username, cookieOptions);
                         $authPanel.removeClass('show');
                     }).catch(function(error) {
                         alert(error.message); console.log(error.code); 
@@ -113,7 +112,7 @@ class Database{
         }
     }
 
-    login(e){
+    login(){
         var username = $authPanel.find('.username').val().trim() || false;
         if(username){
             var password = $authPanel.find('.login-panel .password').val().trim() || false;
@@ -142,7 +141,7 @@ class Database{
                 }
             }else{ // USER HAS ENTERED PASSWORD
                 if(/* is_password_correct */true){
-                    Database.prototype._doLogin();
+                    bootApp();
                     $authPanel.removeClass('show');
                 }else{
                     //
@@ -153,17 +152,12 @@ class Database{
             alert("Login failed! username cannot be empty.");
         }
     }
-
-    _doLogin(){
-        bootApp();
-        Cookies.set("userID", userID, cookieOptions);
-    }
     
     loginUserByCookies(){
         Database.prototype.fetchUser(userID).then(function(docRef){
             USER = docRef.data() || false;
             if(USER){
-                Database.prototype._doLogin();
+                bootApp();
             }else{
                 alert("Cannot login user. Try again.");
             }
