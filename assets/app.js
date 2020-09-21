@@ -79,9 +79,6 @@ function fillSelectedRecord(){
     $title.text(selectedRecord.title);
     $counter.text(selectedRecord.counter);
     $today.text(selectedRecord.counterDay);
-    if(new Date(USER.history.lastWriting).getWeekNumber() != new Date().getWeekNumber()){ // new week since the lastWriting
-        selectRecord.counterWeek = 0;
-    }
     $week.text(selectedRecord.counterWeek);
     $total.text( thousandFormat(selectedRecord.total) );
     $progress.find('.percent').text(goalPercent()+'%');
@@ -167,7 +164,6 @@ function saveSelectedRecord(){
 function reset(){
     selectedRecord.counter = 0; 
     $counter.text(0);
-    setProgress(goalPercent());
     saveSelectedRecord();
 }
 
@@ -244,6 +240,10 @@ function logging(){
         console.log("History is lastWritten today", today.toLocaleString("en"));
         $.each(USER.records, function(i, rec){
             if(rec == null) return;
+            if(lastWriting.getWeekNumber() != today.getWeekNumber()){ // new week
+                rec.counterWeek = 0;
+                $week.text(0);
+            }
             $.each(USER.history.logBooks, function(j, logBook){
                 if(rec.id == logBook.recordId && rec.counterDay > 0){ // no logging if today's log is 0
                     var yesterday = new Date();
