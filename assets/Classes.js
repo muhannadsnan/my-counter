@@ -1,5 +1,5 @@
 class Record{
-    constructor(id, title, counter, goal, total, isActive, counterDay){
+    constructor(id, title, counter, goal, total, isActive, counterDay, counterWeek){
         // this.id = uniqID();
         this.id = id || null;
         this.title = title || "Untitled";
