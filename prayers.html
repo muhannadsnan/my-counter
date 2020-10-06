@@ -9,42 +9,34 @@
             .fa-arrow-circle-left:before{content:"\f0a8"}
             .fa,.fab,.fal,.far,.fas{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-variant:normal;text-rendering:auto;line-height:1; font-size: 7rem;}
             body{background: #2f2f2f; color: #c6ff00; margin: 0;}
-            .info{font-size: 3.5rem; margin: 0; font-family: Audiowide; padding: 2rem; color: #fff; float: right;}
-            /* overwrite styles */
-            .MPwidget{width: 100% !important; font-size: 5rem !important; margin: 0 !important; font-family: 'Audiowide' !important;}
-            .MPheader{padding: 1rem 0 !important; font-family: Audiowide !important; font-size: 4rem !important; font-style: normal !important; border-bottom: 1px solid #c6ff00; min-height: 10rem !important}
-            .MPheader img{width: 10rem; padding: 0 1rem;}
-            .MPtimetable{width: 100%; border-spacing: 0px !important; font-family: Audiowide !important; font-size: 1rem; color: #000000;}
-            .MPtimetable .daterow {color: #adadad; font-size: 7rem !important;}
-            .MPfooter{padding: 3rem 0 !important; color: #5a5a5a !important; margin: 0 !important;}
-            td{padding: 1.5rem !important;}
-            .MPtimetable td:nth-child(2){font-weight: normal !important; width: 50% !important;}
-            .title{width: 85%; padding: 0 !important;}
-            button{font-family: 'Audiowide'; background: transparent; cursor: pointer; border: 0; color: #c6ff00; font-size: 7rem; z-index: 101; position: relative; line-height: 2rem; vertical-align: middle; padding: 0;}
-            #backToMain{position: absolute; right: 0; top: 0; padding: 2.5rem 2rem;}
+            a, a:visited, a:focus{color: #c6ff00;}
+            .header{padding: 1rem;}
+            iframe{width: 100%; height: 100vh;}
+            .info{font-size: 3.5rem; margin: 0; font-family: Audiowide; padding: 1rem; color: #c6ff00; float: right;}
+
             @media screen and (orientation:portrait) {
                 html{font-size: 16px;}
             }
             @media screen and (orientation:landscape) {
                 html{font-size: 6px;}
                 .title a{line-height: 10rem !important; text-decoration: none !important;}
-            }
+            } 
+            
         </style>
     </head>
     
     <body>
+        <div class="header">
+            <a id="backToMain" href="index.html"><i class="fas fa-arrow-circle-left"></i></a>
+            <p class="info">Digital Counter</p>
+        </div>
+        <iframe src="https://www.muslimpro.com/en/prayer-times" frameborder="0"></iframe>
+
         <script src="assets/jquery-3.4.1.min.js"></script>
-        <script type="text/javascript" src="https://www.muslimpro.com/muslimprowidget.js?cityid=3134331&language=en&width=300&timeformat=24&headerbackgroundcolor=2f2f2f&headertextcolor=c6ff00&textcolor=c6ff00&rowbackgroundcolor1=2f2f2f&rowbackgroundcolor2=424141" async></script>
         <script>
             $(function(){
-                $('#backToMain').on('click', function(){
-                    window.location = "./index.html";
-                });
+
             });
         </script>
-
-        <button id="backToMain" class=""><i class="fas fa-arrow-circle-left"></i></button>
-        <p class="info">Muhannad Senan</p>
-
     </body>    
 </html>
