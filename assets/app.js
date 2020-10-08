@@ -1,4 +1,5 @@
-var counter, total, selectedRecord, activeChanged, cookieOptions, $progress, $counter, $today, $week, $total, $user, $panel, $chartPanel, $authPanel, $chart, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout;
+var counter, total, selectedRecord, activeChanged, cookieOptions, $progress, $counter, $today, $week, $total, $user, $panel, $chartPanel, $authPanel, $chart, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout, delayRefreshArr;
+;
 
 function init() {
     db = new Database();
@@ -23,7 +24,8 @@ function initListeners(){
     $('.changeGoal').on('click', changeGoal);
     $('.deleteRecord').on('click', deleteRecord);
     $('#showPrayers').on('click', showPrayers);
-    $('#showAddRecord, #hideAddRecord').on('click', toggleAddRecord);
+    $('#showSettings, #hideSettings').on('click', toggleAddRecord);
+    $('#chkDelayRefresh').on('click', toggleDelayRefresh);
     $('.showChart').on('click', showChart);
     $('#logout').on('click', logout);
     $chartPanel.find('.close').on('click', closeChartpanel);
@@ -73,6 +75,11 @@ function fillValues(){
     activeChanged = false;
     fillSelectedRecord();
     logging();
+    if(USER.settings === undefined){
+        USER.settings = new Settings();
+        db.save();
+    }
+    delayRefreshArr = USER.settings.delayRefresh ? [10, 100] : [1,1];
 }
 
 function fillSelectedRecord(){
@@ -87,16 +94,12 @@ function fillSelectedRecord(){
     activeChanged = true;
 }
 
-function setProgress(value, refreshPercent, today, week){
-    if(refreshPercent !== undefined){
-        $progress.find('.percent').text(value+'%');
-    }
-    if(today !== undefined){
-        $today.text(today); 
-    }
-    if(week !== undefined){
-        $week.text(week); 
-    }
+function setProgress(value, refreshPercent, counter, today, week, total){
+    if(refreshPercent !== undefined) $progress.find('.percent').text(value+'%');
+    if(counter !== undefined) $counter.text(counter);
+    if(today !== undefined) $today.text(today); 
+    if(week !== undefined) $week.text(week); 
+    if(total !== undefined) $total.text( thousandFormat(total) ); 
     if(value >= 100) $progress.addClass('color-green').find('.val').attr('class', 'val c-100 goal-achieved');
     else $progress.removeClass('color-green').find('.val').attr('class', 'val c-'+(value%100));
     pulse($progress);
@@ -141,18 +144,16 @@ function increaseCounter(e){
         selectedRecord.counterDay++;
         selectedRecord.counterWeek++;
         selectedRecord.total++;
-        var today = selectedRecord.counterDay % 10 == 0 ? selectedRecord.counterDay : undefined;
-        var week = selectedRecord.counterWeek % 100 == 0 ? selectedRecord.counterWeek : undefined;
-        setProgress(goalPercent(), true, today, week);
+        var counter = selectedRecord.counter % delayRefreshArr[0] == 0 ? selectedRecord.counter : undefined;
+        var today = selectedRecord.counterDay % delayRefreshArr[0] == 0 ? selectedRecord.counterDay : undefined;
+        var week = selectedRecord.counterWeek % delayRefreshArr[1] == 0 ? selectedRecord.counterWeek : undefined;
+        var total = selectedRecord.total % delayRefreshArr[1] == 0 ? selectedRecord.total : undefined;
+        setProgress(goalPercent(), true, counter, today, week, total);
         saveSelectedRecord();
-        if(selectedRecord.counter % 10 == 0) $counter.text(selectedRecord.counter);
         if(selectedRecord.counter % 100 == 0) pulse($counter, 1);
         if(selectedRecord.counterDay % 100 == 0) pulse($today, 2);
         if(selectedRecord.counterWeek % 100 == 0) pulse($week, 1);
-        if(selectedRecord.total % 100 == 0){
-            $total.text( thousandFormat(selectedRecord.total) );
-            pulse($total, 1);
-        }
+        if(selectedRecord.total % 100 == 0) pulse($total, 1);
     }
 }
 
@@ -168,17 +169,22 @@ function reset(){
 }
 
 function togglePannel(){
-    $panel.toggleClass('show').removeClass('showAddRecord');
+    $panel.toggleClass('show').removeClass('showSettings');
 }
 
 function showPanel(){
-    pulse($('#showPanel, #closePanel'), 2);
     togglePannel();
+    showSettings();
     showRecords();    
 }
 
+function showSettings(){
+    $('#chkDelayRefresh i.unchecked').toggleClass('d-none', USER.settings.delayRefresh);
+    $('#chkDelayRefresh i.checked').toggleClass('d-none', !USER.settings.delayRefresh);
+}
+
 function closePanel(){
-    pulse($('#showPanel, #closePanel'), 2);
+    pulse($('#showPanel'), 2);
     if(activeChanged){
         pulseAll();
         activeChanged = false;
@@ -351,10 +357,11 @@ function pulse($element, i){
 }
 
 function pulseAll(){
+    pulse($title, 2);
     pulse($progress, 3);
     pulse($counter, 2);
     pulse($today, 2);
-    pulse($title, 2);
+    pulse($week, 2);
     pulse($total, 2);
 }
 
@@ -363,10 +370,18 @@ function showPrayers(){
 }
 
 function toggleAddRecord(){
-    $panel.toggleClass('showAddRecord');
-    $panel.find('#showAddRecord, #hideAddRecord').toggleClass('d-none');
+    $panel.find('.settings').toggleClass('show');
+    $panel.find('#showSettings, #hideSettings').toggleClass('d-none');
     $panel.find('#add-record-input').focus();
-    pulse($('#showAddRecord, #hideAddRecord'), 2);
+    pulse($('#showSettings, #hideSettings'), 2);
+}
+
+function toggleDelayRefresh(){
+    USER.settings.delayRefresh = !USER.settings.delayRefresh;
+    delayRefreshArr = USER.settings.delayRefresh ? [10, 100] : [1, 1];
+    $('#chkDelayRefresh i.unchecked').toggleClass('d-none', USER.settings.delayRefresh);
+    $('#chkDelayRefresh i.checked').toggleClass('d-none', !USER.settings.delayRefresh);
+    db.save();
 }
 
 function uniqID(){

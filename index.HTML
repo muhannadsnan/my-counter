@@ -37,8 +37,8 @@
                 </div>
             </div>
             <div class="info">
-                <div class="user d-flex color-secondary mb-1">
-                    <i class="label mr-2 far fa-user"></i>
+                <div class="user color-secondary mb-1">
+                    <i class="labelX mr-2 far fa-user"></i>
                     <span id="user" class="number">--</span>
                 </div>
                 <div class="today d-flex color-white mb-1">
@@ -88,12 +88,17 @@
             <div id="panel" class="transition trans-left trans-right">
                 <button id="closePanel" class="p-2"><i class="fas fa-arrow-alt-circle-right"></i></button>
                 <h1 class="panel-heading m-2">RECORDS</h1>
-                <button id="showAddRecord" class="p-2"><i class="fas fa-plus-square"></i></button>
-                <button id="hideAddRecord" class="p-2 d-none"><i class="fas fa-angle-up close"></i></button>
+                <button id="showSettings" class="p-2"><i class="fas fa-plus-square"></i></button>
+                <button id="hideSettings" class="p-2 d-none"><i class="fas fa-angle-up close"></i></button>
                 <div class="panel-body px-2">
-                    <div class="add-record transition trans-height mb-2 d-flex">
-                        <input type="text" id="add-record-input" class="py-1 pl-1 mx-2 my-2" placeholder="New record...">
-                        <button id="add-record-btn" class="pt-1"><i class="fas fa-plus-square"></i></button>
+                    <div class="settings transition trans-height mb-2 height-0">
+                        <div class="add-record d-flex">
+                            <input type="text" id="add-record-input" class="py-1 pl-1 mr-2 my-2" placeholder="New record...">
+                            <button id="add-record-btn" class="pt-1"><i class="fas fa-plus-square"></i></button>
+                        </div>
+                        <label id="chkDelayRefresh" class="color-white">
+                            <i class="unchecked far fa-square mr-1 color-grey"></i><i class="checked far fa-check-square mr-1 color-primary d-none"></i><small>Delay refresh counters</small>
+                        </label>
                     </div>
                     <div class="records"> </div>
                     <button id="showPrayers" class="btn-block mt-2">

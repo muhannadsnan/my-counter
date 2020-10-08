@@ -50,6 +50,16 @@ class Logbook{
     }
 }
 
+class Settings{
+    constructor(delayRefresh){
+        this.delayRefresh = delayRefresh || true;
+        this.print();
+    }
+    print(){
+        console.log("Settings initiated..", this);
+    }
+}
+
 class Database{
     constructor(){
         this.init();
