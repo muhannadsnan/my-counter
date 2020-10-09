@@ -46,13 +46,15 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 
 #panel{padding: 0; background: #2f2f2f; z-index: 102; position: absolute; top: 0; bottom: 0; right: -200%; font-size: 4rem; font-family: Almarai, Oxanium, tahoma; color: #c6ff00; border:.3rem solid #c6ff00; overflow-y: scroll; overflow-x: hidden;}
 #panel.show{right: 0;}
-#panel #showSettings, #panel #hideSettings{position: absolute; top: 0; left: 0; padding: 2rem;}
+#panel #showSettings{position: absolute; top: 0; left: 0; padding: 2rem;}
+#panel #hideSettings{position: absolute; top: 12rem; left: 51.5rem; padding: 2rem; }
 #panel .panel-heading{text-align: center; font-size: 6rem;}
-#panel .settings{overflow: hidden; border: 0;}
-#panel .settings.show{height: 15vh; border: 2px solid #fff; padding: 1rem;}
+#panel .settings{overflow: hidden; border: 0; background: #3c3b3b;}
+#panel .settings .heading {}
+#panel .settings.show{height: 25vh; border: 2px solid #fff; padding: 1rem; border-radius: 10px;}
 #panel .settings label{cursor: pointer;}
   
-#panel .add-record input{width: 100%; border-bottom: .25rem solid #c6ff00;}
+#panel .add-record input{width: 100%; border: 1px solid #c6ff00; border-bottom-width: 7px;}
 #panel .add-record button{margin-top: -10px;}
 #panel .records {font-size: 4rem; color: #638000;}
 #panel .records .record{position: relative; border-bottom: .25rem solid #949393; opacity: 0.5;}

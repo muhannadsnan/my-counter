@@ -57,7 +57,7 @@
         </div>
 
         <footer class="d-flex justify-content-between">
-            <p>v7.20</p>
+            <p>v7.21</p>
             <p>Digital Counter</p>
         </footer>
  
@@ -88,12 +88,13 @@
             <div id="panel" class="transition trans-left trans-right">
                 <button id="closePanel" class="p-2"><i class="fas fa-arrow-alt-circle-right"></i></button>
                 <h1 class="panel-heading m-2">RECORDS</h1>
-                <button id="showSettings" class="p-2"><i class="fas fa-plus-square"></i></button>
-                <button id="hideSettings" class="p-2 d-none"><i class="fas fa-angle-up close"></i></button>
+                <button id="showSettings" class="p-2"><i class="fas fa-tools"></i></button>
                 <div class="panel-body px-2">
-                    <div class="settings transition trans-height mb-2 height-0">
-                        <div class="add-record d-flex">
-                            <input type="text" id="add-record-input" class="py-1 pl-1 mr-2 my-2" placeholder="New record...">
+                    <div class="settings transition trans-height mb-2 height-0 color-secondary">
+                        <h4 class="heading m-1 color-white">SETTINGS <button id="hideSettings" class="p-2 font-4 d-none"><i class="fas fa-times close"></i></button></h4>
+                        <span>Create new record</span>
+                        <div class="add-record d-flex mb-2">
+                            <input type="text" id="add-record-input" class="py-1 pl-1 mr-1" placeholder="Enter title...">
                             <button id="add-record-btn" class="pt-1"><i class="fas fa-plus-square"></i></button>
                         </div>
                         <label id="chkDelayRefresh" class="color-white">

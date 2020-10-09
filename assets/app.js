@@ -169,6 +169,10 @@ function reset(){
 }
 
 function togglePannel(){
+    if($panel.hasClass('show')){
+        $panel.find('.settings').removeClass('show');
+        $panel.find('#showSettings, #hideSettings').toggleClass('d-none');
+    }
     $panel.toggleClass('show').removeClass('showSettings');
 }
 
