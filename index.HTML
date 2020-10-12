@@ -71,7 +71,7 @@
                     <div class="title"><i class="done fas fa-check color-green p-0"></i><span class="label"></span></div>
                 </div>
                 <button class="details pos-right px-3 py-2"><i class="fas fa-ellipsis-v show"></i> <i class="fas fa-angle-up close"></i></button>
-                <div class="dropdown transition trans-height px-2 mx-2">
+                <div class="dropdown transition trans-height px-2 mx-2 float-right">
                     <div class="mt-1">
                         <p class="total">TOAL <span></span></p>
                         <p class="goal">DAILY GOAL <span></span></p>
@@ -91,7 +91,8 @@
                 <button id="showSettings" class="p-2"><i class="fas fa-tools"></i></button>
                 <div class="panel-body px-2">
                     <div class="settings transition trans-height mb-2 height-0 color-secondary">
-                        <h4 class="heading m-1 color-white">SETTINGS <button id="hideSettings" class="p-2 font-4 d-none"><i class="fas fa-times close"></i></button></h4>
+                        <button id="hideSettings" class="p-1 font-4 float-right"><i class="fas fa-times close"></i></button>
+                        <h4 class="heading m-1 color-white">SETTINGS</h4>
                         <span>Create new record</span>
                         <div class="add-record d-flex mb-2">
                             <input type="text" id="add-record-input" class="py-1 pl-1 mr-1" placeholder="Enter title...">
@@ -103,8 +104,8 @@
                     </div>
                     <div class="records"> </div>
                     <button id="showPrayers" class="btn-block mt-2">
-                        <img src="assets/img/ico-muslimpro.png" class="pr-2">
-                        <span>Show prayers</span>
+                        <img src="assets/img/ico-muslimpro.png" class="pr-2 float-left">
+                        <span class="float-left">Show prayers</span>
                     </button>
                     <button id="logout" class="btn-block mt-2 color-grey">
                         <i class="fas fa-user-lock mr-2"></i>Logout
@@ -157,7 +158,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="text-align-center px-3">
+                    <div class="text-center px-3">
                         <button id="login" class="do-auth btn-block p-3 bg-primary mt-3" disabled>
                             <span class="1">Next <i class="fas fa-chevron-circle-right"></i></span>
                             <span class="1 3 d-none">Wait..</span> <span class="2 3 d-none">ENTER</span>
@@ -176,7 +177,7 @@
                     <div class="d-flex border color-green">
                         <i class="fas fa-key p-2"></i><input type="text" class="password p-2" placeholder="Password...">
                     </div>
-                    <div class="text-align-center px-3">
+                    <div class="text-center px-3">
                         <button id="register" class="do-auth btn-block p-3 bg-primary mt-2">REGISTER</button>
                     </div>
                 </div>

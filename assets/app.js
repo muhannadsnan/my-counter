@@ -24,7 +24,7 @@ function initListeners(){
     $('.changeGoal').on('click', changeGoal);
     $('.deleteRecord').on('click', deleteRecord);
     $('#showPrayers').on('click', showPrayers);
-    $('#showSettings, #hideSettings').on('click', toggleAddRecord);
+    $('#showSettings, #hideSettings').on('click', toggleSettings);
     $('#chkDelayRefresh').on('click', toggleDelayRefresh);
     $('.showChart').on('click', showChart);
     $('#logout').on('click', logout);
@@ -171,7 +171,7 @@ function reset(){
 function togglePannel(){
     if($panel.hasClass('show')){
         $panel.find('.settings').removeClass('show');
-        $panel.find('#showSettings, #hideSettings').toggleClass('d-none');
+        $panel.find('#showSettings').toggleClass('d-none');
     }
     $panel.toggleClass('show').removeClass('showSettings');
 }
@@ -231,7 +231,7 @@ function createRecord(){
         USER.history.logBooks.push(new Logbook(newRecord.id, new Log(new Date().toLocaleString("en"), newRecord.counter)));
         db.save();
         $input.val('');
-        toggleAddRecord();
+        toggleSettings();
         selectRecord(newRecord.id);
         fillSelectedRecord();
         $panel.find('.record').removeClass('color-primary active').first().addClass('color-primary active');
@@ -373,11 +373,11 @@ function showPrayers(){
     window.location = "./prayers.html";
 }
 
-function toggleAddRecord(){
+function toggleSettings(){
     $panel.find('.settings').toggleClass('show');
-    $panel.find('#showSettings, #hideSettings').toggleClass('d-none');
+    $panel.find('#showSettings').toggleClass('d-none');
     $panel.find('#add-record-input').focus();
-    pulse($('#showSettings, #hideSettings'), 2);
+    pulse($('#showSettings'), 2);
 }
 
 function toggleDelayRefresh(){
