@@ -207,7 +207,7 @@ function addRecordToPanel(index, record){
     // console.log(record); 
     var tpl = $templates.find('.record-tpl').clone(true);
     tpl.attr('data-id', record.id).attr('data-title', record.title || 'N/A').attr('data-counter-log', record.counterDay || 0).attr('data-goal', record.goal || 100);
-    tpl.removeClass('d-none record-tpl').addClass('record').toggleClass('color-primary active', selectedRecord.id == record.id);
+    tpl.removeClass('d-none record-tpl').addClass('record d-flex flex-col').toggleClass('color-primary active', selectedRecord.id == record.id);
     tpl.find('.title .label').text(record.title);
     var percent = goalPercent(record.counterDay, record.goal);
     tpl.find('.progress').text(percent+'%');
