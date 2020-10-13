@@ -9,6 +9,12 @@ function init() {
     else{
         db.loginUserByCookies();
     }
+    // prevent loading a cached page
+    window.addEventListener('load', function (e) {
+        window.applicationCache.addEventListener('updateready', function (e) {
+            window.location.reload();
+        }, false);
+    }, false);
 }
 
 function initListeners(){
