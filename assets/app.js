@@ -1,5 +1,4 @@
 var counter, total, selectedRecord, activeChanged, cookieOptions, $progress, $counter, $today, $week, $total, $user, $panel, $chartPanel, $authPanel, $chart, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout, delayRefreshArr;
-;
 
 function init() {
     db = new Database();
@@ -9,12 +8,6 @@ function init() {
     else{
         db.loginUserByCookies();
     }
-    // prevent loading a cached page
-    window.addEventListener('load', function (e) {
-        window.applicationCache.addEventListener('updateready', function (e) {
-            window.location.reload();
-        }, false);
-    }, false);
 }
 
 function initListeners(){
@@ -94,9 +87,10 @@ function fillSelectedRecord(){
     $today.text(selectedRecord.counterDay);
     $week.text(selectedRecord.counterWeek);
     $total.text( thousandFormat(selectedRecord.total) );
-    $progress.find('.percent').text(goalPercent()+'%');
     $user.text(userID);
-    setProgress(goalPercent());
+    var gPercent = goalPercent();
+    $progress.find('.percent').text(gPercent+'%');
+    setProgress(gPercent);
     activeChanged = true;
 }
 
@@ -177,9 +171,9 @@ function reset(){
 function togglePannel(){
     if($panel.hasClass('show')){
         $panel.find('.settings').removeClass('show');
-        $panel.find('#showSettings').toggleClass('d-none');
+        $panel.find('#showSettings').removeClass('d-none');
     }
-    $panel.toggleClass('show').removeClass('showSettings');
+    $panel.toggleClass('show');
 }
 
 function showPanel(){
@@ -272,6 +266,7 @@ function logging(){
         db.save();
         console.log("Logging saved! history: ", USER.history);
         db.BACKUP_USER();
+        fillSelectedRecord(); /* to refresh cached page when loading app the next day */
     }
 }
 
