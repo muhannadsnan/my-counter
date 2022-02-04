@@ -159,7 +159,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 /* STARTUP ANIMATION EFFECT */
 button#showPanel, button#reset, #counter{top: -200%;}
 #progress{left: -200%;}
-#recordTitle, #total{right: -200%;}
+#recordTitle, #total{right: -300%;}
 .info{opacity: 0;}
 footer{bottom: -100%;}
 
@@ -173,7 +173,7 @@ footer{bottom: -100%;}
 .animated .info{opacity: 1; transition: all .8s ease .7s;}
 .animated footer{bottom: 0; transition: all .8s ease .9s;}
 
-#auth-panel{background: #2f2f2f; position: absolute; right: -100%; left: 100%; top: 0; bottom: 0; z-index: -99;}
+#auth-panel{background: #2f2f2f; position: absolute; right: -200%; left: 200%; top: 0; bottom: 0; z-index: -99;}
 #auth-panel.show{position: absolute; right: 0; left: 0; top: 0; bottom: 0; z-index: 9999;}
 #auth-panel .switch{display: flex;}
 #auth-panel .auth{display: none;}
@@ -189,7 +189,7 @@ footer{bottom: -100%;}
 .swipe-container.show-3{right: 330%;}
 
 @media only screen and (min-width: 992px) {
-  body{border: 0.25rem solid #777; border-radius: 1rem; max-width: 53%; margin: auto;}
+  body.animated{border: 0.25rem solid #777; border-radius: 1rem; max-width: 53%; margin: auto;}
 }
 
 /* THESE @media queries MUST STAY AT LAST TO OVERWRITE PREVIOUS ATTRIBUTES */
