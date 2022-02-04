@@ -189,7 +189,8 @@ footer{bottom: -100%;}
 .swipe-container.show-3{right: 330%;}
 
 @media only screen and (min-width: 992px) {
-  body.animated{border: 0.25rem solid #777; border-radius: 1rem; max-width: 53%; margin: auto;}
+  body.animated{border: 0.25rem solid #777; border-radius: 1rem;}
+  body{ max-width: 53%; margin: auto;}
 }
 
 /* THESE @media queries MUST STAY AT LAST TO OVERWRITE PREVIOUS ATTRIBUTES */
