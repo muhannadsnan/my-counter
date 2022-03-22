@@ -1,5 +1,5 @@
 body{z-index: 0; cursor: pointer; /* position: fixed; top: 0; bottom: 0; right: 0; left: 0; */ background: #2f2f2f; color: #fff; font-family: Lalezar, Audiowide, tahoma; margin: 0; font-size: 5rem;}
-main{position: fixed; top: 15vh; bottom: 0; right: 0; left: 0; border: 2px solid #c6ff00;}
+main{position: fixed; top: 15vh; bottom: 0; right: 0; left: 0; border: 2px solid #c6ff00; overflow: hidden;}
 h1, h2, h3, h4, h5, h6{margin: 3rem 0; text-align: center;}
 p{margin: 0;}
 button{font-family: Lalezar, Audiowide, tahoma; background: transparent; cursor: pointer; border: 0; color: #c6ff00; font-size: 7rem; z-index: 101; position: relative; line-height: 2rem; vertical-align: middle; padding: 0;}
@@ -151,6 +151,7 @@ button#closePanel{position: absolute; top: 0; right: 0;}
 }
 @media screen and (orientation:landscape) {
     html{font-size: 9px;}
+    main{width: 500px; margin: auto;}
     #chart-panel canvas{height: 84vh !important;}
 }
 
@@ -168,3 +169,8 @@ footer{bottom: -100%;}
 .animated #recordTitle{right: 0; transition: all .5s ease 1.2s;}
 .animated .info{opacity: 1; transition: all .5s ease 1.7s;}
 .animated footer{bottom: 0; transition: all .5s ease 2s;}
+
+
+@media (min-width: 500px){
+    
+}
