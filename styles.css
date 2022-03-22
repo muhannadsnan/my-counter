@@ -1,4 +1,5 @@
-body{z-index: 0; cursor: pointer; position: fixed; top: 0; bottom: 0; right: 0; left: 0; background: #2f2f2f; color: #fff; font-family: Lalezar, Audiowide, tahoma; margin: 0; font-size: 5rem;}
+body{z-index: 0; cursor: pointer; /* position: fixed; top: 0; bottom: 0; right: 0; left: 0; */ background: #2f2f2f; color: #fff; font-family: Lalezar, Audiowide, tahoma; margin: 0; font-size: 5rem;}
+main{position: fixed; top: 15vh; bottom: 0; right: 0; left: 0; border: 2px solid #c6ff00;}
 h1, h2, h3, h4, h5, h6{margin: 3rem 0; text-align: center;}
 p{margin: 0;}
 button{font-family: Lalezar, Audiowide, tahoma; background: transparent; cursor: pointer; border: 0; color: #c6ff00; font-size: 7rem; z-index: 101; position: relative; line-height: 2rem; vertical-align: middle; padding: 0;}

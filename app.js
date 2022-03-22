@@ -46,9 +46,10 @@ function fillValues(){
         STORE.selectedIndex = 0;
     }
     if(STORE.records === undefined) {
-        var title = prompt("No records yet. Create one !", 'أستغفر الله');
-        if(title.trim() == '')
-            title = '';
+        // var title = prompt("No records yet. Create one !", 'أستغفر الله');
+        alert("Start clicking/touching the screen to begin counting..");
+        // if(title.trim() == '')
+        var title = 'Counter 01';
         var newRec = new Record(1, title);
         STORE.records = [newRec];
         STORE.selectedIndex = 0;

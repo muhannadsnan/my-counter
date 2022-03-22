@@ -10,105 +10,101 @@
     </head>
      
     <body>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6740122974745879"
-            crossorigin="anonymous"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6740122974745879" crossorigin="anonymous"></script>
         <!-- horizontal responsive --> 
-        <ins class="adsbygoogle"
-            style="display:block"
-            data-ad-client="ca-pub-6740122974745879"
-            data-ad-slot="2867195126"
-            data-ad-format="auto"
-            data-full-width-responsive="true"></ins>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6740122974745879" data-ad-slot="2867195126"  data-ad-format="auto" data-full-width-responsive="true"></ins>
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
-        <div id="clicker"></div>
 
-        <button id="reset" class="p-2"><i class="fas fa-redo"></i></button>  
-        <p id="counter" class="pt-3">...</p>
-        <button id="showPanel" class="p-2"><i class="fas fa-cog"></i></button>
 
-        <div class="main">
-            <p id="recordTitle" class="m-0">...</p>
-            <div id="progress">
-                <div class="val c-0 trans-all-5s trans-width-delay-08s"></div>
-            </div>
-            <div class="info">
-                <div class="today" class="m-0">
-                    <p class="label">Today</p>
-                    <p id="today" class="number">...</p>
+        <main>
+            <div id="clicker"></div>
+
+            <button id="reset" class="p-2"><i class="fas fa-redo"></i></button>  
+            <p id="counter" class="pt-3">...</p>
+            <button id="showPanel" class="p-2"><i class="fas fa-cog"></i></button>
+
+            <div class="main">
+                <p id="recordTitle" class="m-0">...</p>
+                <div id="progress">
+                    <div class="val c-0 trans-all-5s trans-width-delay-08s"></div>
                 </div>
-                <div class="total" class="m-0">
-                    <p class="label">Total</p>
-                    <p id="total" class="number m-0">...</p>
-                </div>
-            </div>
-        </div>
-        
-        <div id="panel" class="transition trans-left trans-right">
-            <button id="closePanel" class="p-2"><i class="fas fa-arrow-alt-circle-right"></i></button>
-            <h1 class="panel-heading m-2">RECORDS</h1>
-            <button id="showAddRecord" class="p-2"><i class="fas fa-plus-square"></i></button>
-            <button id="hideAddRecord" class="p-2 d-none"><i class="fas fa-angle-up close"></i></button>
-            <div class="panel-body px-2">
-                <div class="add-record transition trans-height mb-2 d-flex">
-                    <input type="text" id="add-record-input" class="py-1 pl-1 mx-2 my-2" placeholder="New record...">
-                    <button id="add-record-btn" class="pt-1"><i class="fas fa-plus-square"></i></button>
-                </div>
-                <div class="records"> </div>
-                <button id="showPrayers" class="my-2">
-                    <img src="ico-muslimpro.png" class="pr-2">
-                    <span>Show prayers</span>
-                </button>
-            </div>
-        </div>
-
-        <div id="chart-panel" class="chart-panel transition trans-left trans-right">
-            <button class="close p-2 pos-right"><i class="fas fa-times-circle"></i></button>
-            <div class="container hide">
-                <div class="p-1">
-                    <p class="title"></p>
-                    <span class="color-grey">Show</span>
-                    <select class="showBy">
-                        <option value="5-days">5 days</option>
-                        <option value="30-days">30 days</option>
-                        <option value="today-all" disabled>Today - all</option>
-                        <option value="week" disabled>Week</option>
-                        <option value="month" disabled>Month</option>
-                        <option value="year" disabled>Year</option>
-                    </select>
-                </div>
-                <div id="chart-container" class="chart-container"></div>
-            </div>
-            <div class="loading d-flex"><i class="fas fa-compact-disc fa-spin"></i></div>
-        </div>
-
-        <footer class="p-2">
-            <p class="my-0">Muhannad Senan</p>
-            <p class="my-0">msn-23@live.com</p>
-            <p class="version p-2 m-0">v4.2.1</p>
-        </footer>
- 
-
-
-        <div id="templates">
-            <div id="" class="record-tpl d-none" data-id="">
-                <div class="record-body">
-                    <span class="today"></span>
-                    <span class="counter"></span>
-                    <span class="title"></span>
-                </div>
-                <button class="details pos-right px-3 py-2"><i class="fas fa-ellipsis-v show"></i> <i class="fas fa-angle-up close"></i></button>
-                <div class="dropdown transition trans-height mx-2">
-                    <span class="total"></span>
-                    <div class="buttons d-flex justify-content-between mt-3">
-                        <button class="deleteRecord px-0 mx-0"><i class="far fa-trash-alt"></i></button>
-                        <button class="changeTitle px-0 mx-0"><i class="far fa-edit"></i></button>
-                        <button class="showChart px-0 mx-0"><i class="fas fa-chart-line"></i></button>
+                <div class="info">
+                    <div class="today" class="m-0">
+                        <p class="label">Today</p>
+                        <p id="today" class="number">...</p>
+                    </div>
+                    <div class="total" class="m-0">
+                        <p class="label">Total</p>
+                        <p id="total" class="number m-0">...</p>
                     </div>
                 </div>
             </div>
-        </div>
+            
+            <div id="panel" class="transition trans-left trans-right">
+                <button id="closePanel" class="p-2"><i class="fas fa-arrow-alt-circle-right"></i></button>
+                <h1 class="panel-heading m-2">RECORDS</h1>
+                <button id="showAddRecord" class="p-2"><i class="fas fa-plus-square"></i></button>
+                <button id="hideAddRecord" class="p-2 d-none"><i class="fas fa-angle-up close"></i></button>
+                <div class="panel-body px-2">
+                    <div class="add-record transition trans-height mb-2 d-flex">
+                        <input type="text" id="add-record-input" class="py-1 pl-1 mx-2 my-2" placeholder="New record...">
+                        <button id="add-record-btn" class="pt-1"><i class="fas fa-plus-square"></i></button>
+                    </div>
+                    <div class="records"> </div>
+                    <button id="showPrayers" class="my-2">
+                        <img src="ico-muslimpro.png" class="pr-2">
+                        <span>Show prayers</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="chart-panel" class="chart-panel transition trans-left trans-right">
+                <button class="close p-2 pos-right"><i class="fas fa-times-circle"></i></button>
+                <div class="container hide">
+                    <div class="p-1">
+                        <p class="title"></p>
+                        <span class="color-grey">Show</span>
+                        <select class="showBy">
+                            <option value="5-days">5 days</option>
+                            <option value="30-days">30 days</option>
+                            <option value="today-all" disabled>Today - all</option>
+                            <option value="week" disabled>Week</option>
+                            <option value="month" disabled>Month</option>
+                            <option value="year" disabled>Year</option>
+                        </select>
+                    </div>
+                    <div id="chart-container" class="chart-container"></div>
+                </div>
+                <div class="loading d-flex"><i class="fas fa-compact-disc fa-spin"></i></div>
+            </div>
+
+            <footer class="p-2">
+                <p class="my-0">Muhannad Senan</p>
+                <p class="my-0">msn-23@live.com</p>
+                <p class="version p-2 m-0">v4.2.1</p>
+            </footer>
+
+            <div id="templates">
+                <div id="" class="record-tpl d-none" data-id="">
+                    <div class="record-body">
+                        <span class="today"></span>
+                        <span class="counter"></span>
+                        <span class="title"></span>
+                    </div>
+                    <button class="details pos-right px-3 py-2"><i class="fas fa-ellipsis-v show"></i> <i class="fas fa-angle-up close"></i></button>
+                    <div class="dropdown transition trans-height mx-2">
+                        <span class="total"></span>
+                        <div class="buttons d-flex justify-content-between mt-3">
+                            <button class="deleteRecord px-0 mx-0"><i class="far fa-trash-alt"></i></button>
+                            <button class="changeTitle px-0 mx-0"><i class="far fa-edit"></i></button>
+                            <button class="showChart px-0 mx-0"><i class="fas fa-chart-line"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
         
         <script src="jquery-3.4.1.min.js"></script>
         <script src="js-cookie.min.js"></script>
