@@ -1,4 +1,4 @@
-var counter, total, selectedRecord, activeChanged, cookieOptions, $progress, $counter, $today, $week, $total, $user, $panel, $chartPanel, $authPanel, $chart, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout, delayRefreshArr;
+var counter, total, selectedRecord, activeChanged, cookieOptions, $percent, $progress, $counter, $today, $week, $total, $user, $panel, $chartPanel, $authPanel, $chart, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout, delayRefreshArr;
 
 function init() {
     db = new Database();
@@ -38,6 +38,7 @@ function fillValues(){
     $today = $("#today");
     $week = $("#week");
     $total = $("#total");
+    $percent = $("#percent");
     $progress = $("#progress");
     $counter = $("#counter");
     $user = $("#user");
@@ -89,13 +90,13 @@ function fillSelectedRecord(){
     $total.text( thousandFormat(selectedRecord.total) );
     $user.text(userID);
     var gPercent = goalPercent();
-    $progress.find('.percent').text(gPercent+'%');
+    $percent.text(gPercent+' %');
     setProgress(gPercent);
     activeChanged = true;
 }
 
 function setProgress(value, refreshPercent, counter, today, week, total){
-    if(refreshPercent !== undefined) $progress.find('.percent').text(value+'%');
+    if(refreshPercent !== undefined) $percent.text(value+' %');
     if(counter !== undefined) $counter.text(counter);
     if(today !== undefined) $today.text(today); 
     if(week !== undefined) $week.text(week); 
