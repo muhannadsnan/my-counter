@@ -4,7 +4,6 @@ function init() {
     if(isLoggedIn()){
         db = new Database();
         db.loginUserByCookies();
-        Cookies.set("userID", userID, cookieOptions);
         console.log('User "'+userID+'" is logged in.');
     }
     else{
@@ -598,6 +597,9 @@ function switchAuthPanel(){
 }
 
 function bootApp(){
+    if(userID !== undefined && userID != ''){
+        Cookies.set("userID", userID, cookieOptions);
+    }
     fillValues();
     if(selectedRecord === undefined){
         setProgress(0);
