@@ -47,8 +47,8 @@ footer #percent{color: #2f2f2f; font-size: 3rem; position: absolute; bottom: 0; 
 button#reset{position: absolute; top: 0; left: 0;}
 .position-right{position: absolute; top: 0; right: 0;}
 
-#panel{width: 100%; padding: 0; background: #2f2f2f; z-index: 102; position: absolute; top: 0; bottom: 0; right: -200%; font-size: 4rem; font-family: Almarai, Oxanium, tahoma; color: #c6ff00; overflow-x: hidden;}
-#panel.show{right: 0;}
+#panel{width: 100%; padding: 0; background: #2f2f2f; z-index: -9999; position: absolute; top: 0; bottom: 0; right: -300%; font-size: 4rem; font-family: Almarai, Oxanium, tahoma; color: #c6ff00; overflow-x: hidden;}
+#panel.show{right: 0; z-index: 102;}
 #panel > .container{overflow-y: scroll;}
 #panel #showSettings{position: absolute; top: 0; left: 0; padding: 2rem;}
 #panel #hideSettings{position: relative;}
@@ -91,7 +91,7 @@ button#reset{position: absolute; top: 0; left: 0;}
 #panel .record.showDropdown .dropdown{height: 22rem;}
 #panel .panel-footer{color: #fff; font-size: 3rem; text-align: center;}
 
-#chart-panel{position: absolute; left: -200%; right: 200%; background: #2f2f2f; border: .3rem solid #c6ff00; top: 0; bottom: 0; /* border-top-width: 2rem; border-bottom-width: 2rem; */}
+#chart-panel{position: absolute; left: -200%; right: 300%; background: #2f2f2f; border: .3rem solid #c6ff00; top: 0; bottom: 0; z-index: -1;}
 #chart-panel.show{left: 0; right: 0; z-index: 103; }
 #chart-panel .loading{justify-content: center; height: 100%; align-items: center; font-size: 20rem; opacity: .1; position: absolute; top: 0; right: 0; left: 0;}
 #chart-panel .total{text-align: center; color: #c6ff00;}
@@ -175,8 +175,8 @@ footer{bottom: -100%;}
 .animated .info{opacity: 1; transition: all .8s ease .7s;}
 .animated footer{bottom: 0; transition: all .8s ease .9s;}
 
-#auth-panel{background: #2f2f2f; width: 100%; position: absolute; right: -200%; top: 0; bottom: 0; z-index: 9999; overflow: hidden;}
-#auth-panel.show{right: 0;}
+#auth-panel{background: #2f2f2f; width: 100%; position: absolute; right: -300%; top: 0; bottom: 0; z-index: -9999; overflow: hidden;}
+#auth-panel.show{right: 0; z-index: 9999;}
 #auth-panel .switch{display: flex;}
 #auth-panel .auth{display: none;}
 #auth-panel .auth.active{display: block;}
@@ -190,7 +190,7 @@ footer{bottom: -100%;}
 #auth-panel.show .swipe-container.show-2{right: 215%;}
 #auth-panel.show .swipe-container.show-3{right: 330%;}
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 600px) and (orientation:landscape){
   body.animated{border: 0.25rem solid #777; border-radius: 1rem;}
   body{ max-width: 600px; margin: auto;}
 }
@@ -204,7 +204,7 @@ footer{bottom: -100%;}
   .swipe-container.show-2{}
 }
 @media (orientation:landscape) {
-  html{font-size: 9px;}
+  html{font-size: 7px;}
   .main{bottom: 5.3rem;}
   .main .info{}
   #chart-panel canvas{height: 84vh !important;}
