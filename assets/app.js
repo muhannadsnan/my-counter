@@ -59,6 +59,8 @@ function fillValues(){
 
     if(!isLoggedIn()){
         STORE = Cookies.get();
+        STORE.records = JSON.parse(STORE.records);
+        STORE.history = JSON.parse(STORE.history);
     }else{
         STORE = USER;
     }
