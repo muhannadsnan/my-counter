@@ -671,7 +671,7 @@ function saveSTORE(toSave){
         console.log("Records saved!");
     }
     if(toSave == "all" || toSave == "selectedIndex"){
-        selectRecord(selectedRecord.id);
+        // selectRecord(selectedRecord.id);
         Cookies.set("selectedIndex", STORE.selectedIndex, cookieOptions);
         console.log("selectedIndex saved!"); 
     }
