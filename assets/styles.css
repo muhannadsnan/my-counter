@@ -54,7 +54,7 @@ button#reset{position: absolute; top: 0; left: 0;}
 #panel #hideSettings{position: relative;}
 #panel .panel-heading{text-align: center; font-size: 6rem;}
 #panel .settings{overflow: hidden; background: #3c3b3b; opacity: 0;}
-#panel .settings.show{height: 27vh; border: 2px solid #fff; padding: 1rem; border-radius: 10px; opacity: 1;}
+#panel .settings.show{height: 22vh; border: 2px solid #fff; padding: 1rem; border-radius: 10px; opacity: 1;}
 #panel .settings label{cursor: pointer;}
   
 #panel .add-record input{width: 100%; border: 1px solid #c6ff00; border-bottom-width: 7px;}

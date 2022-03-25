@@ -30,7 +30,7 @@ function initListeners(){
     $('.changeGoal').on('click', changeGoal);
     $('.deleteRecord').on('click', deleteRecord);
     $('#showPrayers').on('click', showPrayers);
-    $('#showSettings, #hideSettings').on('click', toggleSettings);
+    $('.toggleSettings').on('click', toggleSettings);
     $('#chkDelayRefresh').on('click', toggleDelayRefresh);
     $('.showChart').on('click', showChart);
     $('#showAuthBtn').on('click', login);
@@ -400,7 +400,7 @@ function showPrayers(){
 function toggleSettings(){
     $panel.find('.settings').toggleClass('show');
     $panel.find('#showSettings').toggleClass('d-none');
-    // $panel.find('#add-record-input').focus();
+    $panel.find('#add-record-input').focus();
     pulse($('#showSettings'), 2);
 }
 
