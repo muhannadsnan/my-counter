@@ -675,7 +675,7 @@ function saveSTORE(toSave){
         console.log("Records saved!");
     }
     if(toSave == "all" || toSave == "selectedIndex"){
-        selectRecord(selectRecord.id);
+        selectRecord(selectedRecord.id);
         Cookies.set("selectedIndex", STORE.selectedIndex, cookieOptions);
         console.log("selectedIndex saved!"); 
     }
@@ -683,7 +683,7 @@ function saveSTORE(toSave){
         Cookies.set("history", STORE.history, cookieOptions);
         console.log("LogBook created!"); 
     }
-    else if(toSave == "logging"){// logging
+    if(toSave == "logging"){
         var today = new Date();
         var lastWriting = new Date(Date.parse(STORE.history.lastWriting));
         if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
