@@ -165,7 +165,7 @@ button#showPanel, button#reset, #counter{top: -200%;}
 .info{opacity: 0;}
 footer{bottom: -100%;}
 
-.animated{background: #2f2f2f; border: 2px solid #777; border-radius: 0px;}
+.animated{background: #2f2f2f;}
 .animated #please-login{display: none;}
 .animated button#showPanel{top: 0; transition: all .3s ease 0s;}
 .animated #counter{top: 0; transition: all .4s ease 0s;}
@@ -191,7 +191,7 @@ footer{bottom: -100%;}
 #auth-panel.show .swipe-container.show-3{right: 330%;}
 
 @media screen and (min-width: 992px) {
-  body.animated > .container{border: 0.25rem solid #777; border-radius: 1rem;}
+  body.animated{border: 0.25rem solid #777; border-radius: 1rem;}
   body{ max-width: 600px; margin: auto;}
 }
 
