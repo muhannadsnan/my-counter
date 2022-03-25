@@ -59,8 +59,8 @@ function fillValues(){
 
     if(!isLoggedIn()){
         STORE = Cookies.get();
-        STORE.records = JSON.parse(STORE.records);
-        STORE.history = JSON.parse(STORE.history);
+        if(STORE.records !== undefined) STORE.records = JSON.parse(STORE.records);
+        if(STORE.history !== undefined) STORE.history = JSON.parse(STORE.history);
     }else{
         STORE = USER;
     }
@@ -150,7 +150,11 @@ function selectRecord(recID){
             }
         });   
     }
-    save();
+    console.log("rec", selectedRecord); 
+
+    save("records");
+    console.log("rec", selectedRecord); 
+
 }
 
 function increaseCounter(e){
@@ -299,6 +303,7 @@ function toggleDropdown(){
 }
 
 function onClickRecordBody(){
+    console.log("rec-body", ); 
     $('.record').removeClass('color-primary active');
     var $rec = $(this).closest('.record');
     $rec.addClass('color-primary active');
@@ -655,11 +660,11 @@ function logout(){
     window.location = window.location;
 }
 
-function save(){
+function save(toSave){
     if(isLoggedIn()){
         db.save();
     }else{
-        saveSTORE();
+        saveSTORE(toSave);
     }
 }
 
