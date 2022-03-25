@@ -145,7 +145,6 @@ class Database{
                 }
             }else{ // USER HAS ENTERED PASSWORD
                 if(/* is_password_correct */true){
-                    STORE = USER;
                     bootApp();
                     $authPanel.removeClass('show');
                     togglePannel();

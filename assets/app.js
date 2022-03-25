@@ -57,6 +57,11 @@ function fillValues(){
     $chartPanel = $('#chart-panel');
     isTouched = false;
 
+    if(!isLoggedIn()){
+        STORE = Cookies.get();
+    }else{
+        STORE = USER;
+    }
     if(STORE === undefined) STORE = {};
     if(STORE.history === undefined) STORE.history = new History();// All histories of records
     if(STORE.history.logBooks === undefined) STORE.history.logBooks = [];
