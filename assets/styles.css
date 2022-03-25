@@ -1,5 +1,5 @@
-html{font-size: 16px;}
-body{height: -webkit-fill-available; z-index: 0; cursor: pointer; position: fixed; top: 0; /* bottom: 0; */ right: 0; left: 0; background: #c6ff00; color: #2f2f2f; font-family: Almarai, Oxanium, tahoma; font-size: 5rem;} /* NO TEXT SELECTION */ body{-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
+html{font-size: 16px; height: -webkit-fill-available;}
+body{min-height: 100vh; min-height: -webkit-fill-available; z-index: 0; cursor: pointer; position: fixed; top: 0; /* bottom: 0; */ right: 0; left: 0; background: #c6ff00; color: #2f2f2f; font-family: Almarai, Oxanium, tahoma; font-size: 5rem;} /* NO TEXT SELECTION */ body{-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
 .container{position: absolute; top: 0; bottom: 0; right: 0; left: 0; height: 98vh; } .container.border{border: 1rem solid #c6ff00;}
 h1, h2, h3, h4, h5, h6{margin: 3rem 0; text-align: center;} h5{font-weight: 100; font-size: 4.65rem;}
 p{margin: 0;}small{font-size: 3rem;}
