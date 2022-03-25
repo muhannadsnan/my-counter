@@ -12,6 +12,7 @@ function init() {
         // initGuest();
         // TODO: when the user loges in, ask him which data he wants to keep, local data or cloud data
         bootApp();
+        alert("Start clicking to count! Add more records to count in Settings..");
     }
 }
 
@@ -68,7 +69,7 @@ function fillValues(){
     if(STORE.history.logBooks === undefined) STORE.history.logBooks = [];
     if(STORE.selectedIndex === undefined) STORE.selectedIndex = 0;
     if(STORE.records === undefined) {
-        alert("No records yet. Create one ! e.g. أستغفر الله");
+        // alert("No records yet. Create one ! e.g. أستغفر الله");
         var newRec = new Record(1);
         STORE.records = [newRec];
         STORE.selectedIndex = 0;
@@ -701,7 +702,7 @@ function saveSTORE(toSave){
             console.log("Logging saved!");
         }
     }
-    console.log("COOKIE STORE", STORE);
+    // console.log("COOKIE STORE", STORE);
 }
 
 window.onload = init();
