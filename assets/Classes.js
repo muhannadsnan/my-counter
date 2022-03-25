@@ -179,7 +179,6 @@ class Database{
             alert("Cannot save empty USER!");
             return;
         }
-        console.log("USER", USER, "STORE", STORE, "userID", userID); 
         dbCollection.doc(userID).set(JSON.parse(JSON.stringify(USER)))
             .then(function() {
                 // console.log("DB saved.");
