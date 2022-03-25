@@ -15,53 +15,54 @@
     </head>
     
     <body>
-        <h4 id="loading-panel" class="p-2">
-            <i class="fas fa-balance-scale fa-3x pb-3"></i>
-            <div class="title my-3">DIGITAL COUNTER</div>
-            <div class="welcomeback my-3"></div>
-            <i class="fas fa-compact-disc fa-spin loading fa-3x my-3 color-dark"></i>
-        </h4>
-
-        <div id="clicker"></div>
-
-        <button id="reset" class="p-2"><i class="fas fa-redo"></i></button>  
-        <p id="counter" class="pt-3">...</p>
-        <button id="showPanel" class="p-2"><i class="fas fa-cog"></i></button>
-
-        <div class="main">
-            <p id="recordTitle" class="m-0">...</p>
-            <div id="progress">
-                <div class="val c-0 trans-all-5s trans-width-delay-08s">
-                    <span class="goal-achieved-label label mt-2"><i class="fas fa-star fa-3x mb-2 pb-2 "></i>DAILY GOAL</span>
+        <div class="container">
+            <h4 id="loading-panel" class="p-2">
+                <i class="fas fa-balance-scale fa-3x pb-3"></i>
+                <div class="title my-3">DIGITAL COUNTER</div>
+                <div class="welcomeback my-3"></div>
+                <i class="fas fa-compact-disc fa-spin loading fa-3x my-3 color-dark"></i>
+            </h4>
+    
+            <div id="clicker"></div>
+    
+            <button id="reset" class="p-2"><i class="fas fa-redo"></i></button>  
+            <p id="counter" class="pt-3">...</p>
+            <button id="showPanel" class="position-right p-2"><i class="fas fa-cog"></i></button>
+    
+            <div class="main">
+                <p id="recordTitle" class="m-0">...</p>
+                <div id="progress">
+                    <div class="val c-0 trans-all-5s trans-width-delay-08s">
+                        <span class="goal-achieved-label label mt-2"><i class="fas fa-star fa-3x mb-2 pb-2 "></i>DAILY GOAL</span>
+                    </div>
+                </div>
+                <div class="info">
+                    <div class="user color-secondary mb-2">
+                        <i class="labelX mr-2 far fa-user"></i>
+                        <span id="user" class="number">--</span>
+                    </div>
+                    <div class="today d-flex justify-content-center color-white mb-1">
+                        <span class="label mr-2">Today</span>
+                        <span id="today" class="number">...</span>
+                    </div>
+                    <div class="week d-flex justify-content-center mb-1">
+                        <span class="label mr-2">This week</span>
+                        <span id="week" class="number m-0">...</span>
+                    </div>
+                    <div class="total d-flex justify-content-center mb-1">
+                        <span class="label mr-2">Total</span>
+                        <span id="total" class="number m-0">...</span>
+                    </div>
                 </div>
             </div>
-            <div class="info">
-                <div class="user color-secondary mb-2">
-                    <i class="labelX mr-2 far fa-user"></i>
-                    <span id="user" class="number">--</span>
-                </div>
-                <div class="today d-flex justify-content-center color-white mb-1">
-                    <span class="label mr-2">Today</span>
-                    <span id="today" class="number">...</span>
-                </div>
-                <div class="week d-flex justify-content-center mb-1">
-                    <span class="label mr-2">This week</span>
-                    <span id="week" class="number m-0">...</span>
-                </div>
-                <div class="total d-flex justify-content-center mb-1">
-                    <span class="label mr-2">Total</span>
-                    <span id="total" class="number m-0">...</span>
-                </div>
-            </div>
+    
+            <footer class="d-flex justify-content-between">
+                <p class="ml-auto">Digital Counter v7.40</p>
+                <p id="percent" class="color-white">--</p>
+            </footer>
         </div>
-
-        <footer class="d-flex justify-content-between">
-            <p class="ml-auto">Digital Counter v7.31</p>
-            <p id="percent" class="color-white">--</p>
-        </footer>
- 
-
-
+    
+    
         <div id="templates">
             <div class="record-tpl d-none" data-id="">
                 <div class="record-body">
@@ -85,35 +86,41 @@
             </div>
                     
             <div id="panel" class="transition trans-left trans-right">
-                <button id="closePanel" class="p-2"><i class="fas fa-arrow-alt-circle-right"></i></button>
-                <h1 class="panel-heading m-2">RECORDS</h1>
-                <button id="showSettings" class="p-2"><i class="fas fa-tools"></i></button>
-                <div class="panel-body px-2">
-                    <div class="settings transition trans-height mb-2 height-0 color-secondary">
-                        <button id="hideSettings" class="p-1 font-4 float-right"><i class="fas fa-times close"></i></button>
-                        <h4 class="heading m-1 color-white">SETTINGS</h4>
-                        <span>Create new record</span>
-                        <div class="add-record d-flex mb-2">
-                            <input type="text" id="add-record-input" class="py-1 pl-1 mr-1" placeholder="Enter title...">
-                            <button id="add-record-btn" class="pt-1"><i class="fas fa-plus-square"></i></button>
+                <div class="container border">
+                    <button id="closePanel" class="position-right p-2"><i class="fas fa-arrow-alt-circle-right"></i></button>
+                    <h1 class="panel-heading m-2">RECORDS</h1>
+                    <button id="showSettings" class="p-2"><i class="fas fa-tools"></i></button>
+                    <div class="panel-body px-2">
+                        <div class="settings transition trans-height mb-2 height-0 color-secondary">
+                            <button id="hideSettings" class="p-1 font-4 float-right"><i class="fas fa-times close"></i></button>
+                            <h4 class="heading m-1 color-white">SETTINGS</h4>
+                            <span>Create new record</span>
+                            <div class="add-record d-flex mb-2">
+                                <input type="text" id="add-record-input" class="py-1 pl-1 mr-1" placeholder="Enter title...">
+                                <button id="add-record-btn" class="pt-1"><i class="fas fa-plus-square"></i></button>
+                            </div>
+                            <label id="chkDelayRefresh" class="color-white">
+                                <i class="unchecked far fa-square mr-1 color-grey"></i><i class="checked far fa-check-square mr-1 color-primary d-none"></i><small>Delay refresh counters</small>
+                            </label>
                         </div>
-                        <label id="chkDelayRefresh" class="color-white">
-                            <i class="unchecked far fa-square mr-1 color-grey"></i><i class="checked far fa-check-square mr-1 color-primary d-none"></i><small>Delay refresh counters</small>
-                        </label>
+                        <div class="records"> </div>
+                        <button id="showPrayers" class="btn btn-block mt-3 p-0 color-green d-flex justify-content-center">
+                            <img src="assets/img/ico-muslimpro.png" class="pr-2">
+                            <span class="">Prayers</span>
+                        </button>
+                        <button id="showAuthBtn" class="btn btn-block mt-2 color-grey">
+                            <i class="fas fa-user-lock mr-2"></i>Login
+                        </button>
+                        </button>
+                        <button id="logoutBtn" class="btn btn-block mt-2 color-grey">
+                            <i class="fas fa-user-lock mr-2"></i>Logout
+                        </button>
                     </div>
-                    <div class="records"> </div>
-                    <button id="showPrayers" class="btn-block mt-2">
-                        <img src="assets/img/ico-muslimpro.png" class="pr-2 float-left">
-                        <span class="float-left">Show prayers</span>
-                    </button>
-                    <button id="logout" class="btn-block mt-2 color-grey">
-                        <i class="fas fa-user-lock mr-2"></i>Logout
-                    </button>
-                </div>
-                <div class="panel-footer p-2 mt-3">
-                    <p class="">Contact:</p>
-                    <p class="">Muhannad Senan</p>
-                    <p class="">msn-23@live.com</p>
+                    <div class="panel-footer p-2 mt-3">
+                        <p class="">Contact:</p>
+                        <p class="">Muhannad Senan</p>
+                        <p class="">msn-23@live.com</p>
+                    </div>
                 </div>
             </div>
 
@@ -137,51 +144,55 @@
                 <div class="loading d-flex"><i class="fas fa-compact-disc fa-spin"></i></div>
             </div>
 
-            <div id="auth-panel" class="p-2 color-primary">
-                <h5 class="color-primary py-1 m-0">M-DIGITAL COUNTER</h5>
-                <div class="switch switch-auth mb-3 mt-2">
-                    <button class="active w-100 border font-4" data-auth="login-panel">LOGIN</button>
-                    <button class="w-100 border font-4" data-auth="register-panel">REGISTER</button>
-                </div>
-                <div class="active auth login-panel pt-1">
-                    <div class="swipe-container w-300 transition trans-time-05sX trans-left trans-right pl-3">
-                        <div class="input-div d-flex pr-3">
-                            <div class="w-100 border color-primary d-flex">
-                                <i class="fas fa-user p-2"></i><input type="text" class="username p-2" placeholder="Username...">
+            <div id="auth-panel" class="transition trans-left trans-right color-primary">
+                <div class="container border border-grey p-2">
+                    <button id="closeAuthPanel" class="close position-right p-2"><i class="fas fa-arrow-alt-circle-right"></i></button>
+                    <h5 class="d-flex color-primary py-1 m-0">M-DIGITAL COUNTER</h5>
+                    <div class="switch switch-auth mb-3 mt-2">
+                        <button class="active w-100 border font-4" data-auth="login-panel">LOGIN</button>
+                        <button class="w-100 border font-4" data-auth="register-panel">REGISTER</button>
+                    </div>
+                    <div class="active auth login-panel pt-1">
+                        <div class="swipe-container w-300 transition trans-time-05sX trans-left trans-right pl-3">
+                            <div class="input-div d-flex pr-3">
+                                <div class="w-100 border color-primary d-flex">
+                                    <i class="fas fa-user p-2"></i><input type="text" class="username p-2" placeholder="Username...">
+                                </div>
+                            </div>
+                            <div class="input-div d-flex pl-3 ml-auto">
+                                <button class="show-1 px-3"><i class="fas fa-arrow-alt-circle-left"></i></button>
+                                <div class="w-100 border color-primary d-flex">
+                                    <i class="fas fa-key p-2"></i><input type="password" class="password p-2" placeholder="Password...">
+                                </div>
                             </div>
                         </div>
-                        <div class="input-div d-flex pl-3 ml-auto">
-                            <button class="show-1 px-3"><i class="fas fa-arrow-alt-circle-left"></i></button>
-                            <div class="w-100 border color-primary d-flex">
-                                <i class="fas fa-key p-2"></i><input type="password" class="password p-2" placeholder="Password...">
-                            </div>
+                        <div class="text-center px-3">
+                            <button id="loginBtn" class="do-auth btn-block p-3 bg-primary mt-3" disabled>
+                                <span class="1">Next <i class="fas fa-chevron-circle-right"></i></span>
+                                <span class="1 3 d-none">Wait..</span> <span class="2 3 d-none">ENTER</span>
+                                <i class="fas fa-spinner fa-spin d-none"></i>
+                            </button>
                         </div>
+                        <p class="font-3 color-grey mt-3">Login with username & password. If you don't have them, don't hesitate to register a new user <i class="fas fa-smile"></i></p>
                     </div>
-                    <div class="text-center px-3">
-                        <button id="login" class="do-auth btn-block p-3 bg-primary mt-3" disabled>
-                            <span class="1">Next <i class="fas fa-chevron-circle-right"></i></span>
-                            <span class="1 3 d-none">Wait..</span> <span class="2 3 d-none">ENTER</span>
-                            <i class="fas fa-spinner fa-spin d-none"></i>
-                        </button>
-                    </div>
-                    <p class="font-3 color-grey mt-3">Login with username & password. If you don't have them, don't hesitate to register a new user <i class="fas fa-smile"></i></p>
-                </div>
-                <div class="auth register-panel">
-                    <div class="d-flex border mb-2 color-green">
-                        <i class="fas fa-user p-2"></i><input type="text" class="username p-2" placeholder="New username...">
-                    </div>
-                    <div class="d-flex border mb-2 color-green">
-                        <i class="fas fa-envelope p-2"></i><input type="text" class="email p-2" placeholder="New email...">
-                    </div>
-                    <div class="d-flex border color-green">
-                        <i class="fas fa-key p-2"></i><input type="text" class="password p-2" placeholder="Password...">
-                    </div>
-                    <div class="text-center px-3">
-                        <button id="register" class="do-auth btn-block p-3 bg-primary mt-2">REGISTER</button>
+                    <div class="auth register-panel">
+                        <div class="d-flex border mb-2 color-green">
+                            <i class="fas fa-user p-2"></i><input type="text" class="username p-2" placeholder="New username...">
+                        </div>
+                        <div class="d-flex border mb-2 color-green">
+                            <i class="fas fa-envelope p-2"></i><input type="text" class="email p-2" placeholder="New email...">
+                        </div>
+                        <div class="d-flex border color-green">
+                            <i class="fas fa-key p-2"></i><input type="text" class="password p-2" placeholder="Password...">
+                        </div>
+                        <div class="text-center px-3">
+                            <button id="register" class="do-auth btn-block p-3 bg-primary mt-2">REGISTER</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        
         
         <script src="assets/jquery-3.4.1.min.js"></script>
         <script src="assets/js-cookie.min.js"></script>
@@ -193,9 +204,5 @@
         <script src="assets/Classes.js"></script>
         <script src="assets/app.js" charset="utf-8"></script>
 
-        <!-- 
-            - generate token when user is logged in, with expiration is not from cookies but encoded withing the token
-            - encrypted password
-         -->
     </body>    
 </html>

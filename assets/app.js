@@ -1,12 +1,18 @@
-var counter, total, selectedRecord, activeChanged, cookieOptions, $percent, $progress, $counter, $today, $week, $total, $user, $panel, $chartPanel, $authPanel, $chart, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout, delayRefreshArr;
+var hasInitializedListeners = false, STORE, counter, total, selectedRecord, activeChanged, cookieOptions, $percent, $progress, $counter, $today, $week, $total, $user, $panel, $chartPanel, $authPanel, $chart, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout, delayRefreshArr;
 
 function init() {
-    db = new Database();
-    if(!isLoggedIn()){
-        showAuthPanel();
+    if(isLoggedIn()){
+        db = new Database();
+        db.loginUserByCookies();
+        Cookies.set("userID", userID, cookieOptions);
+        console.log('User "'+userID+'" is logged in.');
     }
     else{
-        db.loginUserByCookies();
+        // showAuthPanel();
+        // guest user, use cookie-db
+        // initGuest();
+        // TODO: when the user loges in, ask him which data he wants to keep, local data or cloud data
+        bootApp();
     }
 }
 
@@ -16,6 +22,7 @@ function initListeners(){
     $('#reset').on('click', reset);
     $('#showPanel').on('click', showPanel);
     $('#closePanel').on('click', closePanel);
+    $('.close').on('click', function(){ $(this).parent().parent().toggleClass('show') });
     $('#add-record-btn').on('click', createRecord);
     $('button.details').on('click', toggleDropdown);
     $('.record-body').on('click', onClickRecordBody);
@@ -26,10 +33,12 @@ function initListeners(){
     $('#showSettings, #hideSettings').on('click', toggleSettings);
     $('#chkDelayRefresh').on('click', toggleDelayRefresh);
     $('.showChart').on('click', showChart);
-    $('#logout').on('click', logout);
+    $('#showAuthBtn').on('click', login);
+    $('#logoutBtn').on('click', logout);
     $chartPanel.find('.close').on('click', closeChartpanel);
     $chartPanel.find('select.showBy').on('change', onChangeShowBy);
     $('body').addClass('animated');
+    hasInitializedListeners = true;
 }
 
 function fillValues(){
@@ -48,38 +57,43 @@ function fillValues(){
     $chartPanel = $('#chart-panel');
     isTouched = false;
 
-    if(USER.history === undefined) USER.history = new History();// All histories of records
-    if(USER.history.logBooks === undefined) USER.history.logBooks = [];
-    if(USER.selectedIndex === undefined) USER.selectedIndex = 0;
-    if(USER.records === undefined) {
+    if(STORE === undefined) STORE = {};
+    if(STORE.history === undefined) STORE.history = new History();// All histories of records
+    if(STORE.history.logBooks === undefined) STORE.history.logBooks = [];
+    if(STORE.selectedIndex === undefined) STORE.selectedIndex = 0;
+    if(STORE.records === undefined) {
         alert("No records yet. Create one ! e.g. أستغفر الله");
         var newRec = new Record(1);
-        USER.records = [newRec];
-        USER.selectedIndex = 0;
+        STORE.records = [newRec];
+        STORE.selectedIndex = 0;
     }
     /* ensure that every record has Logbook */
-    $.each(USER.records, function(i, rec){
+    $.each(STORE.records, function(i, rec){
         if(rec == null){ // delete empty records
-            delete USER.records[i];
+            delete STORE.records[i];
         }else{
-            if(!USER.history.logBooks.some(el => el.recordId == rec.id)){
+            if(!STORE.history.logBooks.some(el => el.recordId == rec.id)){
                 console.log("Generating daily Log for record ("+rec.title+")");
-                USER.history.logBooks.push(new Logbook(rec.id));
+                STORE.history.logBooks.push(new Logbook(rec.id));
             }
         }
     });
-    if(USER.records[USER.selectedIndex] == null){
-        USER.selectedIndex = 0;
+    if(STORE.records[STORE.selectedIndex] == null){
+        STORE.selectedIndex = 0;
     } 
-    selectedRecord = USER.records[USER.selectedIndex];
+    selectedRecord = STORE.records[STORE.selectedIndex];
     activeChanged = false;
     fillSelectedRecord();
+    $user.text(userID === undefined ? 'Guest' : userID);
+    console.log("88 isLoggedIn", isLoggedIn()); 
+    $panel.find('#showAuthBtn').toggleClass('d-none', isLoggedIn());
+    $panel.find('#logoutBtn').toggleClass('d-none', !isLoggedIn());
     logging();
-    if(USER.settings === undefined){
-        USER.settings = new Settings();
-        db.save();
+    if(STORE.settings === undefined){
+        STORE.settings = new Settings();
     }
-    delayRefreshArr = USER.settings.delayRefresh ? [10, 100] : [1,1];
+    save();
+    delayRefreshArr = STORE.settings.delayRefresh ? [10, 100] : [1,1];
 }
 
 function fillSelectedRecord(){
@@ -88,7 +102,6 @@ function fillSelectedRecord(){
     $today.text(selectedRecord.counterDay);
     $week.text(selectedRecord.counterWeek);
     $total.text( thousandFormat(selectedRecord.total) );
-    $user.text(userID);
     var gPercent = goalPercent();
     $percent.text(gPercent+' %');
     setProgress(gPercent);
@@ -118,20 +131,20 @@ function goalPercent(counterDay, goal){
 
 function selectRecord(recID){
     if(recID === undefined){
-        USER.selectedIndex = 0;
-        selectedRecord = USER.records[0];
+        STORE.selectedIndex = 0;
+        selectedRecord = STORE.records[0];
         return;
     }
     else{
-        $.each(USER.records, function(i, rec){
+        $.each(STORE.records, function(i, rec){
             if(rec.id == recID){
-                USER.selectedIndex = i;
+                STORE.selectedIndex = i;
                 selectedRecord = rec;
                 return false;
             }
         });   
     }
-    db.save();
+    save();
 }
 
 function increaseCounter(e){
@@ -159,8 +172,8 @@ function increaseCounter(e){
 }
 
 function saveSelectedRecord(){
-    USER.records[USER.selectedIndex] = selectedRecord;
-    db.save();
+    STORE.records[STORE.selectedIndex] = selectedRecord;
+    save();
 }
 
 function reset(){
@@ -178,14 +191,15 @@ function togglePannel(){
 }
 
 function showPanel(){
+    console.log("showPanel", ); 
     togglePannel();
     showSettings();
     showRecords();    
 }
 
 function showSettings(){
-    $('#chkDelayRefresh i.unchecked').toggleClass('d-none', USER.settings.delayRefresh);
-    $('#chkDelayRefresh i.checked').toggleClass('d-none', !USER.settings.delayRefresh);
+    $('#chkDelayRefresh i.unchecked').toggleClass('d-none', STORE.settings.delayRefresh);
+    $('#chkDelayRefresh i.checked').toggleClass('d-none', !STORE.settings.delayRefresh);
 }
 
 function closePanel(){
@@ -199,7 +213,7 @@ function closePanel(){
 
 function showRecords(){
     $panel.find('.record').remove();
-    $.each(USER.records, function(i, record){
+    $.each(STORE.records, function(i, record){
         addRecordToPanel(i, record);
     });
 }
@@ -227,10 +241,10 @@ function createRecord(){
     else{
         pulse($(this), 1);
         var newRecord = new Record(autoID(), $input.val());
-        USER.records.push(newRecord);
-        addRecordToPanel(USER.records.length-1, newRecord);
-        USER.history.logBooks.push(new Logbook(newRecord.id, new Log(new Date().toLocaleString("en"), newRecord.counter)));
-        db.save();
+        STORE.records.push(newRecord);
+        addRecordToPanel(STORE.records.length-1, newRecord);
+        STORE.history.logBooks.push(new Logbook(newRecord.id, new Log(new Date().toLocaleString("en"), newRecord.counter)));
+        save();
         $input.val('');
         toggleSettings();
         selectRecord(newRecord.id);
@@ -245,17 +259,17 @@ function createRecord(){
 
 function logging(){
     var today = new Date();
-    var lastWriting = new Date(Date.parse(USER.history.lastWriting));
+    var lastWriting = new Date(Date.parse(STORE.history.lastWriting));
     if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
-        USER.history.lastWriting = today.toLocaleString("en"); // timestamp
+        STORE.history.lastWriting = today.toLocaleString("en"); // timestamp
         console.log("History is lastWritten today", today.toLocaleString("en"));
-        $.each(USER.records, function(i, rec){
+        $.each(STORE.records, function(i, rec){
             if(rec == null) return;
             if(lastWriting.getWeekNumber() != today.getWeekNumber()){ // new week
                 rec.counterWeek = 0;
                 $week.text(0);
             }
-            $.each(USER.history.logBooks, function(j, logBook){
+            $.each(STORE.history.logBooks, function(j, logBook){
                 if(rec.id == logBook.recordId && rec.counterDay > 0){ // no logging if today's log is 0
                     var yesterday = new Date();
                     yesterday.setDate(yesterday.getDate()-1);
@@ -264,9 +278,11 @@ function logging(){
                 }
             });
         });
-        db.save();
-        console.log("Logging saved! history: ", USER.history);
-        db.BACKUP_USER();
+        save();
+        console.log("Logging saved! history: ", STORE.history);
+        if(isLoggedIn && db !== undefined){
+            db.BACKUP_USER();
+        }
         fillSelectedRecord(); /* to refresh cached page when loading app the next day */
     }
 }
@@ -289,7 +305,7 @@ function onClickRecordBody(){
 }
 
 function recIndexByID(id){
-    return USER.records.findIndex(el => el.id == id);
+    return STORE.records.findIndex(el => el.id == id);
 }
 
 function changeTitle(){
@@ -303,9 +319,9 @@ function changeTitle(){
         return;
     }
     var index = recIndexByID($rec.attr('data-id'));
-    USER.records[index].title = newTitle;
+    STORE.records[index].title = newTitle;
     setRecordTitle($rec.attr('data-id'), newTitle); // DOM
-    db.save();
+    save();
 }
 
 function changeGoal(){
@@ -317,14 +333,14 @@ function changeGoal(){
         newGoal = prompt("New Goal:", $rec.attr('data-goal'));
     }
     var index = recIndexByID($rec.attr('data-id'));
-    USER.records[index].goal = parseInt(newGoal);
+    STORE.records[index].goal = parseInt(newGoal);
     var percent = goalPercent();
     setProgress(percent, true);
     $rec.attr('data-goal', newGoal);
     $rec.find('.goal').text('GOAL ' + newGoal);
     $rec.find('.progress').text(goalPercent($rec.attr('data-counter-log'), newGoal)+'%');
     $rec.find('.title i.done').toggleClass('d-none', percent < 100);
-    db.save();
+    save();
 }
 
 function deleteRecord(){
@@ -334,8 +350,8 @@ function deleteRecord(){
     }
     else if(confirm('Are you sure to delete "' + $rec.attr('data-title') + '"?')){
         var _data_id = $rec.attr('data-id');
-        USER.records = USER.records.filter(el => el.id != _data_id);
-        USER.history.logBooks = USER.history.logBooks.filter(el => el.recordId != _data_id);
+        STORE.records = STORE.records.filter(el => el.id != _data_id);
+        STORE.history.logBooks = STORE.history.logBooks.filter(el => el.recordId != _data_id);
         $('#record-'+_data_id).remove();
         $('.record[data-id='+_data_id+']').remove();
         if(_data_id == selectedRecord.id){
@@ -343,7 +359,7 @@ function deleteRecord(){
             fillSelectedRecord();
             showRecords();
         }
-        db.save();
+        save();
     }
 }
 
@@ -383,11 +399,11 @@ function toggleSettings(){
 }
 
 function toggleDelayRefresh(){
-    USER.settings.delayRefresh = !USER.settings.delayRefresh;
-    delayRefreshArr = USER.settings.delayRefresh ? [10, 100] : [1, 1];
-    $('#chkDelayRefresh i.unchecked').toggleClass('d-none', USER.settings.delayRefresh);
-    $('#chkDelayRefresh i.checked').toggleClass('d-none', !USER.settings.delayRefresh);
-    db.save();
+    STORE.settings.delayRefresh = !STORE.settings.delayRefresh;
+    delayRefreshArr = STORE.settings.delayRefresh ? [10, 100] : [1, 1];
+    $('#chkDelayRefresh i.unchecked').toggleClass('d-none', STORE.settings.delayRefresh);
+    $('#chkDelayRefresh i.checked').toggleClass('d-none', !STORE.settings.delayRefresh);
+    save();
 }
 
 function uniqID(){
@@ -419,7 +435,7 @@ function closeChartpanel(){
 
 function drawChart(recID, showBy){
     if(showBy === undefined) showBy = "7-days";
-    var logBook = USER.history.logBooks.find(el => el.recordId == recID);
+    var logBook = STORE.history.logBooks.find(el => el.recordId == recID);
     if(logBook === undefined){
         alert("No data was found for this record");
         closeChartpanel();
@@ -487,7 +503,7 @@ function drawChart(recID, showBy){
             break;
     }
     /* Add today to chart */
-    var rec = USER.records.find(el => el.id == recID);
+    var rec = STORE.records.find(el => el.id == recID);
     dataPoints.push({x: new Date(today.getFullYear(), today.getMonth(), today.getDate()), y: rec.counterDay});
     if(rec.counterDay > maxVal) maxVal = rec.counterDay;
     
@@ -556,7 +572,7 @@ function drawChart(recID, showBy){
 }
 /******************************************/
 function autoID(arr, idProp){
-    if(arr === undefined) arr = USER.records;
+    if(arr === undefined) arr = STORE.records;
     if(idProp === undefined) idProp = 'id';
     return Math.max.apply(Math, arr.map(function(el){ return el[idProp]; })) + 1;
 }
@@ -582,35 +598,102 @@ function bootApp(){
     }else{
         setProgress(goalPercent());
     }
-    initListeners();
-    Cookies.set("userID", userID, cookieOptions);
-    console.log('User "'+userID+'" is logged in.'); 
+    if(!hasInitializedListeners){
+        initListeners();
+    }
 }
 
 function showAuthPanel(){
     $authPanel = $('#auth-panel');
-    $('#auth-panel input').on('input keypress', db.validate_auth);
+    $('#auth-panel input').on('input keypress', validate_auth);
     $('#auth-panel .auth button.show-1').on('click', function(){ 
         $authPanel.find('.auth .swipe-container').removeClass('show-2'); 
-        $authPanel.find('#login').prop('disabled', false).find('span').removeClass('d-none');
-        $authPanel.find('#login').find('span.1.3, span.2.3, i.fa-spinner').addClass('d-none');
+        $authPanel.find('#loginBtn').prop('disabled', false).find('span').removeClass('d-none');
+        $authPanel.find('#loginBtn').find('span.1.3, span.2.3, i.fa-spinner').addClass('d-none');
         $authPanel.find('.login-panel input[type=password]').val('');
     });
-    $('#login').on('click', db.login);
-    $('#register').on('click', db.register);
+    $('#loginBtn').on('click', connectLogin);
+    $('#register').on('click', function(){ db.register; });
     $('.switch-auth button').on('click', switchAuthPanel);
     $authPanel.addClass('show');
     $authPanel.find('.username').focus();
 }
 
+function validate_auth(e){
+    if(e.type == "keypress" && (e.keyCode == 13)){
+        $('#auth-panel .auth.active button.do-auth').trigger("click");
+    }
+    $authPanel.find('#loginBtn').prop('disabled', $(this).val().trim() == false);
+    $authPanel.find('#register').prop('disabled', $(this).val().trim() == false);
+}
+
+function login(){
+    showAuthPanel();
+}
+
+function connectLogin(){ 
+    if(db === undefined){
+        db = new Database();
+    }
+    db.login(); 
+}
+
 function isLoggedIn(){
-    userID = Cookies.get("userID");
+    if(userID == '' || userID === undefined){
+        userID = Cookies.get("userID");
+    }
     return !(userID === undefined || userID == null || userID == '');
 }
 
 function logout(){
     Cookies.set("userID", '');
     window.location = window.location;
+}
+
+function save(){
+    if(isLoggedIn()){
+        db.save();
+    }else{
+        saveSTORE();
+    }
+}
+
+function saveSTORE(toSave){
+    if(toSave === undefined) toSave = "all";
+    if(toSave == "all" || toSave == "records"){
+        Cookies.set("records", STORE.records, cookieOptions);
+        console.log("Records saved!");
+    }
+    if(toSave == "all" || toSave == "selectedIndex"){
+        selectRecord(selectRecord.id);
+        Cookies.set("selectedIndex", STORE.selectedIndex, cookieOptions);
+        console.log("selectedIndex saved!"); 
+    }
+    if(toSave == "all" || toSave == "history"){
+        Cookies.set("history", STORE.history, cookieOptions);
+        console.log("LogBook created!"); 
+    }
+    else if(toSave == "logging"){// logging
+        var today = new Date();
+        var lastWriting = new Date(Date.parse(STORE.history.lastWriting));
+        if(lastWriting.getDate() != today.getDate() || lastWriting.getMonth() != today.getMonth() || lastWriting.getFullYear() != today.getFullYear()){
+            STORE.history.lastWriting = today.toLocaleString("en"); // timestamp
+            console.log("History is lastWritten today", today.toLocaleString("en"));
+            $.each(STORE.records, function(i, rec){
+                $.each(STORE.history.all, function(j, logBook){
+                    if(rec.id == logBook.recordId){
+                        var yesterday = new Date();
+                        yesterday.setDate(yesterday.getDate()-1);
+                        logBook.logs.push(new Log(yesterday.toLocaleString("en")/* timestamp */, rec.counterLog)); // save the daily every time you save
+                        rec.counterLog = 0;
+                    }
+                });
+            });
+            Cookies.set("history", STORE.history, cookieOptions);
+            console.log("Logging saved!");
+        }
+    }
+    console.log("COOKIE STORE", STORE);
 }
 
 window.onload = init();
@@ -625,6 +708,7 @@ window.onload = init();
         v5.3 : log in and out and provide user info: name, email, pass, backup
         v5.5 : set record goal, progress comes from it
         v6   : auto user backup on logging everyday!
+        v7.4 : can use as guest user
         
     FUTURE VERSIONS:
         v8 : GROUPS

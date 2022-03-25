@@ -76,14 +76,6 @@ class Database{
         console.log("DB connection established.");
         USER = {};
     }
-    
-    validate_auth(e){
-        if(e.type == "keypress" && (e.keyCode == 13)){
-            $('#auth-panel .auth.active button.do-auth').trigger("click");
-        }
-        $authPanel.find('#login').prop('disabled', $(this).val().trim() == false);
-        $authPanel.find('#register').prop('disabled', $(this).val().trim() == false);
-    }
 
     fetchUser(username){
         // return dbCollection.where("I", "==", username).get();
@@ -128,32 +120,35 @@ class Database{
         if(username){
             var password = $authPanel.find('.login-panel .password').val().trim() || false;
             if(!password){ // BEFORE ENTERING PASSWORD
-                $authPanel.find('#login').prop('disabled', true).find('span.1, i').toggleClass('d-none');
-                if(!Object.keys(USER).length){ // FETCH USER IF HAVE'NT
+                $authPanel.find('#loginBtn').prop('disabled', true).find('span.1, i').toggleClass('d-none');
+                if(!Object.keys(USER).length){ // FETCH USER IF HAVEN'T
                     Database.prototype.fetchUser(username).then(function(docRef){
                         USER = docRef.data() || false;
                         if(!USER){ 
                             alert("This user is not registered.");
-                            $authPanel.find('#login').prop('disabled', false).find('span.1, i').toggleClass('d-none');
+                            $authPanel.find('#loginBtn').prop('disabled', false).find('span.1, i').toggleClass('d-none');
                         }else{
                             userID = username;
                             $authPanel.find('.login-panel .swipe-container').addClass('show-2').find('.password').focus();
-                            $authPanel.find('#login').prop('disabled', true).find('span.3, i').toggleClass('d-none');
+                            $authPanel.find('#loginBtn').prop('disabled', true).find('span.3, i').toggleClass('d-none');
                         }
+                        console.log("userID", userID, "username", username); 
                     })
                     .catch(function(error){
                         console.error(error);
                         alert("Failed to load user!");
-                        $authPanel.find('#login').find('span.1, i').toggleClass('d-none');
+                        $authPanel.find('#loginBtn').find('span.1, i').toggleClass('d-none');
                     });
                 }else{ // USER FOUND
                     $authPanel.find('.login-panel .swipe-container').addClass('show-2').find('.password').focus();
-                    $authPanel.find('#login').prop('disabled', true).find('span.3, i').toggleClass('d-none');
+                    $authPanel.find('#loginBtn').prop('disabled', true).find('span.3, i').toggleClass('d-none');
                 }
             }else{ // USER HAS ENTERED PASSWORD
                 if(/* is_password_correct */true){
+                    STORE = USER;
                     bootApp();
                     $authPanel.removeClass('show');
+                    togglePannel();
                 }else{
                     //
                 }
@@ -168,7 +163,7 @@ class Database{
         Database.prototype.fetchUser(userID).then(function(docRef){
             USER = docRef.data() || false;
             if(USER){
-                bootApp();
+                // bootApp();
             }else{
                 alert("Cannot login user. Try again.");
             }
@@ -185,6 +180,7 @@ class Database{
             alert("Cannot save empty USER!");
             return;
         }
+        console.log("USER", USER, "STORE", STORE, "userID", userID); 
         dbCollection.doc(userID).set(JSON.parse(JSON.stringify(USER)))
             .then(function() {
                 // console.log("DB saved.");
