@@ -163,7 +163,7 @@ class Database{
         Database.prototype.fetchUser(userID).then(function(docRef){
             USER = docRef.data() || false;
             if(USER){
-                // bootApp();
+                bootApp();
             }else{
                 alert("Cannot login user. Try again.");
             }

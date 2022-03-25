@@ -85,7 +85,6 @@ function fillValues(){
     activeChanged = false;
     fillSelectedRecord();
     $user.text(userID === undefined ? 'Guest' : userID);
-    console.log("88 isLoggedIn", isLoggedIn()); 
     $panel.find('#showAuthBtn').toggleClass('d-none', isLoggedIn());
     $panel.find('#logoutBtn').toggleClass('d-none', !isLoggedIn());
     logging();
@@ -191,7 +190,6 @@ function togglePannel(){
 }
 
 function showPanel(){
-    console.log("showPanel", ); 
     togglePannel();
     showSettings();
     showRecords();    
