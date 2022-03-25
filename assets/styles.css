@@ -1,5 +1,5 @@
 html{font-size: 16px;}
-body{z-index: 0; cursor: pointer; position: fixed; top: 0; /* bottom: 0; */ right: 0; left: 0; background: #c6ff00; color: #2f2f2f; font-family: Almarai, Oxanium, tahoma; font-size: 5rem;} /* NO TEXT SELECTION */ body{-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
+body{height: -webkit-fill-available; z-index: 0; cursor: pointer; position: fixed; top: 0; /* bottom: 0; */ right: 0; left: 0; background: #c6ff00; color: #2f2f2f; font-family: Almarai, Oxanium, tahoma; font-size: 5rem;} /* NO TEXT SELECTION */ body{-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
 .container{position: absolute; top: 0; bottom: 0; right: 0; left: 0; height: 98vh; } .container.border{border: 1rem solid #c6ff00;}
 h1, h2, h3, h4, h5, h6{margin: 3rem 0; text-align: center;} h5{font-weight: 100; font-size: 4.65rem;}
 p{margin: 0;}small{font-size: 3rem;}
@@ -165,7 +165,7 @@ button#showPanel, button#reset, #counter{top: -200%;}
 .info{opacity: 0;}
 footer{bottom: -100%;}
 
-.animated{background: #2f2f2f; height: 100%; min-height: -webkit-fill-available;}
+.animated{background: #2f2f2f; }
 .animated #please-login{display: none;}
 .animated button#showPanel{top: 0; transition: all .3s ease 0s;}
 .animated #counter{top: 0; transition: all .4s ease 0s;}
@@ -190,20 +190,20 @@ footer{bottom: -100%;}
 #auth-panel.show .swipe-container.show-2{right: 215%;}
 #auth-panel.show .swipe-container.show-3{right: 330%;}
 
-@media only screen and (min-width: 992px) {
+@media screen and (min-width: 992px) {
   body.animated > .container{border: 0.25rem solid #777; border-radius: 1rem;}
-  body{ max-width: 53%; margin: auto;}
+  body{ max-width: 600px; margin: auto;}
 }
 
 /* THESE @media queries MUST STAY AT LAST TO OVERWRITE PREVIOUS ATTRIBUTES */
-@media screen and (orientation:portrait) {
+@media (orientation:portrait) {
   html{font-size: 16px;}
   .main{bottom: 5.3rem;}
   .main .info{bottom: 5%;}
   #chart-panel canvas{height: 35vh !important;}
   .swipe-container.show-2{}
 }
-@media screen and (orientation:landscape) {
+@media (orientation:landscape) {
   html{font-size: 9px;}
   .main{bottom: 5.3rem;}
   .main .info{}
