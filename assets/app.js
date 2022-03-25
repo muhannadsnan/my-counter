@@ -90,7 +90,7 @@ function fillValues(){
     selectedRecord = STORE.records[STORE.selectedIndex];
     activeChanged = false;
     fillSelectedRecord();
-    $user.text(userID === undefined ? 'Guest' : userID);
+    $user.text(userID === undefined || userID == '' ? 'Guest' : userID);
     $panel.find('#showAuthBtn').toggleClass('d-none', isLoggedIn());
     $panel.find('#logoutBtn').toggleClass('d-none', !isLoggedIn());
     logging();
