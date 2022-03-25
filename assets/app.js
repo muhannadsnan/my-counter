@@ -150,11 +150,7 @@ function selectRecord(recID){
             }
         });   
     }
-    console.log("rec", selectedRecord); 
-
-    save("records");
-    console.log("rec", selectedRecord); 
-
+    save();
 }
 
 function increaseCounter(e){
