@@ -12,7 +12,7 @@ function init() {
         // initGuest();
         // TODO: when the user loges in, ask him which data he wants to keep, local data or cloud data
         bootApp();
-        alert("Start clicking to count! Add more records to count in Settings..");
+        alert("IMPORTANT ABOUT THE CONTENT! Read the information about this app, click the gear icon..");
     }
 }
 
