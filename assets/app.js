@@ -2,7 +2,7 @@ var hasInitializedListeners = false, STORE, counter, total, selectedRecord, acti
 
 function init() {
     TOKEN = Cookies.get('token') || undefined;
-    USER = Cookies.get('user') || undefined;
+    USER = Cookies.get('user');
     USER = JSON.parse(USER) || undefined;
     if(TOKEN && USER){
         db = new Database();
