@@ -198,8 +198,6 @@ class Database{
                         // bootApp();
                     }
                     bootApp();
-                    $panel.find('.settings').removeClass('show');
-                    $panel.find('#showSettings').removeClass('d-none');
                 }else{
                     alert("Cannot signin. Try again.");
                 }
