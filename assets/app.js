@@ -33,11 +33,27 @@ function initListeners(){
     $('#chkDelayRefresh').on('click', toggleDelayRefresh);
     $('.showChart').on('click', showChart);
     $('#showAuthBtn').on('click', login);
+    $('#signin-google').on('click', signin_google);
+    $('#signout-google').on('click', signout_google);
     $('#logoutBtn').on('click', logout);
     $chartPanel.find('.close').on('click', closeChartpanel);
     $chartPanel.find('select.showBy').on('change', onChangeShowBy);
     $('body').addClass('animated');
     hasInitializedListeners = true;
+}
+
+function signin_google(){
+    if(db === undefined){
+        db = new Database();
+    }
+    db.google_signin();
+}
+
+function signout_google(){
+    if(db === undefined){
+        db = new Database();
+    }
+    db.google_signout();
 }
 
 function fillValues(){

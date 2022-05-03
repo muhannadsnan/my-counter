@@ -214,6 +214,35 @@ class Database{
             alert("Couldn't take auto backup! (#5503) " + error);
         });
     }
+
+    google_signin(event){
+        console.log("google_signin"); 
+        // GOOGLE SIGNIN
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithRedirect(provider);
+        console.log("1", ); 
+        // firebase.auth().getRedirectResult(provider)
+        //     .then((result) => {
+        //         var token = result.credential.accessToken; // A Google Access Token. You can use it to access the Google API.
+        //         var user = result.user; // The signed-in user info.
+        //         console.log("success", credential, token, user); 
+        //     })
+        //     .catch((error) => {
+        //         var errorCode = error.code;
+        //         var errorMessage = error.message;
+        //         var email = error.email;
+        //         var credential = error.credential;
+        //         console.log("error", errorCode, errorMessage, email); 
+        //     });
+    }
+    
+    google_signout(){
+        firebase.auth().signOut().then(() => {
+            // Sign-out successful.
+          }).catch((error) => {
+            // An error happened.
+          });
+    }
 }
 
 function uniqID(){
