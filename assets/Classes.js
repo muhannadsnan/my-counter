@@ -217,15 +217,29 @@ class Database{
 
     google_signin(event){
         console.log("google_signin"); 
-        // GOOGLE SIGNIN
         var provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithRedirect(provider);
-        console.log("1", ); 
+        firebase.auth().signInWithRedirect(provider).then((result) => {
+            var token = result.credential.accessToken; // A Google Access Token. You can use it to access the Google API.
+            var user = result.user; // The signed-in user info.
+            console.log("success", credential, token, user); 
+            Cookies.set("token", token, cookieOptions);
+            Cookies.set("username", username, cookieOptions);
+        })
+        .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            var email = error.email;
+            var credential = error.credential;
+            console.log("error", errorCode, errorMessage, email); 
+        });;
+
         // firebase.auth().getRedirectResult(provider)
         //     .then((result) => {
         //         var token = result.credential.accessToken; // A Google Access Token. You can use it to access the Google API.
         //         var user = result.user; // The signed-in user info.
         //         console.log("success", credential, token, user); 
+        //         Cookies.set("token", token, cookieOptions);
+        //         Cookies.set("username", username, cookieOptions);
         //     })
         //     .catch((error) => {
         //         var errorCode = error.code;
