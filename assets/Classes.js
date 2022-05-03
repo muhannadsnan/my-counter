@@ -175,7 +175,7 @@ class Database{
                     Database.prototype.loginByToken()
                 }
                 // bootApp();
-                togglePannel();
+                // togglePannel();
            });
     }
     
