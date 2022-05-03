@@ -74,112 +74,149 @@ class Database{
         firebase_db = firebase.firestore();
         dbCollection = firebase_db.collection("counter-users");
         console.log("DB connection established.");
-        USER = {};
     }
 
     fetchUser(username){
-        // return dbCollection.where("I", "==", username).get();
         return dbCollection.doc(username).get(); // get by id
     }
 
-    register(){
-        var username = $authPanel.find('.register-panel .username').val().trim() || "";
-        var email = $authPanel.find('.register-panel .email').val().trim() || "";
-        var password = $authPanel.find('.register-panel .password').val().trim() || "";
-        if(username.trim() && email.trim() && password.trim()){
-            Database.prototype.fetchUser(username).then(function(docRef){
-                if(!docRef.data()){
-                    // REGISTER USER
-                    firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
-                        alert("Welcome "+username+" to M-Digital Counter!");
-                        // LOGIN THE NEW USER
-                        userID = username; // must be separated from USER bcz we dont need to save it to db
-                        USER = {email: email};
-                        bootApp();
-                        $authPanel.removeClass('show');
-                    }).catch(function(error) {
-                        alert(error.message); console.log(error.code); 
-                    });
-                }else{
-                    alert("Username already exists. Choose a different one.");
-                }
-            })
-            .catch(function(error){
-                console.error(error);
-                alert("Failed to load user! "+error);
-                return false;
-            });
-        }
-        else{
-            alert("Registeration failed! Please provide all fields.");
-        }
-    }
+    // register(){
+    //     var username = $authPanel.find('.register-panel .username').val().trim() || "";
+    //     var email = $authPanel.find('.register-panel .email').val().trim() || "";
+    //     var password = $authPanel.find('.register-panel .password').val().trim() || "";
+    //     if(username.trim() && email.trim() && password.trim()){
+    //         Database.prototype.fetchUser(username).then(function(docRef){
+    //             if(!docRef.data()){
+    //                 // REGISTER STORE
+    //                 firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
+    //                     alert("Welcome "+username+" to M-Digital Counter!");
+    //                     // LOGIN THE NEW STORE
+    //                     userID = username; // must be separated from STORE bcz we dont need to save it to db
+    //                     STORE = {email: email};
+    //                     bootApp();
+    //                     $authPanel.removeClass('show');
+    //                 }).catch(function(error) {
+    //                     alert(error.message); console.log(error.code); 
+    //                 });
+    //             }else{
+    //                 alert("Username already exists. Choose a different one.");
+    //             }
+    //         })
+    //         .catch(function(error){
+    //             console.error(error);
+    //             alert("Failed to load user! "+error);
+    //             return false;
+    //         });
+    //     }
+    //     else{
+    //         alert("Registeration failed! Please provide all fields.");
+    //     }
+    // }
 
-    login(){
-        var username = $authPanel.find('.username').val().trim() || false;
-        if(username){
-            var password = $authPanel.find('.login-panel .password').val().trim() || false;
-            if(!password){ // BEFORE ENTERING PASSWORD
-                $authPanel.find('#loginBtn').prop('disabled', true).find('span.1, i').toggleClass('d-none');
-                if(!Object.keys(USER).length){ // FETCH USER IF HAVEN'T
-                    Database.prototype.fetchUser(username).then(function(docRef){
-                        USER = docRef.data() || false;
-                        if(!USER){ 
-                            alert("This user is not registered.");
-                            $authPanel.find('#loginBtn').prop('disabled', false).find('span.1, i').toggleClass('d-none');
-                        }else{
-                            userID = username;
-                            $authPanel.find('.login-panel .swipe-container').addClass('show-2').find('.password').focus();
-                            $authPanel.find('#loginBtn').prop('disabled', true).find('span.3, i').toggleClass('d-none');
-                        }
-                        console.log("userID", userID, "username", username); 
-                    })
-                    .catch(function(error){
-                        console.error(error);
-                        alert("Failed to load user!");
-                        $authPanel.find('#loginBtn').find('span.1, i').toggleClass('d-none');
-                    });
-                }else{ // USER FOUND
-                    $authPanel.find('.login-panel .swipe-container').addClass('show-2').find('.password').focus();
-                    $authPanel.find('#loginBtn').prop('disabled', true).find('span.3, i').toggleClass('d-none');
+    // login(){
+    //     var username = $authPanel.find('.username').val().trim() || false;
+    //     if(username){
+    //         var password = $authPanel.find('.login-panel .password').val().trim() || false;
+    //         if(!password){ // BEFORE ENTERING PASSWORD
+    //             $authPanel.find('#loginBtn').prop('disabled', true).find('span.1, i').toggleClass('d-none');
+    //             if(!Object.keys(STORE).length){ // FETCH STORE IF HAVEN'T
+    //                 Database.prototype.fetchUser(username).then(function(docRef){
+    //                     STORE = docRef.data() || false;
+    //                     if(!STORE){ 
+    //                         alert("This user is not registered.");
+    //                         $authPanel.find('#loginBtn').prop('disabled', false).find('span.1, i').toggleClass('d-none');
+    //                     }else{
+    //                         userID = username;
+    //                         $authPanel.find('.login-panel .swipe-container').addClass('show-2').find('.password').focus();
+    //                         $authPanel.find('#loginBtn').prop('disabled', true).find('span.3, i').toggleClass('d-none');
+    //                     }
+    //                     console.log("userID", userID, "username", username); 
+    //                 })
+    //                 .catch(function(error){
+    //                     console.error(error);
+    //                     alert("Failed to load user!");
+    //                     $authPanel.find('#loginBtn').find('span.1, i').toggleClass('d-none');
+    //                 });
+    //             }else{ // STORE FOUND
+    //                 $authPanel.find('.login-panel .swipe-container').addClass('show-2').find('.password').focus();
+    //                 $authPanel.find('#loginBtn').prop('disabled', true).find('span.3, i').toggleClass('d-none');
+    //             }
+    //         }else{ // STORE HAS ENTERED PASSWORD
+    //             if(/* is_password_correct */true){
+    //                 bootApp();
+    //                 $authPanel.removeClass('show');
+    //                 togglePannel();
+    //             }else{
+    //                 //
+    //             }
+    //         }
+    //     }
+    //     else{
+    //         alert("Login failed! username cannot be empty.");
+    //     }
+    // }
+
+    do_signin(provider){
+        // IMPORTANT: when running from localhost, use a web server to load the html page, so that google signin works:
+        // > python3 -m http.server 1234
+        // then go to http://localhost:1234/
+        firebase.auth().signInWithPopup(provider)
+            .then(function(result) {
+                
+                TOKEN = result.credential.accessToken;
+                USER = result.user;
+                
+                console.log(isLoggedIn() ? "You are signed in!!" : "still stated as not signed in.."); 
+                Cookies.set("token", TOKEN, cookieOptions);
+                Cookies.set("user", JSON.stringify(USER), cookieOptions);
+
+                STORE = Cookies.get() || false;
+                if(STORE){ // when there is cookie-store, fetch user so that it does not be saved
+                    Database.prototype.loginByToken()
                 }
-            }else{ // USER HAS ENTERED PASSWORD
-                if(/* is_password_correct */true){
-                    bootApp();
-                    $authPanel.removeClass('show');
-                    togglePannel();
-                }else{
-                    //
-                }
-            }
-        }
-        else{
-            alert("Login failed! username cannot be empty.");
-        }
+                // bootApp();
+                togglePannel();
+           });
     }
     
-    loginUserByCookies(){
-        Database.prototype.fetchUser(userID).then(function(docRef){
-            USER = docRef.data() || false;
-            if(USER){
-                bootApp();
+    signOut(){
+        firebase.auth().signOut();
+    }
+
+    loginByToken(){
+        Database.prototype.fetchUser(USER.email).then(function(docRef){
+            console.log("docRef", docRef.data()); 
+            if(docRef.data() === undefined){ // NO SUCH EMAIL EXISTS BEFORE, SAVE cookie-store
+                console.log("empty here", ); 
+                save(); // !! cookies-store upload !!
             }else{
-                alert("Cannot login user. Try again.");
+                STORE = docRef.data() || false;
+                if(STORE){
+                    if(STORE.token !== TOKEN){
+                        // do_signin(); // don't redo signin before booting the app...
+                    }else{
+                        // bootApp();
+                    }
+                    bootApp();
+                }else{
+                    alert("Cannot signin. Try again.");
+                }
             }
         })
         .catch(function(error){
             console.error(error);
-            alert("Failed to login user! "+error);
+            alert("Failed to signin! "+error);
+            // save();
             return false;
         });
     }
     
     save(){
-        if(USER.records === undefined || USER.records.length == 0){
-            alert("Cannot save empty USER!");
+        if(STORE.records === undefined || STORE.records.length == 0){
+            alert("Cannot save empty STORE!");
             return;
         }
-        dbCollection.doc(userID).set(JSON.parse(JSON.stringify(USER)))
+        dbCollection.doc(USER.email).set(JSON.parse(JSON.stringify(STORE)))
             .then(function() {
                 // console.log("DB saved.");
             })
@@ -189,17 +226,16 @@ class Database{
     }
 
     BACKUP_USER(){
-        var lastWriting = USER.history.lastWriting;
+        var lastWriting = STORE.history.lastWriting;
         var _db = firebase.firestore();
-        // _db.collection("_BACKUP-counter-users").where("id", "==", userID).get().then(function(querySnapshot){
-        _db.collection("_BACKUP-counter-users").doc(userID).get().then(function(docRef){ 
+        _db.collection("_BACKUP-counter-users").doc(USER.email).get().then(function(docRef){ 
             lastWriting = new Date(Date.parse(lastWriting));
             var lastBackup = false;
             if(docRef.data() !== undefined){
                 lastBackup = new Date(docRef.data().history.lastWriting) || false;
             }
             if(!lastBackup /*first-time backup*/ || (lastWriting.getDate() != lastBackup.getDate() || lastWriting.getMonth() != lastBackup.getMonth() || lastWriting.getFullYear() != lastBackup.getFullYear()) ){
-                _db.collection("_BACKUP-counter-users").doc(userID).set(JSON.parse(JSON.stringify(USER)))
+                _db.collection("_BACKUP-counter-users").doc(USER.email).set(JSON.parse(JSON.stringify(STORE)))
                     .then(function() {
                         console.log("User auto backup was taken!");
                     })
@@ -213,49 +249,6 @@ class Database{
             console.error("Error backing up User: (#5503) ", error);
             alert("Couldn't take auto backup! (#5503) " + error);
         });
-    }
-
-    google_signin(event){
-        console.log("google_signin"); 
-        var provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithRedirect(provider).then((result) => {
-            var token = result.credential.accessToken; // A Google Access Token. You can use it to access the Google API.
-            var user = result.user; // The signed-in user info.
-            console.log("success", credential, token, user); 
-            Cookies.set("token", token, cookieOptions);
-            Cookies.set("username", username, cookieOptions);
-        })
-        .catch((error) => {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            var email = error.email;
-            var credential = error.credential;
-            console.log("error", errorCode, errorMessage, email); 
-        });;
-
-        // firebase.auth().getRedirectResult(provider)
-        //     .then((result) => {
-        //         var token = result.credential.accessToken; // A Google Access Token. You can use it to access the Google API.
-        //         var user = result.user; // The signed-in user info.
-        //         console.log("success", credential, token, user); 
-        //         Cookies.set("token", token, cookieOptions);
-        //         Cookies.set("username", username, cookieOptions);
-        //     })
-        //     .catch((error) => {
-        //         var errorCode = error.code;
-        //         var errorMessage = error.message;
-        //         var email = error.email;
-        //         var credential = error.credential;
-        //         console.log("error", errorCode, errorMessage, email); 
-        //     });
-    }
-    
-    google_signout(){
-        firebase.auth().signOut().then(() => {
-            // Sign-out successful.
-          }).catch((error) => {
-            // An error happened.
-          });
     }
 }
 

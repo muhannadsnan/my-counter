@@ -1,15 +1,14 @@
-var hasInitializedListeners = false, STORE, counter, total, selectedRecord, activeChanged, cookieOptions, $percent, $progress, $counter, $today, $week, $total, $user, $panel, $chartPanel, $authPanel, $chart, $templates, db, firebase_db, dbCollection, isTouched, userID, USER, timeout, delayRefreshArr;
+var hasInitializedListeners = false, STORE, counter, total, selectedRecord, activeChanged, cookieOptions, $percent, $progress, $counter, $today, $week, $total, $user, $panel, $chartPanel, $authPanel, $chart, $templates, db, firebase_db, dbCollection, isTouched, timeout, delayRefreshArr, USER, TOKEN;
 
 function init() {
-    if(isLoggedIn()){
+    TOKEN = Cookies.get('token') || undefined;
+    USER = JSON.parse(Cookies.get('user')) || undefined;
+    if(TOKEN && USER){
         db = new Database();
-        db.loginUserByCookies();
-        console.log('User "'+userID+'" is logged in.');
+        db.loginByToken();
+        console.log('User "'+USER.email+'" is logged in.');
     }
     else{
-        // showAuthPanel();
-        // guest user, use cookie-db
-        // initGuest();
         // TODO: when the user loges in, ask him which data he wants to keep, local data or cloud data
         bootApp();
     }
@@ -33,27 +32,13 @@ function initListeners(){
     $('#chkDelayRefresh').on('click', toggleDelayRefresh);
     $('.showChart').on('click', showChart);
     $('#showAuthBtn').on('click', login);
-    $('#signin-google').on('click', signin_google);
-    $('#signout-google').on('click', signout_google);
+    $('.signin').on('click', signin);
+    $('.signout').on('click', signout);
     $('#logoutBtn').on('click', logout);
     $chartPanel.find('.close').on('click', closeChartpanel);
     $chartPanel.find('select.showBy').on('change', onChangeShowBy);
     $('body').addClass('animated');
     hasInitializedListeners = true;
-}
-
-function signin_google(){
-    if(db === undefined){
-        db = new Database();
-    }
-    db.google_signin();
-}
-
-function signout_google(){
-    if(db === undefined){
-        db = new Database();
-    }
-    db.google_signout();
 }
 
 function fillValues(){
@@ -76,19 +61,18 @@ function fillValues(){
         STORE = Cookies.get();
         if(STORE.records !== undefined) STORE.records = JSON.parse(STORE.records);
         if(STORE.history !== undefined) STORE.history = JSON.parse(STORE.history);
-    }else{
-        STORE = USER;
     }
     if(STORE === undefined) STORE = {};
     if(STORE.history === undefined) STORE.history = new History();// All histories of records
     if(STORE.history.logBooks === undefined) STORE.history.logBooks = [];
     if(STORE.selectedIndex === undefined) STORE.selectedIndex = 0;
     if(STORE.records === undefined) {
-        // alert("No records yet. Create one ! e.g. أستغفر الله");
+        alert("No records yet. Create one ! e.g. أستغفر الله");
         var newRec = new Record(1);
         STORE.records = [newRec];
         STORE.selectedIndex = 0;
     }
+    if(USER === undefined) USER = {'displayName': 'Guest', 'email': 'null'};
     /* ensure that every record has Logbook */
     $.each(STORE.records, function(i, rec){
         if(rec == null){ // delete empty records
@@ -106,8 +90,8 @@ function fillValues(){
     selectedRecord = STORE.records[STORE.selectedIndex];
     activeChanged = false;
     fillSelectedRecord();
-    $user.text(userID === undefined || userID == '' ? 'Guest' : userID);
-    $panel.find('#showAuthBtn').toggleClass('d-none', isLoggedIn());
+    $user.text(isLoggedIn ? USER.displayName : 'Guest');
+    $panel.find('.login-buttons-container').toggleClass('d-none', isLoggedIn());
     $panel.find('#logoutBtn').toggleClass('d-none', !isLoggedIn());
     logging();
     if(STORE.settings === undefined){
@@ -613,11 +597,6 @@ function switchAuthPanel(){
 }
 
 function bootApp(){
-    if(userID !== undefined && userID != ''){
-        Cookies.set("userID", userID, cookieOptions);
-    }else{
-        alert("IMPORTANT ABOUT THE CONTENT! Read the information about this app, click the gear icon..");
-    }
     fillValues();
     if(selectedRecord === undefined){
         setProgress(0);
@@ -665,14 +644,15 @@ function connectLogin(){
 }
 
 function isLoggedIn(){
-    if(userID == '' || userID === undefined){
-        userID = Cookies.get("userID");
-    }
-    return !(userID === undefined || userID == null || userID == '');
+    return !(TOKEN === undefined || TOKEN === '' || USER === undefined || USER.email === 'null');
 }
 
 function logout(){
-    Cookies.set("userID", "");
+    db.signOut();
+    TOKEN = null;
+    if(Cookies.get("token") !== undefined && Cookies.get("token") !== ""){
+        Cookies.remove("token");
+    }
     window.location = window.location;
 }
 
@@ -688,16 +668,12 @@ function saveSTORE(toSave){
     if(toSave === undefined) toSave = "all";
     if(toSave == "all" || toSave == "records"){
         Cookies.set("records", STORE.records, cookieOptions);
-        console.log("Records saved!");
     }
     if(toSave == "all" || toSave == "selectedIndex"){
-        // selectRecord(selectedRecord.id);
         Cookies.set("selectedIndex", STORE.selectedIndex, cookieOptions);
-        console.log("selectedIndex saved!"); 
     }
     if(toSave == "all" || toSave == "history"){
         Cookies.set("history", STORE.history, cookieOptions);
-        console.log("LogBook created!"); 
     }
     if(toSave == "logging"){
         var today = new Date();
@@ -719,7 +695,29 @@ function saveSTORE(toSave){
             console.log("Logging saved!");
         }
     }
-    // console.log("COOKIE STORE", STORE);
+    console.log(toSave == "all" || toSave == "records" ? 'records':'', toSave == "all" || toSave == "selectedIndex" ? 'selectedIndex':'', toSave == "all" || toSave == "history" ? 'history':'', 'saved !'); 
+}
+
+function signin(){
+    if(db === undefined){
+        db = new Database();
+    }
+    var provider;
+    if($(this).data('signin-type') == 'google'){
+        provider = new firebase.auth.GoogleAuthProvider();
+    }
+    else if($(this).data('signin-type') == 'facebook'){
+        provider = new firebase.auth.FacebookAuthProvider();
+    }
+    provider.addScope('email');
+    db.do_signin(provider);   
+}
+
+function signout(){
+    if(db === undefined){
+        db = new Database();
+    }
+    db.signOut();
 }
 
 window.onload = init();

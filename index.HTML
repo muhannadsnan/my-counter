@@ -113,9 +113,17 @@
                                     <span class="">Prayers</span>
                                 </button>
                                 <!-- <button id="showAuthBtn" class="btn btn-block mt-3 color-grey"> -->
-                                <button id="signin-google" class="btn btn-block mt-3 color-grey">
-                                    <i class="fas fa-user-lock mr-2"></i>Login
-                                </button>
+                                <div class="login-buttons-container">
+                                    <h2 class="m-0 mt-3">Sign In</h2>
+                                    <div class="d-flex">
+                                        <button id="signin-google" class="signin btn btn-block mt-3 p-0 color-white p-2 d-flex justify-content-around" data-signin-type="google">
+                                            <img src="assets/img/google-favico.png">
+                                        </button>&nbsp;
+                                        <button id="signin-facebook" class="signin btn btn-block mt-3 p-0 color-white p-2 d-flex justify-content-around" data-signin-type="facebook">
+                                            <img src="assets/img/facebook-favico.png">
+                                        </button>
+                                    </div>
+                                </div>
                                 </button>
                                 <button id="logoutBtn" class="btn btn-block mt-3 color-grey">
                                     <i class="fas fa-user-lock mr-2"></i>Logout
