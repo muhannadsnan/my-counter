@@ -201,7 +201,7 @@ class Database{
             if(!lastBackup /*first-time backup*/ || (lastWriting.getDate() != lastBackup.getDate() || lastWriting.getMonth() != lastBackup.getMonth() || lastWriting.getFullYear() != lastBackup.getFullYear()) ){
                 _db.collection("_BACKUP-counter-users").doc(userID).set(JSON.parse(JSON.stringify(USER)))
                     .then(function() {
-                        console.log("User auto backup was taken!", USER);
+                        console.log("User auto backup was taken!");
                     })
                     .catch(function(error) {
                         console.error("Couldn't take auto backup! (#5502) ", error);

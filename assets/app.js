@@ -12,7 +12,6 @@ function init() {
         // initGuest();
         // TODO: when the user loges in, ask him which data he wants to keep, local data or cloud data
         bootApp();
-        alert("IMPORTANT ABOUT THE CONTENT! Read the information about this app, click the gear icon..");
     }
 }
 
@@ -600,6 +599,8 @@ function switchAuthPanel(){
 function bootApp(){
     if(userID !== undefined && userID != ''){
         Cookies.set("userID", userID, cookieOptions);
+    }else{
+        alert("IMPORTANT ABOUT THE CONTENT! Read the information about this app, click the gear icon..");
     }
     fillValues();
     if(selectedRecord === undefined){
@@ -655,7 +656,7 @@ function isLoggedIn(){
 }
 
 function logout(){
-    Cookies.set("userID", '');
+    Cookies.set("userID", "");
     window.location = window.location;
 }
 
