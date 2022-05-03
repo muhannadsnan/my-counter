@@ -198,6 +198,7 @@ class Database{
                         // bootApp();
                     }
                     bootApp();
+                    togglePannel();
                 }else{
                     alert("Cannot signin. Try again.");
                 }

@@ -607,8 +607,6 @@ function bootApp(){
     if(!hasInitializedListeners){
         initListeners();
     }
-    $panel.find('.settings').removeClass('show');
-    $panel.find('#showSettings').removeClass('d-none');
 }
 
 function showAuthPanel(){
