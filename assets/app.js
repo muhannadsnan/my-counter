@@ -6,7 +6,7 @@ function init() {
     USER = JSON.parse(USER) || undefined;
     if(TOKEN && USER){
         db = new Database();
-        db.loginByToken();
+        db.x_signin();
         console.log('User "'+USER.email+'" is logged in.');
     }
     else{

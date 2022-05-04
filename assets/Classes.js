@@ -158,57 +158,55 @@ class Database{
 
     do_signin(provider){
         // IMPORTANT: when running from localhost, use a web server to load the html page, so that google signin works:
-        // > python3 -m http.server 1234
-        // then go to http://localhost:1234/
+        // > python3 -m http.server 1234  // then go to http://localhost:1234/
         firebase.auth().signInWithPopup(provider)
             .then(function(result) {
-                
                 TOKEN = result.credential.accessToken;
                 USER = result.user;
-                
                 console.log(isLoggedIn() ? "You are signed in!!" : "still stated as not signed in.."); 
                 Cookies.set("token", TOKEN, cookieOptions);
                 Cookies.set("user", JSON.stringify(USER), cookieOptions);
-
                 STORE = Cookies.get() || false;
                 if(STORE){ // when there is cookie-store, fetch user so that it does not be saved
-                    Database.prototype.loginByToken()
+                    Database.prototype.x_signin();
                 }
-                // bootApp();
-                // togglePannel();
            });
+    }
+
+    x_signin(){
+        Database.prototype.fetchUserData().then(function(){
+            console.log("here is then", ); 
+            bootApp();
+            showRecords();
+        })
+        .catch(function(error){
+            alert("Failed to signin! "+error);
+            console.log("here is catch", ); 
+        })
+    }
+
+    fetchUserData(){
+        return new Promise(function(resolve, reject) {
+            Database.prototype.fetchUser(USER.email).then(function(docRef){
+                if(docRef.data() === undefined){ // NO SUCH EMAIL EXISTS BEFORE, SAVE cookie-store
+                    save(); // !! cookies-store upload !!
+                }else{
+                    STORE = docRef.data() || false;
+                    if(STORE){
+                        resolve(true); // when successful
+                    }else{
+                        reject("No data found. Try another account.");
+                    }
+                }
+            })
+            .catch(function(error){
+                reject(error);
+            });
+        });
     }
     
     signOut(){
         firebase.auth().signOut();
-    }
-
-    loginByToken(){
-        Database.prototype.fetchUser(USER.email).then(function(docRef){
-            console.log("docRef", docRef.data()); 
-            if(docRef.data() === undefined){ // NO SUCH EMAIL EXISTS BEFORE, SAVE cookie-store
-                console.log("empty here", ); 
-                save(); // !! cookies-store upload !!
-            }else{
-                STORE = docRef.data() || false;
-                if(STORE){
-                    if(STORE.token !== TOKEN){
-                        // do_signin(); // don't redo signin before booting the app...
-                    }else{
-                        // bootApp();
-                    }
-                    bootApp();
-                }else{
-                    alert("Cannot signin. Try again.");
-                }
-            }
-        })
-        .catch(function(error){
-            console.error(error);
-            alert("Failed to signin! "+error);
-            // save();
-            return false;
-        });
     }
     
     save(){
