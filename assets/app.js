@@ -10,7 +10,6 @@ function init() {
         console.log('User "'+USER.email+'" is logged in.');
     }
     else{
-        // TODO: when the user loges in, ask him which data he wants to keep, local data or cloud data
         bootApp();
     }
 }
@@ -74,7 +73,7 @@ function fillValues(){
         STORE.records = [newRec];
         STORE.selectedIndex = 0;
     }
-    if(USER === undefined) USER = {'displayName': 'Guest', 'email': 'null'};
+    if(USER === undefined) USER = new User();
     /* ensure that every record has Logbook */
     $.each(STORE.records, function(i, rec){
         if(rec == null){ // delete empty records
@@ -660,9 +659,9 @@ function isLoggedIn(){
 function logout(){
     db.signOut();
     TOKEN = null;
-    if(Cookies.get("token") !== undefined && Cookies.get("token") !== ""){
-        Cookies.remove("token");
-    }
+    USER = new User();
+    if(Cookies.get("token") !== undefined && Cookies.get("token") !== "") Cookies.remove("token");
+    if(Cookies.get("user") !== undefined && Cookies.get("user") !== "") Cookies.remove("user");
     window.location = window.location;
 }
 

@@ -60,6 +60,13 @@ class Settings{
     }
 }
 
+class User{
+    constructor(displayName, email){
+        this.displayName = displayName || 'Guest';
+        this.email = email || '';
+    }
+}
+
 class Database{
     constructor(){
         this.init();
