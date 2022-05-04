@@ -174,10 +174,14 @@ class Database{
     }
 
     x_signin(){
-        Database.prototype.fetchUserData().then(function(){
+        Database.prototype.fetchUserData().then(function(result){
             console.log("here is then", ); 
-            bootApp();
-            showRecords();
+            if(result == "NO SUCH EMAIL EXISTS BEFORE"){
+                save(); // !! cookies-store upload !!
+            }else{
+                bootApp();
+                showRecords();
+            }
         })
         .catch(function(error){
             alert("Failed to signin! "+error);
@@ -189,7 +193,7 @@ class Database{
         return new Promise(function(resolve, reject) {
             Database.prototype.fetchUser(USER.email).then(function(docRef){
                 if(docRef.data() === undefined){ // NO SUCH EMAIL EXISTS BEFORE, SAVE cookie-store
-                    save(); // !! cookies-store upload !!
+                    resolve("NO SUCH EMAIL EXISTS BEFORE");
                 }else{
                     STORE = docRef.data() || false;
                     if(STORE){

@@ -736,6 +736,7 @@ window.onload = init();
         v5.5 : set record goal, progress comes from it
         v6   : auto user backup on logging everyday!
         v7.4 : can use as guest user
+        v8.0 : signin with google, use promise
         
     FUTURE VERSIONS:
         v8 : GROUPS
