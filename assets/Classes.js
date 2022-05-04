@@ -232,8 +232,7 @@ class Database{
             alert("Cannot save empty STORE!");
             return;
         }
-        // dbCollection.doc(USER.email).set(JSON.parse(JSON.stringify(STORE)))
-        dbCollection.doc(USER.email).set(STORE)
+        dbCollection.doc(USER.email).set(JSON.parse(JSON.stringify(STORE)))
             .then(function() {
                 // console.log("DB saved.");
             })
