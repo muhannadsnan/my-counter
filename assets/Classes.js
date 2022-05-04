@@ -176,13 +176,11 @@ class Database{
     x_signin(){
         Database.prototype.fetchUserData().then(function(result){
             console.log("here is then", ); 
-            if(result == "NO SUCH EMAIL EXISTS BEFORE"){
+            if(result == "NO SUCH EMAIL EXISTS BEFORE"){ // SAVE cookie-store, WARNING: overwrite database in cloud
                 console.log(1,STORE)
-                $.each(STORE, function(key,item){
-                    if(typeof item == 'string'){
-                        STORE[key] = JSON.parse(item); //console.log(STORE[key])
-                    }
-                })
+                if(typeof STORE['history'] == 'string') STORE['history'] = JSON.parse(STORE['history']);
+                if(typeof STORE['records'] == 'string') STORE['records'] = JSON.parse(STORE['records']);
+                if(typeof STORE['settings'] == 'string') STORE['settings'] = JSON.parse(STORE['settings']);
                 console.log(2,STORE)
                 save(); // !! cookies-store upload !!
                 console.log(3,STORE)
@@ -200,7 +198,7 @@ class Database{
     fetchUserData(){
         return new Promise(function(resolve, reject) {
             Database.prototype.fetchUser(USER.email).then(function(docRef){
-                if(docRef.data() === undefined){ // NO SUCH EMAIL EXISTS BEFORE, SAVE cookie-store
+                if(docRef.data() === undefined){ // SAVE cookie-store
                     resolve("NO SUCH EMAIL EXISTS BEFORE");
                 }else{
                     STORE = docRef.data() || false;
