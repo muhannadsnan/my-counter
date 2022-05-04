@@ -179,7 +179,9 @@ class Database{
             if(result == "NO SUCH EMAIL EXISTS BEFORE"){
                 console.log(1,STORE)
                 $.each(STORE, function(key,item){
-                    STORE[key] = JSON.parse(item); //console.log(STORE[key])
+                    if(typeof item == 'string'){
+                        STORE[key] = JSON.parse(item); //console.log(STORE[key])
+                    }
                 })
                 console.log(2,STORE)
                 save(); // !! cookies-store upload !!
