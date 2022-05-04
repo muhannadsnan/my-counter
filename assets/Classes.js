@@ -177,6 +177,9 @@ class Database{
         Database.prototype.fetchUserData().then(function(result){
             console.log("here is then", ); 
             if(result == "NO SUCH EMAIL EXISTS BEFORE"){
+                $.each(STORE, function(key,item){
+                    STORE[key] = JSON.parse(item); //console.log(STORE[key])
+                })
                 save(); // !! cookies-store upload !!
             }else{
                 bootApp();
