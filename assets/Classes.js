@@ -191,6 +191,7 @@ class Database{
                 console.log(2,STORE)
                 save(); // !! cookies-store upload !!
                 console.log(3,STORE)
+                bootApp();
             }else{
                 bootApp();
                 showRecords();
