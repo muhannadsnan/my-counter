@@ -188,7 +188,7 @@ class Database{
         })
         .catch(function(error){
             alert("Failed to signin! "+error);
-            console.log("here is catch", ); 
+            console.log("here is catch", error); 
         })
     }
 
