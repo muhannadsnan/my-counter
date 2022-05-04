@@ -29,19 +29,19 @@
             <div id="clicker"></div>
 
             <button id="reset" class="p-2"><i class="fas fa-redo"></i></button>  
-            <p id="counter" class="pt-3">...</p>
+            <p id="counter" class="pt-2">...</p>
             <button id="showPanel" class="position-right p-2"><i class="fas fa-cog"></i></button>
 
             <div class="main">
                 <p id="recordTitle" class="m-0">...</p>
                 <div id="progress">
                     <div class="val c-0 trans-all-5s trans-width-delay-08s">
-                        <span class="goal-achieved-label label mt-2"><i class="fas fa-star fa-2x mb-2 pb-2 "></i>DAILY GOAL</span>
+                        <span class="goal-achieved-label label justify-content-center"><i class="fas fa-star fa-2x mb-2 pb-2 "></i>DAILY GOAL</span>
                     </div>
                 </div>
                 <div class="info">
-                    <div class="user color-secondary mb-2">
-                        <i class="labelX mr-2 far fa-user"></i>
+                    <div class="user color-secondary mb-3">
+                        <i class="far fa-user"></i>
                         <span id="user" class="number">--</span>
                     </div>
                     <div class="today d-flex justify-content-center color-white mb-1">
@@ -108,29 +108,25 @@
                         </div>
                         <div class="panel-footer p-2 mt-2">
                             <div class="px-2 mb-2">
-                                <button id="showPrayers" class="btn btn-block mt-3 p-0 color-green d-flex justify-content-center">
-                                    <img src="assets/img/ico-muslimpro.png" class="pr-2">
-                                    <span class="">Prayers</span>
-                                </button>
-                                <!-- <button id="showAuthBtn" class="btn btn-block mt-3 color-grey"> -->
                                 <div class="login-buttons-container">
-                                    <h2 class="m-0 mt-3">Sign In</h2>
-                                    <div class="d-flex">
-                                        <button id="signin-google" class="signin btn btn-block mt-3 p-0 color-white p-2 d-flex justify-content-around" data-signin-type="google">
-                                            <img src="assets/img/google-favico.png">
-                                        </button>&nbsp;
-                                        <button id="signin-facebook" class="signin btn btn-block mt-3 p-0 color-white p-2 d-flex justify-content-around" data-signin-type="facebook">
-                                            <img src="assets/img/facebook-favico.png">
+                                    <div class="">
+                                        <button id="signin-google" data-signin-type="google" class="signin btn btn-block mt-3 p-0 p-2 d-flex align-items-center">
+                                            <img src="assets/img/google-favico.png" class="px-3"> Signin with Google
+                                        </button>
+                                        <button id="signin-facebook" data-signin-type="facebook" class="signin btn btn-block color-white border-0 mt-3 p-0 p-2 d-flex align-items-center">
+                                            <img src="assets/img/facebook-favico.png" class="px-3"> Signin with Facebook
                                         </button>
                                     </div>
                                 </div>
+                                <button id="showPrayers" class="btn btn-block color-white mt-3 p-0 d-flex align-items-center" style="background: #00722d;">
+                                    <img src="assets/img/ico-muslimpro.png" class="px-3"> Prayers
                                 </button>
                                 <button id="logoutBtn" class="btn btn-block mt-3 color-grey">
                                     <i class="fas fa-user-lock mr-2"></i>Logout
                                 </button>
                             </div>
                             <h3>What is this app for?</h3>
-                            <p>Many people have need to count (words, items, maraton runners) among other things that go fast. Other people have tasks to count the accuracy of specific items on a production line. Another synario is religious people who set them selves a goal to say "precious words" for thousands of times, which is too hard to focus on. Also in sports, referees can use this app to count shots, fouls, passes and so on. Therefor, this app can help users do their "counting tasks" easily and achieve their goals. 
+                            <p style="text-align: justify;">Many people have need to count (words, items, maraton runners) among other things that go fast. Other people have tasks to count the accuracy of specific items on a production line. Another synario is religious people who set them selves a goal to say "precious words" for thousands of times, which is too hard to focus on. Also in sports, referees can use this app to count shots, fouls, passes and so on. Therefor, this app can help users do their "counting tasks" easily and achieve their goals. 
                             <h3>Features</h3>
                             <ul class="pr-0 pl-3" style="text-align: left;">
                                 <li>Add more records to count multi-tasks separately</li>
@@ -141,7 +137,7 @@
                                 <li>The records are saved locally in the browser, and you can LOGIN to sync them on the cloud to save your data and use on other devices</li>
                             </ul>
                             <h3>Notice</h3>
-                            <p>Browser compatibility is being optimized all the time. But the main functions are working fine and tested.</p>
+                            <p style="text-align: justify;">Browser compatibility is being optimized all the time. But the main functions are working fine and tested.</p>
                             <h3 class="mt-3 mb-1">Contact:</h3>
                             <p class="">Muhannad Senan</p>
                             <p class="">msn-23@live.com</p>
@@ -169,7 +165,7 @@
                     </div>
                 </div>
     
-                <div id="auth-panel" class="transition trans-left trans-right color-primary d-flex">
+                <!-- <div id="auth-panel" class="transition trans-left trans-right color-primary d-flex">
                     <div class="container border border-grey p-2">
                         <button id="closeAuthPanel" class="close position-right p-2"><i class="fas fa-arrow-alt-circle-right"></i></button>
                         <h5 class="d-flex color-primary py-1 m-0">M-DIGITAL COUNTER</h5>
@@ -215,7 +211,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     
