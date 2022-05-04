@@ -233,9 +233,6 @@ class Database{
             return;
         }
         dbCollection.doc(USER.email).set(JSON.parse(JSON.stringify(STORE)))
-            .then(function() {
-                // console.log("DB saved.");
-            })
             .catch(function(error) {
                 console.error("Error saving DB: ", error);
             });
