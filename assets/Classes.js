@@ -178,9 +178,16 @@ class Database{
             console.log("here is then", ); 
             if(result == "NO SUCH EMAIL EXISTS BEFORE"){ // SAVE cookie-store, WARNING: overwrite database in cloud
                 console.log(1,STORE)
-                if(typeof STORE['history'] == 'string') STORE['history'] = JSON.parse(STORE['history']);
-                if(typeof STORE['records'] == 'string') STORE['records'] = JSON.parse(STORE['records']);
-                if(typeof STORE['settings'] == 'string') STORE['settings'] = JSON.parse(STORE['settings']);
+                // json-parse the cookie-store before it is saved to cloud
+                if(STORE['history'] !== undefined && typeof STORE['history'] == 'string') 
+                    STORE['history'] = JSON.parse(STORE['history']);
+                if(STORE['records'] !== undefined && typeof STORE['records'] == 'string') 
+                    STORE['records'] = JSON.parse(STORE['records']);
+                if(STORE['settings'] !== undefined && typeof STORE['settings'] == 'string') 
+                    STORE['settings'] = JSON.parse(STORE['settings']);
+                if(STORE['user'] !== undefined && typeof STORE['user'] == 'string') 
+                    STORE['user'] = JSON.parse(STORE['user']);
+                USER = STORE['user'];
                 console.log(2,STORE)
                 save(); // !! cookies-store upload !!
                 console.log(3,STORE)
@@ -224,7 +231,8 @@ class Database{
             alert("Cannot save empty STORE!");
             return;
         }
-        dbCollection.doc(USER.email).set(JSON.parse(JSON.stringify(STORE)))
+        // dbCollection.doc(USER.email).set(JSON.parse(JSON.stringify(STORE)))
+        dbCollection.doc(USER.email).set(STORE)
             .then(function() {
                 // console.log("DB saved.");
             })
