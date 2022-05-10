@@ -332,7 +332,7 @@ function changeTitle(){
 
 function changeGoal(){
     var $rec = $(this).closest('.record');
-    var newGoal = (function goalPrompt() { var n = prompt('New Daily Goal: (between 1 and 1 million)', $rec.attr('data-goal')); return isNaN(n) || +n > 100 || +n < 1 ? goalPrompt() : n;  }());
+    var newGoal = (function goalPrompt() { var n = prompt('New Daily Goal: (between 1 and 1 million)', $rec.attr('data-goal')); return isNaN(n) || +n > 1000000 || +n < 1 ? goalPrompt() : n; }());
     if(newGoal == null) return;
     while(newGoal.trim() == '' || newGoal === parseInt(newGoal, 10)/*is int*/){
         alert('The goal must be a number!');
